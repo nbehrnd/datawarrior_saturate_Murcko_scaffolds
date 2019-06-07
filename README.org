@@ -1,4 +1,5 @@
 
+[[./pattern.png]]
 
 * Background
    
