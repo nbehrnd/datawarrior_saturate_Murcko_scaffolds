@@ -49,10 +49,8 @@
    aromatic bonds retains the information about which atoms are
    directly connected with each other.  =openbabel='s algorithm to
    display the molecular structures sometimes deals surprisingly well
-   complicated entries (e.g., the cyclophane in #33).  There are other
-   cases (#38, 50, 110) where only an inspection of the SMILES and the
-   3D regeneration in a sketcher reveals their "true nature" (e.g.,
-   motif of sparteine, or adamantane).
+   complicated entries (e.g., the cyclophane [#33], sparteine [#38],
+   adamantane [#50]). 
 
 
 [1] Bemis GW, Murcko MA J. Med. Chem. 1996, 39, 2887-2893,
