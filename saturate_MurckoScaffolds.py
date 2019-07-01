@@ -1,6 +1,8 @@
-# name:   MurckoScaffold_bondOrder_one.py
+# name:   saturate_MurckoScaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   2019-06-07 (YYYY-MM-DD)
+# edit:   2019-07-01 (YYYY-MM-DD)
+
 """ Read Smiles of Murcko scaffolds and return these as 'saturated'.
 
 The Bemis-Murcko scaffold [1] provided by DataWarrior [2] retains
@@ -14,7 +16,7 @@ imidazole scaffold into cyclopentane.
 To be used on the CLI of Python (either branch 2 or 3) with the mandatory
 parameter about listing file containing the SMILES to work with:
 
-python MurckoScaffold_bondOrder_one [listing_file.txt]
+python saturate_MurckoScaffolds.py [listing_file.txt]
 
 to generate saturated_Murcko_scaffold.csv as permanent record.
 
