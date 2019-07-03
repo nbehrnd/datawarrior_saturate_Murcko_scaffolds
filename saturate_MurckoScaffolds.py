@@ -1,24 +1,26 @@
 # name:   saturate_MurckoScaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   2019-06-07 (YYYY-MM-DD)
-# edit:   2019-07-01 (YYYY-MM-DD)
+# edit:   2019-07-03 (YYYY-MM-DD)
 
 """ Read Smiles of Murcko scaffolds and return these as 'saturated'.
 
 The Bemis-Murcko scaffold [1] provided by DataWarrior [2] retains
 information about bond order and chirality.  There are instances where
-retaining only information about which atoms are connected with each
-other, but not their bond order is desired.  This corresponds to the
-assumption 'there are only single bonds'.  DataWarrior equally offers
-the export of Bemis-Murcko skeleton, however this simplifies e.g. an
-imidazole scaffold into cyclopentane.
+retaining only information atom connectivtiy is wanted, corresponding
+to the assumption 'there are only single bonds' and a neutral state.
+
+DataWarrior equally offers the export of Bemis-Murcko skeleton, however
+this simplifies e.g. an imidazole scaffold into cyclopentane.
 
 To be used on the CLI of Python (either branch 2 or 3) with the mandatory
-parameter about listing file containing the SMILES to work with:
+parameter of a listing file containing the SMILES to work with:
 
 python saturate_MurckoScaffolds.py [listing_file.txt]
 
-to generate saturated_Murcko_scaffold.csv as permanent record.
+to generate saturated_Murcko_scaffold.csv as permanent record.  Assuming
+single charged molecules at maximum, such an information in the SMILES
+string equally are removed, too.
 
 [1] Bemis GW, Murcko MA J. Med. Chem. 1996, 39, 2887-2893,
     doi 10.1021/jm9602928
@@ -60,7 +62,7 @@ def remove_explicit_chars():
     retained_after_char_removal = ""
 
     for char in smiles_entry:
-        strip_characters = ['=', '#', '-', '@', '/', '\\', 'H']
+        strip_characters = ['=', '#', '-', '+', '@', '/', '\\', 'H']
         if str(char) not in strip_characters:
             retained_after_char_removal += str(char)
 
