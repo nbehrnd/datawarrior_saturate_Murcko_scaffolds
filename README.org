@@ -48,9 +48,18 @@
     #+BEGIN_SRC shell
       python saturate_MurckoScaffolds.py Murcko_scaffolds_with_bond_order.txt
    #+END_SRC
-   yielding =saturated_Murcko_scaffold.csv=.  For a visual survey
-   about the scaffolds, =openbabel=[fn:3] allows a quick check on the
-   CLI by writing a =.svg=, here as:
+   yielding =saturated_Murcko_scaffold.csv=.  The affect of this
+   operation on the SMILES strings deposit in the listings are easy to
+   see (fig. [[file_diff]]).
+   
+   #+NAME:       file_diff
+   #+CAPTION:    DiffView of the SMILES strings of a Murcko scaffold /prior/ (left hand column) or /after/ an «artifical saturation» (right hand column).  Note the removal of explicit bond order indicators, e.g. double bond (equality sign), triple bond bond (octohorpe), or about implicit aromatization (lower case -> upper case for atoms of carbon, nitrogen (depicted); oxygen or sulfur (not depicted).  At the same time, stereochemical indicators are removed, too (e.g., at-signs).
+   #+ATTR_LATEX: :width 8cm
+   #+ATTR_HTML:  :width 75%
+   [[./2019-07-03_vimdiff.png]]
+
+   For a visual survey about the scaffolds, =openbabel=[fn:3] allows a
+   quick check on the CLI by writing a =.svg=, here as:
    #+BEGIN_SRC shell -n1
      obabel -ismi Murcko_scaffolds_with_bond_order.txt -O Murcko_scaffolds_with_bond_order.svg -xc10 -xr12 -xl --addinindex
    #+END_SRC

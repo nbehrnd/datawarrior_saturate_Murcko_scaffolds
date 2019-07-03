@@ -34,9 +34,14 @@ was obtained by
 
     python saturate_MurckoScaffolds.py Murcko_scaffolds_with_bond_order.txt
 
-yielding `saturated_Murcko_scaffold.csv`.  For a visual survey
-about the scaffolds, `openbabel`<sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup> allows a quick check on the
-CLI by writing a `.svg`, here as:
+yielding `saturated_Murcko_scaffold.csv`.  The affect of this
+operation on the SMILES strings deposit in the listings are easy to
+see (fig. [7](#org3b77c98)).
+
+![img](./2019-07-03_vimdiff.png "DiffView of the SMILES strings of a Murcko scaffold *prior* (left hand column) or *after* an «artifical saturation» (right hand column).  Note the removal of explicit bond order indicators, e.g. double bond (equality sign), triple bond bond (octohorpe), or about implicit aromatization (lower case -> upper case for atoms of carbon, nitrogen (depicted); oxygen or sulfur (not depicted).  At the same time, stereochemical indicators are removed, too (e.g., at-signs).")
+
+For a visual survey about the scaffolds, `openbabel`<sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup> allows a
+quick check on the CLI by writing a `.svg`, here as:
 
     1  obabel -ismi Murcko_scaffolds_with_bond_order.txt -O Murcko_scaffolds_with_bond_order.svg -xc10 -xr12 -xl --addinindex
 
