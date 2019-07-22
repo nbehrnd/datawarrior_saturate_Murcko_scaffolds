@@ -1,6 +1,6 @@
 
 # name: README.org 
-# edit: 2019-07-01 (YYYY-MM-DD)
+# edit: 2019-07-22 (YYYY-MM-DD)
 
 #+OPTIONS: toc:nil
 
@@ -19,13 +19,12 @@
 * Background
    
    The Bemis-Murcko scaffold[fn:1] provided by =DataWarrior=[fn:2]
-   retains information about bond order and chirality.  There are
-   instances where retaining only information about which atoms are
-   connected with each other, but not their bond order is desired.
-   This corresponds to the assumption 'there are only single bonds'.
-   =DataWarrior= equally offers the export of Bemis-Murcko skeleton,
-   however this simplifies e.g. the scaffold about an imidazole into
-   one of cyclopentane.
+   retains information about bond order and chirality.  Sometimes,
+   however, it suffices to retain only which atoms are connected with
+   each other.  This corresponds to the assumption «there are only
+   single bonds».  =DataWarrior= equally offers the export of
+   Bemis-Murcko skeleton, however this simplifies e.g. the scaffold
+   about an imidazole into one of cyclopentane.
 
    [[./pattern.png]]
 
@@ -36,42 +35,40 @@
    #+BEGIN_SRC shell
      python saturate_MurckoScaffolds.py [listing_file.txt]
    #+END_SRC
-   to generate =saturated_Murcko_scaffold.csv= as permanent record.
-   The script equally works with the legacy of Python2.17, too.
+   This generates =saturated_Murcko_scaffold.csv= as permanent record.
+   The script equally works with the legacy of Python2.7.15, too.
 
 * Example
 
   For a collection of organic materials, the Bemis-Murcko scaffolds
   was extracted with =DataWarrior= (release 5.0.0 for Linux) as
-  listing =Murcko_scaffolds_with_bond_order.txt=.  The "saturation"
-  was obtained by
+  listing =Murcko_scaffolds_with_bond_order.txt=.  The «artifical
+  saturation» was obtained by
     #+BEGIN_SRC shell
       python saturate_MurckoScaffolds.py Murcko_scaffolds_with_bond_order.txt
    #+END_SRC
-   yielding =saturated_Murcko_scaffold.csv=.  The affect of this
-   operation on the SMILES strings deposit in the listings are easy to
-   see (fig. [[file_diff]]).
+   to yield =saturated_Murcko_scaffold.csv=.  Comparing the two
+   scaffold lists, the effect of this operation is easy to recognize
+   (fig. [[file_diff]]).
    
    #+NAME:       file_diff
    #+CAPTION:    DiffView of the SMILES strings of a Murcko scaffold /prior/ (left hand column) or /after/ an «artifical saturation» (right hand column).  Note the removal of explicit bond order indicators, e.g. double bond (equality sign), triple bond bond (octohorpe), or about implicit aromatization (lower case -> upper case for atoms of carbon, nitrogen (depicted); oxygen or sulfur (not depicted).  At the same time, stereochemical indicators are removed, too (e.g., at-signs).
-   #+ATTR_LATEX: :width 8cm
+   #+ATTR_LATEX: :width 10cm
    #+ATTR_HTML:  :width 75%
    [[./2019-07-03_vimdiff.png]]
 
-   For a visual survey about the scaffolds, =openbabel=[fn:3] allows a
-   quick check on the CLI by writing a =.svg=, here as:
+   The following instruction on the CLI triggers =openbabel=[fn:3] to
+   provide a visual survey about the scaffolds as =.svg= file:
    #+BEGIN_SRC shell -n1
      obabel -ismi Murcko_scaffolds_with_bond_order.txt -O Murcko_scaffolds_with_bond_order.svg -xc10 -xr12 -xl --addinindex
    #+END_SRC
    This formats the output as an array of 10 columns (=-xc10=) by
    12 rows (=-xr12=) with a grid (=-xl=), where the entries are
    labeled in order of their appearance in the input file
-   (=--addinindex=).  If using the GUI of =openbabel= instead of the
-   CLI, the later optional parameter is called =Append input index to
-   title=.[fn:4]
-
-   The =.svg= may be post-processed further to yield a =.pdf= or a
-   =.png=, for example =cairosvg=[fn:5] by a call of
+   (=--addinindex=).[fn:4] If using the GUI of =openbabel= instead of
+   the CLI, the later optional parameter is called =Append input index
+   to title=.  The =.svg= was post-processed further to yield a =.pdf=
+   or a =.png=, for example =cairosvg=[fn:5] by a call of
    #+BEGIN_SRC shell -n1
      cairopdf Murcko_scaffold_with_bond_order.svg -o Murcko_scaffold_with_bond_order.pdf
    #+END_SRC
@@ -84,6 +81,10 @@
    display the molecular structures deals surprisingly well even with
    sometimes complicated motifs (e.g., the scaffold of cyclophane
    [entry #33], sparteine [#38], or adamantane [#50]).
+
+* Licence
+
+  Norwid Behrnd, 2019, GPLv3.
 
 * Footnotes
 

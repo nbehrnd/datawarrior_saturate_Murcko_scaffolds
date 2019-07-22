@@ -3,13 +3,12 @@
 # Background
 
 The Bemis-Murcko scaffold<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup> provided by `DataWarrior`<sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup>
-retains information about bond order and chirality.  There are
-instances where retaining only information about which atoms are
-connected with each other, but not their bond order is desired.
-This corresponds to the assumption 'there are only single bonds'.
-`DataWarrior` equally offers the export of Bemis-Murcko skeleton,
-however this simplifies e.g. the scaffold about an imidazole into
-one of cyclopentane.
+retains information about bond order and chirality.  Sometimes,
+however, it suffices to retain only which atoms are connected with
+each other.  This corresponds to the assumption «there are only
+single bonds».  `DataWarrior` equally offers the export of
+Bemis-Murcko skeleton, however this simplifies e.g. the scaffold
+about an imidazole into one of cyclopentane.
 
 ![img](./pattern.png)
 
@@ -21,39 +20,37 @@ parameter about listing file containing the SMILES to work with:
 
     python saturate_MurckoScaffolds.py [listing_file.txt]
 
-to generate `saturated_Murcko_scaffold.csv` as permanent record.
-The script equally works with the legacy of Python2.17, too.
+This generates `saturated_Murcko_scaffold.csv` as permanent record.
+The script equally works with the legacy of Python2.7.15, too.
 
 
 # Example
 
 For a collection of organic materials, the Bemis-Murcko scaffolds
 was extracted with `DataWarrior` (release 5.0.0 for Linux) as
-listing `Murcko_scaffolds_with_bond_order.txt`.  The "saturation"
-was obtained by
+listing `Murcko_scaffolds_with_bond_order.txt`.  The «artifical
+saturation» was obtained by
 
     python saturate_MurckoScaffolds.py Murcko_scaffolds_with_bond_order.txt
 
-yielding `saturated_Murcko_scaffold.csv`.  The affect of this
-operation on the SMILES strings deposit in the listings are easy to
-see (fig. [7](#org3b77c98)).
+to yield `saturated_Murcko_scaffold.csv`.  Comparing the two
+scaffold lists, the effect of this operation is easy to recognize
+(fig. [7](#org96ea312)).
 
 ![img](./2019-07-03_vimdiff.png "DiffView of the SMILES strings of a Murcko scaffold *prior* (left hand column) or *after* an «artifical saturation» (right hand column).  Note the removal of explicit bond order indicators, e.g. double bond (equality sign), triple bond bond (octohorpe), or about implicit aromatization (lower case -> upper case for atoms of carbon, nitrogen (depicted); oxygen or sulfur (not depicted).  At the same time, stereochemical indicators are removed, too (e.g., at-signs).")
 
-For a visual survey about the scaffolds, `openbabel`<sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup> allows a
-quick check on the CLI by writing a `.svg`, here as:
+The following instruction on the CLI triggers `openbabel`<sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup> to
+provide a visual survey about the scaffolds as `.svg` file:
 
     1  obabel -ismi Murcko_scaffolds_with_bond_order.txt -O Murcko_scaffolds_with_bond_order.svg -xc10 -xr12 -xl --addinindex
 
 This formats the output as an array of 10 columns (`-xc10`) by
 12 rows (`-xr12`) with a grid (`-xl`), where the entries are
 labeled in order of their appearance in the input file
-(`--addinindex`).  If using the GUI of `openbabel` instead of the
-CLI, the later optional parameter is called `Append input index to
-   title`.<sup><a id="fnr.4" class="footref" href="#fn.4">4</a></sup>
-
-The `.svg` may be post-processed further to yield a `.pdf` or a
-`.png`, for example `cairosvg`<sup><a id="fnr.5" class="footref" href="#fn.5">5</a></sup> by a call of
+(`--addinindex`).<sup><a id="fnr.4" class="footref" href="#fn.4">4</a></sup> If using the GUI of `openbabel` instead of
+the CLI, the later optional parameter is called `Append input index
+   to title`.  The `.svg` was post-processed further to yield a `.pdf`
+or a `.png`, for example `cairosvg`<sup><a id="fnr.5" class="footref" href="#fn.5">5</a></sup> by a call of
 
     1  cairopdf Murcko_scaffold_with_bond_order.svg -o Murcko_scaffold_with_bond_order.pdf
 
@@ -66,6 +63,11 @@ directly connected with each other.  `openbabel`'s algorithm to
 display the molecular structures deals surprisingly well even with
 sometimes complicated motifs (e.g., the scaffold of cyclophane
 [entry #33], sparteine [#38], or adamantane [#50]).
+
+
+# Licence
+
+Norwid Behrnd, 2019, GPLv3.
 
 
 # Footnotes

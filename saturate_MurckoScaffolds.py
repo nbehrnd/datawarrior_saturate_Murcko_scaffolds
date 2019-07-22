@@ -1,7 +1,7 @@
 # name:   saturate_MurckoScaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   2019-06-07 (YYYY-MM-DD)
-# edit:   2019-07-03 (YYYY-MM-DD)
+# edit:   2019-07-22 (YYYY-MM-DD)
 
 """ Read Smiles of Murcko scaffolds and return these as 'saturated'.
 
@@ -26,6 +26,8 @@ string equally are removed, too.
     doi 10.1021/jm9602928
 [2] Sander T, Freyss J, von Korff M, Rufener C, J. Chem. Inf. Model. 2015,
     55, 460-473, doi 10.1021/ci500588j, http://www.openmolecules.org
+
+License: Norwid Behrnd, 2019, GPLv3.
 """
 import sys
 
