@@ -1,6 +1,7 @@
 
 # name: README.org 
-# edit: 2019-07-22 (YYYY-MM-DD)
+# date: 2019-07-22 (YYYY-MM-DD)
+# edit: 2020-04-25 (YYYY-MM-DD)
 
 #+OPTIONS: toc:nil
 
@@ -18,7 +19,7 @@
 
 * Background
    
-   The Bemis-Murcko scaffold[fn:1] provided by =DataWarrior=[fn:2]
+   The Bemis-Murcko scaffold[fn:BM_scaffold] provided by =DataWarrior=[fn:DataWarrior]
    retains information about bond order and chirality.  Sometimes,
    however, it suffices to retain only which atoms are connected with
    each other.  This corresponds to the assumption «there are only
@@ -57,7 +58,7 @@
    #+ATTR_HTML:  :width 75%
    [[./2019-07-03_vimdiff.png]]
 
-   The following instruction on the CLI triggers =openbabel=[fn:3] to
+   The following instruction on the CLI triggers =openbabel=[fn:openbabel] to
    provide a visual survey about the scaffolds as =.svg= file:
    #+BEGIN_SRC shell -n1
      obabel -ismi Murcko_scaffolds_with_bond_order.txt -O Murcko_scaffolds_with_bond_order.svg -xc10 -xr12 -xl --addinindex
@@ -65,15 +66,15 @@
    This formats the output as an array of 10 columns (=-xc10=) by
    12 rows (=-xr12=) with a grid (=-xl=), where the entries are
    labeled in order of their appearance in the input file
-   (=--addinindex=).[fn:4] If using the GUI of =openbabel= instead of
+   (=--addinindex=).[fn:openbabel_color] If using the GUI of =openbabel= instead of
    the CLI, the later optional parameter is called =Append input index
    to title=.  The =.svg= was post-processed further to yield a =.pdf=
-   or a =.png=, for example =cairosvg=[fn:5] by a call of
+   or a =.png=, for example =cairosvg=[fn:cairosvg] by a call of
    #+BEGIN_SRC shell -n1
      cairopdf Murcko_scaffold_with_bond_order.svg -o Murcko_scaffold_with_bond_order.pdf
    #+END_SRC
    Alternatively, the =.svg= may be processed in programs like
-   =inkscape=.[fn:6] 
+   =inkscape=.[fn:inkscape] 
 
    As desired, this "artificial saturation" of double / triple /
    aromatic bonds retains the information about which atoms are
@@ -88,25 +89,33 @@
 
 * Footnotes
 
-[fn:1] Bemis GW, Murcko MA /J. Med. Chem./ 1996, **39**, 2887-2893,
-[[https://pubs.acs.org/doi/10.1021/jm9602928][doi 10.1021/jm9602928]]
+[fn:BM_scaffold] Bemis GW, Murcko MA /J. Med. Chem./ 1996, **39**,
+2887-2893, [[https://pubs.acs.org/doi/10.1021/jm9602928][doi 10.1021/jm9602928]]
 
-[fn:2] Sander T, Freyss J, von Korff M, Rufener C,
+[fn:DataWarrior] Sander T, Freyss J, von Korff M, Rufener C,
     /J. Chem. Inf. Model./ 2015, **55**, 460-473, [[https://pubs.acs.org/doi/10.1021/ci500588j][doi
     10.1021/ci500588j]].  The program, (c) 2002--2019 by Idorsia
     Pharmaceuticals Ltd., is freely available under
     [[http://www.openmolecules.org]].
 
-[fn:3] [[http://www.openbabel.org][www.openbabel.org]]. This outline is based on release 2.4.1
-(Nov 12, 2018) provided by Linux Xubuntu 18.04.2 LTS.
+[fn:openbabel] [[http://www.openbabel.org][www.openbabel.org]].  The script initially was developed
+for and tested against openbabel (release 2.4.1; Nov 12, 2018)
+provided by Linux Xubuntu 18.04.2 LTS for either python2.7.17 and
+python3.7.6.  It is known to work with python 3.8.2 (recommended,
+released April 1, 2020) as well as python 2.7.18 (legacy, deprecated,
+released April 20, 2020) and openbabel (release 3.0.0 by April
+6, 2020) as provided in Linux Debian 10.
 
-[fn:4] By default, =openbabel= attributes element specific colors.
-Especially if the output is print black-and-white, the labels about
-atoms like hydrogen, silicon, sulfur, phosphor, then might be barely
-intelligible, especially at low scale.  It is possible to toggle off
-the element-colors by adding =-xu= as additional parameter of
-=openbabel='s conversion after the definition of the output file.
+[fn:openbabel_color] By default, =openbabel= attributes element
+specific colors.  Especially if the output is print black-and-white,
+the labels about atoms like hydrogen, silicon, sulfur, phosphor, then
+might be barely intelligible, especially at low scale.  It is possible
+to toggle off the element-colors by adding =-xu= as additional
+parameter of =openbabel='s conversion after the definition of the
+output file.
 
-[fn:5] [[https://cairosvg.org/]]
+[fn:cairosvg] See, for example, [[https://cairosvg.org/]].  The
+intermediate =.svg= by openbabel was converted successfully into a
+=.pdf=, e.g. by release 2.4.0.
 
-[fn:6] [[https://inkscape.org]]
+[fn:inkscape] See, for example,  [[https://inkscape.org]].
