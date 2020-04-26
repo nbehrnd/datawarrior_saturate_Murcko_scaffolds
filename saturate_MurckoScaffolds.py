@@ -1,7 +1,7 @@
 # name:   saturate_MurckoScaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   2019-06-07 (YYYY-MM-DD)
-# edit:   2020-04-25 (YYYY-MM-DD)
+# edit:   2020-04-26 (YYYY-MM-DD)
 #
 """Read Smiles of Murcko scaffolds and return these as 'saturated'.
 
@@ -89,7 +89,7 @@ def capitalize_CNOPS():
     change_case = ['c', 'n', 'o', 'p', 's']
     retained_BO_one_string = ""
 
-    reporter_file = str("saturated_Murcko_scaffold.csv")
+    reporter_file = input_file[:-4] + str("_sat.smi")
     with open(reporter_file, mode="a") as newfile:
 
         for char in retained_after_char_removal:
@@ -115,6 +115,4 @@ smiles_reading()
 worker()
 
 # closing
-print("\nPermanent record written into 'saturated_Murcko_scaffold.csv'.")
-print("Script 'MurckoScaffold_bondOrder_one' closes now.\n")
 sys.exit()
