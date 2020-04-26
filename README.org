@@ -1,13 +1,13 @@
 
 # name: README.org 
 # date: 2019-07-22 (YYYY-MM-DD)
-# edit: 2020-04-25 (YYYY-MM-DD)
+# edit: 2020-04-26 (YYYY-MM-DD)
 
 #+OPTIONS: toc:nil
 
 #+LATEX_CLASS:    koma-article  
 #+LATEX_HEADER:   \usepackage[a4paper]{geometry}
-#+LATEX_HEADER:   \usepackage{libertine, microtype, graphicx, float, booktabs, amsmath, siunitx}
+#+LATEX_HEADER:   \usepackage{libertine, microtype, graphicx, float, booktabs}
 #+LATEX_HEADER:   \usepackage[USenglish]{babel}
 #+LATEX_HEADER:   \usepackage[scaled=0.9]{inconsolata}
 #+LATEX_HEADER:   \usepackage[libertine]{newtxmath}
@@ -19,73 +19,87 @@
 
 * Background
    
-   The Bemis-Murcko scaffold[fn:BM_scaffold] provided by =DataWarrior=[fn:DataWarrior]
-   retains information about bond order and chirality.  Sometimes,
-   however, it suffices to retain only which atoms are connected with
-   each other.  This corresponds to the assumption «there are only
-   single bonds».  =DataWarrior= equally offers the export of
-   Bemis-Murcko skeleton, however this simplifies e.g. the scaffold
-   about an imidazole into one of cyclopentane.
+   The Bemis-Murcko scaffold[fn:BM_scaffold] provided by
+   =DataWarrior=[fn:DataWarrior] retains information about bond order
+   and chirality.  Sometimes, however, it suffices to retain only
+   which atoms are connected with each other, equivalent to the
+   assumption «there are only single bonds».  Note =DataWarrior=
+   equally offers the export of Bemis-Murcko skeleton, however this
+   simplifies e.g. the scaffold about an imidazole into one of
+   cyclopentane.
 
    [[./pattern.png]]
 
 * Typical use
-
-   The script is to be used on the CLI of Python3 with the mandatory
-   parameter about listing file containing the SMILES to work with:
+ 
+   The script runs in the CLI of Python. File =listing_file.txt=
+   contains the SMILES to work with:
    #+BEGIN_SRC shell
      python saturate_MurckoScaffolds.py [listing_file.txt]
    #+END_SRC
-   This generates =saturated_Murcko_scaffold.csv= as permanent record.
-   The script equally works with the legacy of Python2.7.15, too.
+   This generates =saturated_Murcko_scaffold_sat.smi= as permanent
+   record, which shares the file name with the input file /with the
+   addition of =_sat= (like saturated)/.  Regardless of the
+   three-character file extension of the input, the plain ASCII-list
+   of SMILES is recorded in a file of extension =.smi=, accepted
+   recognized e.g., by =openbabel= to contain this specific
+   information.
+
+   While intended to work with the current branch of Python 3.6+, the
+   script equally works well with the deprecated, legacy branch of
+   Python 2, e.g., Python 2.7.16.
 
 * Example
 
   For a collection of organic materials, the Bemis-Murcko scaffolds
-  was extracted with =DataWarrior= (release 5.0.0 for Linux) as
-  listing =Murcko_scaffolds_with_bond_order.txt=.  The «artifical
-  saturation» was obtained by
-    #+BEGIN_SRC shell
-      python saturate_MurckoScaffolds.py Murcko_scaffolds_with_bond_order.txt
+  was extracted with =DataWarrior= (then release 5.0.0 for Linux,
+  January 2019) as listing =test_input.smi.txt= including higher bond
+  orders (see folder =test_data=).  The «artificial saturation» was
+  triggered by
+    #+BEGIN_SRC shell -n1
+      python saturate_MurckoScaffolds.py test_input.smi
    #+END_SRC
-   to yield =saturated_Murcko_scaffold.csv=.  Comparing the two
-   scaffold lists, the effect of this operation is easy to recognize
-   (fig. [[file_diff]]).
+   to yield =test_input_sat.smi=.  The effect of this operation is
+   easy to recognize while comparing the scaffold lists
+   (fig. [[file_diff]]) in a difference view of the two =.smi= files.
    
    #+NAME:       file_diff
-   #+CAPTION:    DiffView of the SMILES strings of a Murcko scaffold /prior/ (left hand column) or /after/ an «artifical saturation» (right hand column).  Note the removal of explicit bond order indicators, e.g. double bond (equality sign), triple bond bond (octohorpe), or about implicit aromatization (lower case -> upper case for atoms of carbon, nitrogen (depicted); oxygen or sulfur (not depicted).  At the same time, stereochemical indicators are removed, too (e.g., at-signs).
+   #+CAPTION:    Difference view of the SMILES strings of a Murcko scaffold /prior/ (left hand column) and /after/ an «artificial saturation» (right hand column).  Note the removal of explicit bond order indicators, e.g. double bond (equality sign), triple bond bond (octohorpe), or about implicit aromatization (lower case \rightarrow upper case for atoms of carbon, nitrogen, oxygen (depicted); or sulfur (not depicted).  At the same time, stereochemical indicators are removed, too (e.g., slashes in lines #018 and #019, @-signs line #025).
    #+ATTR_LATEX: :width 10cm
    #+ATTR_HTML:  :width 75%
-   [[./2019-07-03_vimdiff.png]]
+   [[./2020-04-26_kdiff3.png]]
 
-   The following instruction on the CLI triggers =openbabel=[fn:openbabel] to
-   provide a visual survey about the scaffolds as =.svg= file:
-   #+BEGIN_SRC shell -n1
-     obabel -ismi Murcko_scaffolds_with_bond_order.txt -O Murcko_scaffolds_with_bond_order.svg -xc10 -xr12 -xl --addinindex
+   Subsequently, =openbabel=[fn:openbabel] was used to illustrate the
+   work performed.  While eventually automated (cf. script
+   =test_series.py=, deposit in folder =test_data=), instructions
+   delivered to =openbabel= on the command line follow the pattern of
+   #+BEGIN_SRC shell -n2
+     obabel -ismi test_input.smi -O test_input_color.svg -xc10 -xr12 -xl --addinindex
    #+END_SRC
-   This formats the output as an array of 10 columns (=-xc10=) by
-   12 rows (=-xr12=) with a grid (=-xl=), where the entries are
-   labeled in order of their appearance in the input file
-   (=--addinindex=).[fn:openbabel_color] If using the GUI of =openbabel= instead of
-   the CLI, the later optional parameter is called =Append input index
-   to title=.  The =.svg= was post-processed further to yield a =.pdf=
-   or a =.png=, for example =cairosvg=[fn:cairosvg] by a call of
-   #+BEGIN_SRC shell -n1
-     cairopdf Murcko_scaffold_with_bond_order.svg -o Murcko_scaffold_with_bond_order.pdf
+   to generate a =.svg= file (vector representation), or
+   #+BEGIN_SRC shell -n3
+       obabel -ismi test_input_sat.smi -O test_input_sat_color.png -xc10 -xr12 -xl --addinindex -xp 3000
    #+END_SRC
-   Alternatively, the =.svg= may be processed in programs like
-   =inkscape=.[fn:inkscape] 
+   to generate a bitmap =.png=.  The instructions share the definition
+   of data input (=-ismi=) -- eventually /a list of SMILES/, rather
+   than only one SMILES string -- and the definition of the output
+   format based on the extension of the file to be written (=.svg=, or
+   =.png=).  Both put the entries into an array of 10 columns and
+   12 rows (=-xc=, =xr=) and label them in the consecution of their
+   appearance in the input files (=--addinindex=) as inner index.
+   Contrasting to the vector output, in case of =.png=, an explicit
+   scaling by a factor of 10 (=-xp= parameter) was required to yield
+   an intelligible illustration.
 
-   As desired, this "artificial saturation" of double / triple /
-   aromatic bonds retains the information about which atoms are
-   directly connected with each other.  =openbabel='s algorithm to
-   display the molecular structures deals surprisingly well even with
-   sometimes complicated motifs (e.g., the scaffold of cyclophane
-   [entry #33], sparteine [#38], or adamantane [#50]).
+   It is remarkable how well =openbabel='s algorithm displays the
+   molecular structures with advanced motifs (e.g., the scaffold of
+   cyclophane [entry #33 in the synopses, =test_data= folder],
+   sparteine [#38], or adamantane [#50]), some equally depicted in the
+   first illustration of this guide.
 
-* Licence
+* License
 
-  Norwid Behrnd, 2019, GPLv3.
+  Norwid Behrnd, 2020, GPLv3.
 
 * Footnotes
 
@@ -99,23 +113,8 @@
     [[http://www.openmolecules.org]].
 
 [fn:openbabel] [[http://www.openbabel.org][www.openbabel.org]].  The script initially was developed
-for and tested against openbabel (release 2.4.1; Nov 12, 2018)
-provided by Linux Xubuntu 18.04.2 LTS for either python2.7.17 and
-python3.7.6.  It is known to work with python 3.8.2 (recommended,
-released April 1, 2020) as well as python 2.7.18 (legacy, deprecated,
-released April 20, 2020) and openbabel (release 3.0.0 by April
-6, 2020) as provided in Linux Debian 10.
-
-[fn:openbabel_color] By default, =openbabel= attributes element
-specific colors.  Especially if the output is print black-and-white,
-the labels about atoms like hydrogen, silicon, sulfur, phosphor, then
-might be barely intelligible, especially at low scale.  It is possible
-to toggle off the element-colors by adding =-xu= as additional
-parameter of =openbabel='s conversion after the definition of the
-output file.
-
-[fn:cairosvg] See, for example, [[https://cairosvg.org/]].  The
-intermediate =.svg= by openbabel was converted successfully into a
-=.pdf=, e.g. by release 2.4.0.
-
-[fn:inkscape] See, for example,  [[https://inkscape.org]].
+for and tested with openbabel (release 2.4.1; Nov 12, 2018) and
+Python 2.7.17 provided by Linux Xubuntu 18.04.2 LTS.  It equally works
+with Python 3.8.2 (recommended current branch, released April 1, 2020)
+and openbabel (release 3.0.0 by April 6, 2020) as provided in
+Debian 10.
