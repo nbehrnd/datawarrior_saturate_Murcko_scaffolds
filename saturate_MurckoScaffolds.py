@@ -1,7 +1,9 @@
+#!/usr/bin/env python3
+
 # name:   saturate_MurckoScaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   2019-06-07 (YYYY-MM-DD)
-# edit:   2020-04-26 (YYYY-MM-DD)
+# edit:   2020-12-15 (YYYY-MM-DD)
 #
 """Read Smiles of Murcko scaffolds and return these as 'saturated'.
 
