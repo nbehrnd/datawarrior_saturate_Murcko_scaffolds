@@ -3,7 +3,7 @@
 # name:   saturate_MurckoScaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   2019-06-07 (YYYY-MM-DD)
-# edit:   2020-12-15 (YYYY-MM-DD)
+# edit:   2021-02-04 (YYYY-MM-DD)
 #
 """Read Smiles of Murcko scaffolds and return these as 'saturated'.
 
@@ -33,11 +33,11 @@ SMILES will yield neuter atoms in the output.
     10.1021/jm9602928.
 [2] Sander T, Freyss J, von Korff M, Rufener C,
     J. Chem. Inf. Model. 2015, 55, 460-473, doi 10.1021/ci500588j,
-    http://www.openmolecules.org
+    http://www.openmolecules.org, https://github.com/thsa/datawarrior
 [3] https://en.wikipedia.org/wiki/Benomyl
 [4] http://www.openbabel.org/wiki/Main_Page, version 3.0.0
 
-License: Norwid Behrnd, 2019, 2020, GPLv3.
+License: Norwid Behrnd, 2019--2021, GPLv3.
 """
 import sys
 
@@ -66,7 +66,7 @@ def remove_explicit_chars():
     retained_after_char_removal = ""
 
     for char in smiles_entry:
-        strip_characters = ['=', '#', '-', '+', '@', '/', '\\']
+        strip_characters = ['=', '#', '/', '\\']
         if str(char) not in strip_characters:
             retained_after_char_removal += str(char)
 
@@ -112,9 +112,6 @@ def worker():
         capitalize_CNOPS()
 
 
-# action calls:
-smiles_reading()
-worker()
-
-# closing
-sys.exit()
+if __name__ == "__main__":
+    smiles_reading()
+    worker()

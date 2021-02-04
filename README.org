@@ -1,7 +1,7 @@
 
 # name: README.org 
 # date: 2019-07-22 (YYYY-MM-DD)
-# edit: 2020-04-26 (YYYY-MM-DD)
+# edit: 2021-02-04 (YYYY-MM-DD)
 
 #+OPTIONS: toc:nil
 
@@ -21,12 +21,11 @@
    
    The Bemis-Murcko scaffold[fn:BM_scaffold] provided by
    =DataWarrior=[fn:DataWarrior] retains information about bond order
-   and chirality.  Sometimes, however, it suffices to retain only
-   which atoms are connected with each other, equivalent to the
-   assumption «there are only single bonds».  Note =DataWarrior=
-   equally offers the export of Bemis-Murcko skeleton, however this
-   simplifies e.g. the scaffold about an imidazole into one of
-   cyclopentane.
+   and chirality.  Sometimes, however, it suffices to retain only atom
+   connectivity, like an assumption «there are only single bonds».
+   Note =DataWarrior= equally offers the export of Bemis-Murcko
+   skeleton, however this simplifies e.g. the scaffold about an
+   imidazole into one of cyclopentane.
 
    [[./pattern.png]]
 
@@ -46,8 +45,8 @@
    information.
 
    While intended to work with the current branch of Python 3.6+, the
-   script equally works well with the deprecated, legacy branch of
-   Python 2, e.g., Python 2.7.16.
+   script equally works well with the legacy branch of Python 2, e.g.,
+   Python 2.7.16.
 
 * Example
 
@@ -99,7 +98,7 @@
 
 * License
 
-  Norwid Behrnd, 2020, GPLv3.
+  Norwid Behrnd, 2019--21, GPLv3.
 
 * Footnotes
 
@@ -110,11 +109,11 @@
     /J. Chem. Inf. Model./ 2015, **55**, 460-473, [[https://pubs.acs.org/doi/10.1021/ci500588j][doi
     10.1021/ci500588j]].  The program, (c) 2002--2019 by Idorsia
     Pharmaceuticals Ltd., is freely available under
-    [[http://www.openmolecules.org]].
+    [[http://www.openmolecules.org]].  For the source code, see
+    [[https://github.com/thsa/datawarrior]].
 
 [fn:openbabel] [[http://www.openbabel.org][www.openbabel.org]].  The script initially was developed
 for and tested with openbabel (release 2.4.1; Nov 12, 2018) and
 Python 2.7.17 provided by Linux Xubuntu 18.04.2 LTS.  It equally works
-with Python 3.8.2 (recommended current branch, released April 1, 2020)
-and openbabel (release 3.0.0 by April 6, 2020) as provided in
-Debian 10.
+with Python 3.9.1+ (released January 20, 2021) and openbabel (release
+3.1.1 by January 6, 2021) as provided in Debian 10.
