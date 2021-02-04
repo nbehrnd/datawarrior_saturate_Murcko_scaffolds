@@ -112,9 +112,6 @@ def worker():
         capitalize_CNOPS()
 
 
-# action calls:
-smiles_reading()
-worker()
-
-# closing
-sys.exit()
+if __name__ == "__main__":
+    smiles_reading()
+    worker()
