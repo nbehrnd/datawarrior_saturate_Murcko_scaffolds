@@ -8,10 +8,7 @@
 This script is written to check if edits in the script
 saturate_MurckoScaffolds.py affect scope and content of the output.
 
-The scope of the tests is incomplete.  There is no coverage for the
-removal of atom centered chirality (@) and indication of charges (+ and
-- sign) in the SMILES as currently implemented in the main script.
-These edits are no longer considered useful as default.
+The scope of the tests is incomplete.
 
 To trigger the tests, either launch
 

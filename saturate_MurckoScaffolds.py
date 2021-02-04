@@ -3,7 +3,7 @@
 # name:   saturate_MurckoScaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   2019-06-07 (YYYY-MM-DD)
-# edit:   2020-12-15 (YYYY-MM-DD)
+# edit:   2021-02-04 (YYYY-MM-DD)
 #
 """Read Smiles of Murcko scaffolds and return these as 'saturated'.
 
@@ -66,7 +66,7 @@ def remove_explicit_chars():
     retained_after_char_removal = ""
 
     for char in smiles_entry:
-        strip_characters = ['=', '#', '-', '+', '@', '/', '\\']
+        strip_characters = ['=', '#', '/', '\\']
         if str(char) not in strip_characters:
             retained_after_char_removal += str(char)
 
