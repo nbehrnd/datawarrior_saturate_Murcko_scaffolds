@@ -107,8 +107,9 @@ def capitalize_CNOPS():
         newfile.write(retained_BO_one_string)
 
 
-def worker():
+def main():
     """Join the individual methods, lower the bond order to one."""
+    smiles_reading()
     global smiles_entry
     for smiles_entry in smiles_register:
         remove_explicit_chars()
@@ -116,5 +117,4 @@ def worker():
 
 
 if __name__ == "__main__":
-    smiles_reading()
-    worker()
+    main()
