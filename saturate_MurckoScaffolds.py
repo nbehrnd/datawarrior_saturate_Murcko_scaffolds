@@ -3,7 +3,7 @@
 # name:   saturate_MurckoScaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   2019-06-07 (YYYY-MM-DD)
-# edit:   2021-02-04 (YYYY-MM-DD)
+# edit:   2021-04-27 (YYYY-MM-DD)
 #
 """Read Smiles of Murcko scaffolds and return these as 'saturated'.
 
@@ -39,21 +39,28 @@ SMILES will yield neuter atoms in the output.
 
 License: Norwid Behrnd, 2019--2021, GPLv3.
 """
-import sys
+import argparse
 
-# read input file
-try:
-    if sys.argv[1] is not None:
-        input_file = str(sys.argv[1])
-except:
-    print("\nExpected use: python bond_order_one.py [listing.txt]")
-    print("Without changing data, the script will close now.\n")
-    sys.exit()
+
+def get_args():
+    """Get command-line arguments"""
+
+    parser = argparse.ArgumentParser(
+        description="Report 'saturated' Murcko scaffolds as a list of SMILES.")
+
+    parser.add_argument('source_file',
+                        metavar='FILE',
+                        help='Input file containing a list of SMILES strings.')
+
+    return parser.parse_args()
 
 
 def smiles_reading():
     """Identify the smiles to work with."""
     global smiles_register
+    global input_file
+    args = get_args()
+    input_file = args.source_file
     smiles_register = []
     with open(input_file, mode="r") as source:
         for line in source:
