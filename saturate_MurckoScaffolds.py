@@ -24,9 +24,7 @@ The script works from the CLI of Python to read a list of SMILES from
 
 python saturate_MurckoScaffolds.py [input_file.smi]
 
-The results are written into file [input_file_sat.smi].  Atoms
-with at maximum one positive or one negative charge in the input
-SMILES will yield neuter atoms in the output.
+The results are written into file [input_file_sat.smi].
 
 [1] Bemis GW, Murcko MA J. Med. Chem. 1996, 39, 2887-2893, doi
     10.1021/jm9602928.
