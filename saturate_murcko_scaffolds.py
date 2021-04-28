@@ -60,12 +60,12 @@ def prepare_reporter():
     args = get_args()
     input_file = args.source_file
 
-    reporter_file = "".join([input_file[:-4], str("_sat.smi")])
+    reporter_file = "".join([str(input_file).split(".")[0], str("_sat.smi")])
 
     # Ensure the absence of reporter_file left by a previous run:
     try:
         os.remove(reporter_file)
-    except IOError:
+    except OSError:
         pass
 
     return reporter_file
@@ -83,7 +83,7 @@ def read_smiles():
             for line in source:
                 retain = str(line).strip()
                 smiles_register.append(retain)
-    except IOError:
+    except OSError:
         print("File '{}' could not be accessed.  Exit.".format(input_file))
     return smiles_register
 
@@ -131,7 +131,7 @@ def report_results():
 
         print("File '{}' lists the processed SMILES strings.".format(
             reporter_file))
-    except IOError:
+    except OSError:
         print("File '{}' could not be written.  Exit.".format(reporter_file))
 
 
