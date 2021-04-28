@@ -2,8 +2,9 @@
 # name:   test.py
 # author: nbehrnd@yahoo.com
 # date:   2021-02-04 (YYYY-MM-DD)
-# edit:
-"""tests for saturate_MurckoScaffolds.py
+# edit:   2021-04-28 (YYYY-MM-DD)
+#
+"""tests for saturate_murcko_scaffolds.py
 
 This script is written to check if edits in the script
 saturate_MurckoScaffolds.py affect scope and content of the output.
@@ -26,12 +27,12 @@ invoked."""
 import os
 import subprocess as sub
 
-SCRIPT = './saturate_MurckoScaffolds.py'
+SCRIPT = './saturate_murcko_scaffolds.py'
 
 
 # --------------------------------------------------
 def test_program_exists():
-    """Check for the presence of saturate_MurckoScaffolds.py"""
+    """Check for the presence of saturate_murcko_scaffolds.py"""
 
     assert os.path.isfile(SCRIPT)
 
@@ -43,7 +44,7 @@ def test_benzene_to_cyclohexane():
     with open("benzene.smi", mode="w") as newfile:
         newfile.write("c1ccccc1")
 
-    command = str("python3 saturate_MurckoScaffolds.py benzene.smi")
+    command = str("python3 saturate_murcko_scaffolds.py benzene.smi")
     sub.call(command, shell=True)
 
     with open("benzene_sat.smi", mode="r") as source:
@@ -61,7 +62,7 @@ def test_cyclopentadiene_to_cyclopentane():
     with open("cyclopentadiene.smi", mode="w") as newfile:
         newfile.write("c1cccc1")
 
-    command = str("python3 saturate_MurckoScaffolds.py cyclopentadiene.smi")
+    command = str("python3 saturate_murcko_scaffolds.py cyclopentadiene.smi")
     sub.call(command, shell=True)
 
     with open("cyclopentadiene_sat.smi", mode="r") as source:
@@ -79,7 +80,7 @@ def test_pyrrole_to_pyrrolidine():
     with open("pyrrole.smi", mode="w") as newfile:
         newfile.write("c1cncc1")
 
-    command = str("python3 saturate_MurckoScaffolds.py pyrrole.smi")
+    command = str("python3 saturate_murcko_scaffolds.py pyrrole.smi")
     sub.call(command, shell=True)
 
     with open("pyrrole_sat.smi", mode="r") as source:
@@ -97,7 +98,7 @@ def test_furane_to_tetrahydrofurane():
     with open("furane.smi", mode="w") as newfile:
         newfile.write("c1cocc1")
 
-    command = str("python3 saturate_MurckoScaffolds.py furane.smi")
+    command = str("python3 saturate_murcko_scaffolds.py furane.smi")
     sub.call(command, shell=True)
 
     with open("furane_sat.smi", mode="r") as source:
@@ -115,7 +116,7 @@ def test_thiophene_to_thiolene():
     with open("thiophene.smi", mode="w") as newfile:
         newfile.write("c1cscc1")
 
-    command = str("python3 saturate_MurckoScaffolds.py thiophene.smi")
+    command = str("python3 saturate_murcko_scaffolds.py thiophene.smi")
     sub.call(command, shell=True)
 
     with open("thiophene_sat.smi", mode="r") as source:
@@ -141,7 +142,7 @@ def test_explicit_double_bonds():
     with open("dienes.smi", mode="w") as newfile:
         newfile.write(str("CCC/C=C/C\nCCC/C=C\C\nO=C1NC=CC=C1"))
 
-    command = str("python3 saturate_MurckoScaffolds.py dienes.smi")
+    command = str("python3 saturate_murcko_scaffolds.py dienes.smi")
     sub.call(command, shell=True)
 
     with open("dienes_sat.smi", mode="r") as source:
@@ -164,7 +165,7 @@ def test_explicit_triple_bonds():
     with open("triple_bond.smi", mode="w") as newfile:
         newfile.write("CCCCC#C\nCCCC#CC\nN#Cc1ccccc1\nCC(C)(C)N#C")
 
-    command = str("python3 saturate_MurckoScaffolds.py triple_bond.smi")
+    command = str("python3 saturate_murcko_scaffolds.py triple_bond.smi")
     sub.call(command, shell=True)
 
     with open("triple_bond_sat.smi", mode="r") as source:
