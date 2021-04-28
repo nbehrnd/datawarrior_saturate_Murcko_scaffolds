@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# name:   saturate_MurckoScaffolds.py
+# name:   saturate_murcko_scaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   2019-06-07 (YYYY-MM-DD)
 # edit:   2021-04-28 (YYYY-MM-DD)
@@ -23,7 +23,7 @@ yields octahydro-1H-benzimidazole
 The script works from the CLI of Python with listing file containing
 the SMILES to work with as mandatory parameter:
 
-python saturate_MurckoScaffolds.py [listing_file.txt]
+python saturate_murcko_scaffolds.py [listing_file.txt]
 
 Results are written into file saturated_Murcko_scaffold.csv.  Atoms
 with at maximum one positive or one negative charge in the input
