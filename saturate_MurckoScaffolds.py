@@ -3,15 +3,16 @@
 # name:   saturate_MurckoScaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   2019-06-07 (YYYY-MM-DD)
-# edit:   2021-04-27 (YYYY-MM-DD)
+# edit:   2021-04-28 (YYYY-MM-DD)
 #
 """Read Smiles of Murcko scaffolds and return these as 'saturated'.
 
 The Bemis-Murcko scaffold [1] provided by DataWarrior [2] retains
-information about bond order and chirality, which simplifies Benomyl
-[3] (i.e., Methyl 1-(butylcarbamoyl)-2-benzimidazolecarbamate) to
-benzimidazole.  Note, DataWarrior offers to identify the
-Bemis-Murcko skeleton; in case of Benomyl, this is octahydro-1H-indene.
+information about bond order and chirality, which simplifies the
+structure of Benomyl[3] (i.e., of methyl 1-(butylcarbamoyl)-2-
+benzimidazolecarbamate, CAS-RN 17804-35-2) to benzimidazole.  Note,
+DataWarrior equally offers to identify the Bemis-Murcko skeleton; in
+case of Benomyl the simplification yields octahydro-1H-indene.
 
 There are instances where an intermediate simplification is required,
 retaining only information atom connectivity which corresponds to the
@@ -19,12 +20,14 @@ assumption 'there are only single bonds' and a neutral state.
 Benomyl, already simplified by DataWarrior to benzimidazole, thus
 yields octahydro-1H-benzimidazole
 
-The script works from the CLI of Python to read a list of SMILES from
-[input_file.smi] as the mandatory parameter:
+The script works from the CLI of Python with listing file containing
+the SMILES to work with as mandatory parameter:
 
-python saturate_MurckoScaffolds.py [input_file.smi]
+python saturate_MurckoScaffolds.py [listing_file.txt]
 
-The results are written into file [input_file_sat.smi].
+Results are written into file saturated_Murcko_scaffold.csv.  Atoms
+with at maximum one positive or one negative charge in the input
+SMILES will yield neuter atoms in the output.
 
 [1] Bemis GW, Murcko MA J. Med. Chem. 1996, 39, 2887-2893, doi
     10.1021/jm9602928.
@@ -32,11 +35,11 @@ The results are written into file [input_file_sat.smi].
     J. Chem. Inf. Model. 2015, 55, 460-473, doi 10.1021/ci500588j,
     http://www.openmolecules.org, https://github.com/thsa/datawarrior
 [3] https://en.wikipedia.org/wiki/Benomyl
-[4] http://www.openbabel.org/wiki/Main_Page, version 3.0.0
 
 License: Norwid Behrnd, 2019--2021, GPLv3.
 """
 import argparse
+import os
 
 
 def get_args():
@@ -45,73 +48,97 @@ def get_args():
     parser = argparse.ArgumentParser(
         description="Report 'saturated' Murcko scaffolds as a list of SMILES.")
 
-    parser.add_argument('source_file',
-                        metavar='FILE',
-                        help='Input file containing a list of SMILES strings.')
+    parser.add_argument("source_file",
+                        metavar="FILE",
+                        help="Input file containing a list of SMILES strings.")
 
     return parser.parse_args()
 
 
-def smiles_reading():
-    """Identify the smiles to work with."""
-    global smiles_register
-    global input_file
+def prepare_reporter():
+    """Set the stage for a permanent record file."""
     args = get_args()
     input_file = args.source_file
+
+    reporter_file = "".join([input_file[:-4], str("_sat.smi")])
+
+    # Ensure the absence of reporter_file left by a previous run:
+    try:
+        os.remove(reporter_file)
+    except IOError:
+        pass
+
+    return reporter_file
+
+
+def read_smiles():
+    """Identify the smiles to work with."""
     smiles_register = []
-    with open(input_file, mode="r") as source:
-        for line in source:
-            smiles_register.append(line.strip())
+
+    args = get_args()
+    input_file = args.source_file
+
+    try:
+        with open(input_file, mode="r") as source:
+            for line in source:
+                retain = str(line).strip()
+                smiles_register.append(retain)
+    except IOError:
+        print("File '{}' could not be accessed.  Exit.".format(input_file))
+    return smiles_register
 
 
-def remove_explicit_chars():
-    """Remove the characters about a higher bond order."""
-    global retained_after_char_removal
-    retained_after_char_removal = ""
+def adjust_smiles():
+    """Remove, or capitalize characters in the SMILES string.
 
-    for char in smiles_entry:
-        strip_characters = ['=', '#', '/', '\\']
-        if str(char) not in strip_characters:
-            retained_after_char_removal += str(char)
+    Explicit descriptions of double or triple bonds will be removed,
+    including the markers about (cis)/(trans) configuration.  A set
+    of characters implicitly describing bond orders higher than one
+    will be capitalized if these are about elements written by one
+    character only."""
 
+    characters_to_remove = ["=", "#", "/", "\\"]
+    characters_to_captitalize = ["c", "n", "o", "p", "s"]
+    retained_smiles = []
 
-def capitalize_CNOPS():
-    """Ensure capitalization of elements (C, N, O, P, S).
+    smiles_register = read_smiles()
 
-    A simple string-conversion to yield upper-case characters only is
-    not sensible here; this would render the SMILES strings of
-    compounds like stannabenzene, arsabenzene, germabenzene and
-    silabenzene at least ambigous.  The later, for example, is
-    understood by openbabel[4] with the SMILES string c1cc[siH]cc1,
-    where the naive capitalization would yield S (like sulfur) and
-    I (like iodine) simultaneously.
+    for entry in smiles_register:
+        smiles_per_entry = ""
 
-    Silicon accidentally may benefit from the capitalization of its
-    first character, though."""
-
-    change_case = ['c', 'n', 'o', 'p', 's']
-    retained_BO_one_string = ""
-
-    reporter_file = input_file[:-4] + str("_sat.smi")
-    with open(reporter_file, mode="a") as newfile:
-
-        for char in retained_after_char_removal:
-            if str(char) in change_case:
-                retained_BO_one_string += char.upper()
+        for char in entry:
+            if char in characters_to_remove:
+                pass
+            elif char in characters_to_captitalize:
+                smiles_per_entry += str(char).upper()
             else:
-                retained_BO_one_string += char
+                smiles_per_entry += str(char)
 
-        retained_BO_one_string += str("\n")
-        newfile.write(retained_BO_one_string)
+        retained_smiles.append(smiles_per_entry)
+    return retained_smiles
+
+
+def report_results():
+    """Write a permanent record of the 'saturized' SMILES strings."""
+
+    reporter_file = prepare_reporter()
+    smiles_to_report = adjust_smiles()
+
+    try:
+        with open(reporter_file, mode="w") as newfile:
+            retain = "\n".join(smiles_to_report)
+            newfile.write(retain)
+
+        print("File '{}' lists the processed SMILES strings.".format(
+            reporter_file))
+    except IOError:
+        print("File '{}' could not be written.  Exit.".format(reporter_file))
 
 
 def main():
-    """Join the individual methods, lower the bond order to one."""
-    smiles_reading()
-    global smiles_entry
-    for smiles_entry in smiles_register:
-        remove_explicit_chars()
-        capitalize_CNOPS()
+    """Join the functions."""
+    adjust_smiles()
+    report_results()
 
 
 if __name__ == "__main__":
