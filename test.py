@@ -2,7 +2,7 @@
 # name:   test.py
 # author: nbehrnd@yahoo.com
 # date:   2021-02-04 (YYYY-MM-DD)
-# edit:   2021-04-28 (YYYY-MM-DD)
+# edit:   2021-04-29 (YYYY-MM-DD)
 #
 """tests for saturate_murcko_scaffolds.py
 
@@ -178,4 +178,22 @@ def test_explicit_triple_bonds():
 
 
 ## --------------------------------------------------
+def test_exclude_compounds_with_tin():
+    """A reduction of [sn] to [SN] is not sensible."""
+    with open("tin_exclusion.smi", mode="w") as newfile:
+        newfile.write("c1cc[Sn]cc1\nc1cc[sn]cc1")
+
+    command = str("python3 saturate_murcko_scaffolds.py tin_exclusion.smi")
+    sub.call(command, shell=True)
+
+    with open("tin_exclusion_sat.smi", mode="r") as source:
+        output = source.read()
+        assert str(output).strip() == str(
+            "Entry c1cc[Sn]cc1 might report tin and is skipped.\nEntry c1cc[sn]cc1 might report tin and is skipped."
+        )
+
+    os.remove("tin_exclusion.smi")
+    os.remove("tin_exclusion_sat.smi")
+
+
 # END
