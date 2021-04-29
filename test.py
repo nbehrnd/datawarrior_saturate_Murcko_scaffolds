@@ -7,7 +7,7 @@
 """tests for saturate_murcko_scaffolds.py
 
 This script is written to check if edits in the script
-saturate_MurckoScaffolds.py affect scope and content of the output.
+saturate_murcko_scaffolds.py affect scope and content of the output.
 
 The scope of the tests is incomplete.
 
@@ -21,8 +21,21 @@ pytest-3 test.py
 
 The script test.py works for either pytest 6.2.1 and Python 3.9.1, or
 legacy pytest 4.6.11 and Python 2.7.18.  The test sequence equally may
-be triggered with the Makefile (and GNU Make 4.3); here pytest-3 is
-invoked."""
+be triggered with the Makefile (and GNU Make 4.3) provided; here
+pytest-3 is invoked.  Individual SMILES provided as input were
+generated with DataWarrior.[1]  SMILES used in the assert statements
+were checked with the .svg visual by OpenBabel.[2]
+
+[1]  Sander T, Freyss J, von Korff M, Rufener C, J. Chem. Inf. Model.
+     2015, 55, 460-473, (https://pubs.acs.org/doi/10.1021/ci500588j).
+     The program, (c) 2002--2021 by Idorsia Pharmaceuticals Ltd., is
+     freely available under http://www.openmolecules.org (source code
+     at https://github.com/thsa/datawarrior).  The native Linux
+     version 5.5.0 (April 2021) was used.
+
+[2]  OpenBabel (http://www.openbabel.org).  The packaged version 3.1.0
+     for Linux Debian 11 / bullseye, branch testing, was used.
+"""
 
 import os
 import subprocess as sub
@@ -132,8 +145,8 @@ def test_explicit_double_bonds():
     """Check the saturation of explicit double bonds, e.g. in
     esters, or non-aromatic dienes.
 
-    Submitted are three tests in one: (E)-hexene, (Z)-hexene both to
-    yield hexane; 2-pyridone to yield 2-piperidinol.
+    Submitted are three tests: (E)-hexene, (Z)-hexene both to yield
+    hexane (two entries); and 2-pyridone to yield 2-piperidinol.
 
     The explicit indication of (E)/(Z)-isomerism of the double bonds
     with forward and backward slash may yield a deprecation warning
@@ -158,9 +171,9 @@ def test_explicit_triple_bonds():
     """Check the saturation of explicit triple bonds, e.g. in alkynes,
     nitriles, or isonitriles.
 
-    Submitted are four tests in one: 1-hexine, 2-hexine both to yield
-    hexane, benzonitrile to cyclohexylmethylamine, and tert-butyl
-    isocyanide to N-tert-butyl methylamine."""
+    Submitted are four tests: 1-hexine, 2-hexine both to yield hexane
+    (two entries), benzonitrile to cyclohexylmethylamine, and
+    tert-butyl isocyanide to N-tert-butyl methylamine."""
 
     with open("triple_bond.smi", mode="w") as newfile:
         newfile.write("CCCCC#C\nCCCC#CC\nN#Cc1ccccc1\nCC(C)(C)N#C")
@@ -179,7 +192,8 @@ def test_explicit_triple_bonds():
 
 ## --------------------------------------------------
 def test_exclude_compounds_with_tin():
-    """A reduction of [sn] to [SN] is not sensible."""
+    """Prevent the not sensible reduction of [sn] to [SN]."""
+
     with open("tin_exclusion.smi", mode="w") as newfile:
         newfile.write("c1cc[Sn]cc1\nc1cc[sn]cc1")
 
@@ -202,6 +216,7 @@ def test_preserve_stereogenic_centers():
 
     Test compounds are the prochiral methyl ethylketone,
     (2R)-butanol, and (2S)-butanol."""
+
     with open("rs_test.smi", mode="w") as newfile:
         newfile.write("CCC(C)=O\nCC[C@@H](C)O\nCC[C@H](C)O")
 
@@ -224,6 +239,7 @@ def test_preserve_structure_concatenation():
     more than exactly one molecule each.  This allows the submission
     of e.g., SMILES about co-crystals, solvates, etc.  The entry of
     the test indeed is about 1,4-benzoquinone and hydroquinone."""
+
     with open("cocrystal.smi", mode="w") as newfile:
         newfile.write("C1=CC(=O)C=CC1=O.c1cc(ccc1O)O")
 
@@ -242,11 +258,12 @@ def test_preserve_structure_concatenation():
 def test_preserve_assigned_charges():
     """Do not alter a charged assigned to an atom.
 
-    The test checks this with the SMILES about sodium acetate, calcium
-    carbonate, and pyridine N-oxide.  Given the processing / reduction
-    of bond orders, this conservative approach may be chemically
-    meaningful (e.g., around N like in cetyltrimethylammonium bromide
-    / CTAB), or not (e.g. the reduction of pyridine N-oxide)."""
+    Test checks are SMILES about sodium acetate, calcium carbonate,
+    and pyridine N-oxide.  Given the processing / reduction of bond
+    orders, this conservative approach may be chemically meaningful
+    (e.g., around N like in cetyltrimethylammonium bromide / CTAB), or
+    not (e.g., the reduction of pyridine N-oxide)."""
+
     with open("charges.smi", mode="w") as newfile:
         newfile.write(
             "CC([O-])=O.[Na+]\n[O-]C([O-])=O.[Ca+2]\n[O-][n+]1ccccc1")
