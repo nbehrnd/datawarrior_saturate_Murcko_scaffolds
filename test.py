@@ -216,4 +216,26 @@ def test_preserve_stereogenic_centers():
     os.remove("rs_test_sat.smi")
 
 
+## --------------------------------------------------
+def test_preserve_structure_concatenation():
+    """Retain the concatenation by the period sign.
+
+    There is no reason to exclude _a priori_ SMILES strings describing
+    more than exactly one molecule each.  This allows the submission
+    of e.g., SMILES about co-crystals, solvates, etc.  The entry of
+    the test indeed is about 1,4-benzoquinone and hydroquinone."""
+    with open("cocrystal.smi", mode="w") as newfile:
+        newfile.write("C1=CC(=O)C=CC1=O.c1cc(ccc1O)O")
+
+    command = str("python3 saturate_murcko_scaffolds.py cocrystal.smi")
+    sub.call(command, shell=True)
+
+    with open("cocrystal_sat.smi", mode="r") as source:
+        output = source.read()
+        assert str(output) == str("C1CC(O)CCC1O.C1CC(CCC1O)O")
+
+    os.remove("cocrystal.smi")
+    os.remove("cocrystal_sat.smi")
+
+
 # END
