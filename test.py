@@ -238,4 +238,29 @@ def test_preserve_structure_concatenation():
     os.remove("cocrystal_sat.smi")
 
 
+## --------------------------------------------------
+def test_preserve_assigned_charges():
+    """Do not alter a charged assigned to an atom.
+
+    The test checks this with the SMILES about sodium acetate, calcium
+    carbonate, and pyridine N-oxide.  Given the processing / reduction
+    of bond orders, this conservative approach may be chemically
+    meaningful (e.g., around N like in cetyltrimethylammonium bromide
+    / CTAB), or not (e.g. the reduction of pyridine N-oxide)."""
+    with open("charges.smi", mode="w") as newfile:
+        newfile.write(
+            "CC([O-])=O.[Na+]\n[O-]C([O-])=O.[Ca+2]\n[O-][n+]1ccccc1")
+
+    command = str("python3 saturate_murcko_scaffolds.py charges.smi")
+    sub.call(command, shell=True)
+
+    with open("charges_sat.smi", mode="r") as source:
+        output = source.read()
+        assert str(output) == str(
+            "CC([O-])O.[Na+]\n[O-]C([O-])O.[Ca+2]\n[O-][N+]1CCCCC1")
+
+    os.remove("charges.smi")
+    os.remove("charges_sat.smi")
+
+
 # END
