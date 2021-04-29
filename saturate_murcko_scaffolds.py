@@ -3,7 +3,7 @@
 # name:   saturate_murcko_scaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   2019-06-07 (YYYY-MM-DD)
-# edit:   2021-04-28 (YYYY-MM-DD)
+# edit:   2021-04-29 (YYYY-MM-DD)
 #
 """Read Smiles of Murcko scaffolds and return these as 'saturated'.
 
@@ -106,6 +106,14 @@ def adjust_smiles():
     for entry in smiles_register:
         smiles_per_entry = ""
 
+        # Prevent the description of tin:
+        if (str("[sn]") in str(entry)) or (str("[Sn]") in str(entry)):
+            smiles_per_entry = str(
+                "Entry {} might report tin and is skipped.".format(entry))
+            retained_smiles.append(smiles_per_entry)
+            continue
+
+        # Process no-tin data:
         for char in entry:
             if char in characters_to_remove:
                 pass
