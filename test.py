@@ -196,4 +196,24 @@ def test_exclude_compounds_with_tin():
     os.remove("tin_exclusion_sat.smi")
 
 
+## --------------------------------------------------
+def test_preserve_stereogenic_centers():
+    """Do not remove, nor newly assign (R)/(S) indicators.
+
+    Test compounds are the prochiral methyl ethylketone,
+    (2R)-butanol, and (2S)-butanol."""
+    with open("rs_test.smi", mode="w") as newfile:
+        newfile.write("CCC(C)=O\nCC[C@@H](C)O\nCC[C@H](C)O")
+
+    command = str("python3 saturate_murcko_scaffolds.py rs_test.smi")
+    sub.call(command, shell=True)
+
+    with open("rs_test_sat.smi", mode="r") as source:
+        output = source.read()
+        assert str(output) == str("CCC(C)O\nCC[C@@H](C)O\nCC[C@H](C)O")
+
+    os.remove("rs_test.smi")
+    os.remove("rs_test_sat.smi")
+
+
 # END
