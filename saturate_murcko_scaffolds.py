@@ -2,8 +2,8 @@
 
 # name:   saturate_murcko_scaffolds.py
 # author: nbehrnd@yahoo.com
-# date:   2019-06-07 (YYYY-MM-DD)
-# edit:   2021-05-03 (YYYY-MM-DD)
+# date:   [2019-06-07 Fri] 
+# edit:   [2023-05-07 Sun]
 #
 """Read Smiles of Murcko scaffolds and return these as 'saturated'.
 
@@ -78,35 +78,6 @@ def access_raw_data(input_file=""):
     return raw_data
 
 
-def check_admission(smiles):
-    """Exclude SMILES with more than one pair of square brackets."""
-    check = ""
-    pattern_1 = re.compile(r'\[')
-    test_1 = pattern_1.findall(smiles)
-
-    pattern_2 = re.compile(r']')
-    test_2 = pattern_2.findall(smiles)
-
-    if (len(test_1) == 0 and len(test_2) == 0):
-        check = f"0 {smiles}"
-    elif (len(test_1) == 1 and len(test_2) == 1):
-        check = f"1 {smiles}"
-    elif (len(test_1) > 1 or len(test_2) > 1):
-        check = f"2 or more instances of square brackets in {smiles}"
-
-    return check
-
-
-def classifyer(raw_data):
-    """Apply check_admission on raw_smiles to yield a list of working_data."""
-    working_data = []
-    for entry in raw_data:
-        entry = str(entry).strip()
-        working_data.append(check_admission(entry))
-
-    return working_data
-
-
 def saturator(raw_smiles):
     """Return a SMILES string about a saturated compound.
 
@@ -129,6 +100,93 @@ def saturator(raw_smiles):
     return saturated_smiles
 
 
+def saturate_bonds(input_smiles):
+    """remove explicit designation of higher bond orders
+
+    SMILES strings may describe double and triple bonds explicitly; this as well
+    as then irrelevant information about (E)/(Z) configuration is removed."""
+    characters_to_remove = ["=", "#", "/", "\\"]
+    retain = []
+    processed = ""
+
+    for char in input_smiles:
+        if char in characters_to_remove:
+            pass
+        else:
+            retain.append(char)
+
+    processed = "".join(retain)
+    return processed
+
+
+def saturate_carbon(input_string):
+    """provide saturation of carbon atoms
+
+    A sequential approach appears more suitable here.
+    + though perhaps a bit verbose, it is possible to note every C atom enclosed
+      in square brackets.  Inspired by OpenBabel, saturation is provided by drop
+      of the enclosing square brackets and capitalization.
+    + application of the mere string.uppercase() approach could transform `[sn]`
+      about aromatic tin to `[SN]` -- which however now neither is non-aromatic
+      tin `[Sn]`, nor follows the rule to enclose only one element into a pair
+      of square brackets (you don't want to have `S` sulfur and `N` instead).
+      So the second rule prevents a modification of `c` if `c` is used as second
+      character of an element symbol enclosed by a pair or square brackets.
+    + third, there may be formal charge on the atom of interest.  For now, only
+      single positive, and single negative are supported by the algorithm.
+      """
+    processed = ""
+    new01 = re.sub(r"\[c\]", "C", input_string)  # `[c]` -> `C`
+    new02 = re.sub(r"(?<!\[[a-zA-Z])c(?!\])", "C", new01)
+    new03 = re.sub(r"\[c-\]", "[C-]", new02)
+    new04 = re.sub(r"\[c+\]", "[C+]", new03)
+
+    processed = new04
+    return processed
+
+
+def saturate_nitrogen(input_string):
+    """provide saturation of nitrogen atoms
+
+    The approach copies the one introduced on carbon, confer vide supra."""
+    processed = ""
+    new01 = re.sub(r"\[n\]", "N", input_string)  # `[n]` -> `N`
+    new02 = re.sub(r"(?<!\[[a-zA-Z])n(?!\])", "N", new01)
+    new03 = re.sub(r"\[n-\]", "[N-]", new02)
+    new04 = re.sub(r"\[n+\]", "[N+]", new03)
+
+    processed = new04
+    return processed
+
+
+def saturate_oxygen(input_string):
+    """provide saturation of oxygen atoms
+
+    The approach copies the one introduced on carbon, confer vide supra."""
+    processed = ""
+    new01 = re.sub(r"\[o\]", "O", input_string)  # `[o]` -> `O`
+    new02 = re.sub(r"(?<!\[[a-zA-Z])o(?!\])", "O", new01)
+    new03 = re.sub(r"\[o-\]", "[O-]", new02)
+    new04 = re.sub(r"\[o+\]", "[O+]", new03)
+
+    processed = new04
+    return processed
+
+
+def saturate_sulfur(input_string):
+    """provide saturation of sulfur atoms
+
+    The approach copies the one introduced on carbon, confer vide supra."""
+    processed = ""
+    new01 = re.sub(r"\[s\]", "S", input_string)  # `[s]` -> `S`
+    new02 = re.sub(r"(?<!\[[a-zA-Z])s(?!\])", "S", new01)
+    new03 = re.sub(r"\[s-\]", "[S-]", new02)
+    new04 = re.sub(r"\[s+\]", "[S+]", new03)
+
+    processed = new04
+    return processed
+
+
 def write_record(input_file, listing):
     """Provide the permanent record."""
     stem_input_file = os.path.splitext(input_file)[0]
@@ -149,43 +207,17 @@ def main():
     input_file = args.source_file
     raw_data = access_raw_data(input_file)
 
-    working_data = classifyer(raw_data)
     list_processed_smiles = []
 
-    for entry in working_data:
-        retain = []
+    for entry in raw_data:
+        only_single_bonds = saturate_bonds(str(entry).strip())
+        on_carbon = saturate_carbon(only_single_bonds)
+        on_nitrogen = saturate_nitrogen(on_carbon)
+        on_oxygen = saturate_oxygen(on_nitrogen)
+        on_sulfur = saturate_sulfur(on_oxygen)
 
-        # absence of square brackets:
-        if str(entry).startswith("0"):
-            raw_smiles = str(entry).split()[1]
-            list_processed_smiles.append(saturator(raw_smiles))
-
-        # one pair of square brackets per SMILES:
-        elif str(entry).startswith("1"):
-            raw_smiles = str(entry).split()[1]
-
-            # the entry in the center:
-            pattern = re.compile(r'\[.*\]')
-            test = pattern.search(raw_smiles)
-            bracketed_element = test.group()
-
-            # part to the left of "bracketed_element":
-            divider = re.compile(r'\[.*\]')
-            split_list = divider.split(raw_smiles)
-            first_section_raw = split_list[0]
-            saturated_left = saturator(first_section_raw)
-
-            # part to the right of "bracketed_element":
-            second_section_raw = split_list[1]
-            saturated_right = saturator(second_section_raw)
-
-            retain = "".join(
-                [saturated_left, bracketed_element, saturated_right])
-            list_processed_smiles.append(retain)
-
-        # presence of two or more pairs of square brackets per SMILES:
-        elif str(entry).startswith("2"):
-            list_processed_smiles.append(entry)
+        result = on_sulfur
+        list_processed_smiles.append(result)
 
     write_record(input_file, list_processed_smiles)
 

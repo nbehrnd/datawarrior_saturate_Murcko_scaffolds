@@ -210,7 +210,7 @@ def test_explicit_triple_bonds():
 #    os.remove("tin_exclusion_sat.smi")
 
 
-### --------------------------------------------------
+## --------------------------------------------------
 def test_preserve_stereogenic_centers():
     """Do not remove, nor newly assign (R)/(S) indicators.
 
@@ -275,7 +275,7 @@ def test_preserve_assigned_charges():
     with open("charges_sat.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
         assert str(output) == str(
-            "[O-]C1CCCCC1\n[o-]C1CCCCC1\nC[N+](C1CCCCC1)(C)C\n")
+            "[O-]C1CCCCC1\n[O-]C1CCCCC1\nC[N+](C1CCCCC1)(C)C\n")
 
     os.remove("charges.smi")
     os.remove("charges_sat.smi")
