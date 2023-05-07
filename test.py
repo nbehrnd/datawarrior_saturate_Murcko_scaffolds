@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # name:   test.py
 # author: nbehrnd@yahoo.com
-# date:   2021-02-04 (YYYY-MM-DD)
-# edit:   2021-04-29 (YYYY-MM-DD)
+# date:   [2021-02-04 Tue]
+# edit:   [2023-05-07 Sun]
 #
 """tests for saturate_murcko_scaffolds.py
 
@@ -54,13 +54,13 @@ def test_program_exists():
 def test_benzene_to_cyclohexane():
     """Check the complete saturation of benzene to cyclohexane"""
 
-    with open("benzene.smi", mode="w") as newfile:
+    with open("benzene.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("c1ccccc1")
 
     command = str("python3 saturate_murcko_scaffolds.py benzene.smi")
     sub.call(command, shell=True)
 
-    with open("benzene_sat.smi", mode="r") as source:
+    with open("benzene_sat.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
         assert str(output).strip() == str("C1CCCCC1")
 
@@ -72,13 +72,13 @@ def test_benzene_to_cyclohexane():
 def test_cyclopentadiene_to_cyclopentane():
     """Check the saturation of cyclohexadiene to cyclohexane"""
 
-    with open("cyclopentadiene.smi", mode="w") as newfile:
+    with open("cyclopentadiene.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("c1cccc1")
 
     command = str("python3 saturate_murcko_scaffolds.py cyclopentadiene.smi")
     sub.call(command, shell=True)
 
-    with open("cyclopentadiene_sat.smi", mode="r") as source:
+    with open("cyclopentadiene_sat.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
         assert str(output).strip() == str("C1CCCC1")
 
@@ -90,13 +90,13 @@ def test_cyclopentadiene_to_cyclopentane():
 def test_pyrrole_to_pyrrolidine():
     """Check the saturation for a N-heterocycle"""
 
-    with open("pyrrole.smi", mode="w") as newfile:
+    with open("pyrrole.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("c1cncc1")
 
     command = str("python3 saturate_murcko_scaffolds.py pyrrole.smi")
     sub.call(command, shell=True)
 
-    with open("pyrrole_sat.smi", mode="r") as source:
+    with open("pyrrole_sat.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
         assert str(output).strip() == str("C1CNCC1")
 
@@ -108,13 +108,13 @@ def test_pyrrole_to_pyrrolidine():
 def test_furane_to_tetrahydrofurane():
     """Check the saturation for an O-heterocycle"""
 
-    with open("furane.smi", mode="w") as newfile:
+    with open("furane.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("c1cocc1")
 
     command = str("python3 saturate_murcko_scaffolds.py furane.smi")
     sub.call(command, shell=True)
 
-    with open("furane_sat.smi", mode="r") as source:
+    with open("furane_sat.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
         assert str(output).strip() == str("C1COCC1")
 
@@ -126,13 +126,13 @@ def test_furane_to_tetrahydrofurane():
 def test_thiophene_to_thiolene():
     """Check the saturation for a S-heterocycle"""
 
-    with open("thiophene.smi", mode="w") as newfile:
+    with open("thiophene.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("c1cscc1")
 
     command = str("python3 saturate_murcko_scaffolds.py thiophene.smi")
     sub.call(command, shell=True)
 
-    with open("thiophene_sat.smi", mode="r") as source:
+    with open("thiophene_sat.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
         assert str(output).strip() == str("C1CSCC1")
 
@@ -152,13 +152,13 @@ def test_explicit_double_bonds():
     with forward and backward slash may yield a deprecation warning
     issued by Python; so far, without effect to this test's results."""
 
-    with open("dienes.smi", mode="w") as newfile:
+    with open("dienes.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write(str("CCC/C=C/C\nCCC/C=C\C\nO=C1NC=CC=C1"))
 
     command = str("python3 saturate_murcko_scaffolds.py dienes.smi")
     sub.call(command, shell=True)
 
-    with open("dienes_sat.smi", mode="r") as source:
+    with open("dienes_sat.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
         assert str(output).strip() == str("CCCCCC\nCCCCCC\nOC1NCCCC1")
 
@@ -175,13 +175,13 @@ def test_explicit_triple_bonds():
     (two entries), benzonitrile to cyclohexylmethylamine, and
     tert-butyl isocyanide to N-tert-butyl methylamine."""
 
-    with open("triple_bond.smi", mode="w") as newfile:
+    with open("triple_bond.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("CCCCC#C\nCCCC#CC\nN#Cc1ccccc1\nCC(C)(C)N#C")
 
     command = str("python3 saturate_murcko_scaffolds.py triple_bond.smi")
     sub.call(command, shell=True)
 
-    with open("triple_bond_sat.smi", mode="r") as source:
+    with open("triple_bond_sat.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
         assert str(output).strip() == str(
             "CCCCCC\nCCCCCC\nNCC1CCCCC1\nCC(C)(C)NC")
@@ -217,13 +217,13 @@ def test_preserve_stereogenic_centers():
     Test compounds are the prochiral methyl ethylketone,
     (2R)-butanol, and (2S)-butanol."""
 
-    with open("rs_test.smi", mode="w") as newfile:
+    with open("rs_test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("CCC(C)=O\nnCC[C@@H](C)O\nCC[C@H](C)O")
 
     command = str("python3 saturate_murcko_scaffolds.py rs_test.smi")
     sub.call(command, shell=True)
 
-    with open("rs_test_sat.smi", mode="r") as source:
+    with open("rs_test_sat.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
         assert str(output) == str("CCC(C)O\nNCC[C@@H](C)O\nCC[C@H](C)O\n")
 
@@ -240,13 +240,13 @@ def test_preserve_structure_concatenation():
     of e.g., SMILES about co-crystals, solvates, etc.  The entry of
     the test indeed is about 1,4-benzoquinone and hydroquinone."""
 
-    with open("cocrystal.smi", mode="w") as newfile:
+    with open("cocrystal.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("C1=CC(=O)C=CC1=O.c1cc(ccc1O)O")
 
     command = str("python3 saturate_murcko_scaffolds.py cocrystal.smi")
     sub.call(command, shell=True)
 
-    with open("cocrystal_sat.smi", mode="r") as source:
+    with open("cocrystal_sat.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
         assert str(output) == str("C1CC(O)CCC1O.C1CC(CCC1O)O\n")
 
@@ -266,13 +266,13 @@ def test_preserve_assigned_charges():
     and N,N,N-trimethylbenzenaminium, intentionally lacking the counter
     ion for charge compensation."""
 
-    with open("charges.smi", mode="w") as newfile:
+    with open("charges.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("[O-]c1ccccc1\n[o-]c1ccccc1\nC[N+](c1ccccc1)(C)C")
 
     command = str("python3 saturate_murcko_scaffolds.py charges.smi")
     sub.call(command, shell=True)
 
-    with open("charges_sat.smi", mode="r") as source:
+    with open("charges_sat.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
         assert str(output) == str(
             "[O-]C1CCCCC1\n[o-]C1CCCCC1\nC[N+](C1CCCCC1)(C)C\n")
