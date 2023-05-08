@@ -226,24 +226,27 @@ def test_explicit_triple_bonds():
     os.remove("triple_bond_sat.smi")
 
 
-### --------------------------------------------------
-#def test_exclude_compounds_with_tin():
-#    """Prevent the not sensible reduction of [sn] to [SN]."""
+## --------------------------------------------------
+def test_stannole_to_stannolane():
+    """Prevent the not sensible reduction of [sn] to [SN].
 
-#    with open("tin_exclusion.smi", mode="w") as newfile:
-#        newfile.write("c1cc[Sn]cc1\nc1cc[sn]cc1")
+    While `[sn]` is valid for an atom of tin (implicitly) considered aromatic
+    and `[Sn]` one which is not, the saturation must not yield `[SN]`.  There
+    is not such an element symbol, and except single hydrogen `H`, the presence
+    of a second element enclosed in the square brackets -- here reading like
+    sulfur and nitrogen -- is not sensible."""
+    with open("stannole.smi", mode="w", encoding="utf-8") as newfile:
+        newfile.write("c1c[Sn]cc1\nc1c[sn]cc1\nC1=CC=C[Sn]1")
 
-#    command = str("python3 saturate_murcko_scaffolds.py tin_exclusion.smi")
-#    sub.call(command, shell=True)
+    command = str("python3 saturate_murcko_scaffolds.py stannole.smi")
+    sub.call(command, shell=True)
 
-#    with open("tin_exclusion_sat.smi", mode="r") as source:
-#        output = source.read()
-#        assert str(output).strip() == str(
-#            "Entry c1cc[Sn]cc1 might report tin and is skipped.\nEntry c1cc[sn]cc1 might report tin and is skipped."
-#        )
+    with open("stannole_sat.smi", mode="r", encoding="utf-8") as source:
+        output = source.read()
+        assert str(output).strip() == str("C1C[Sn]CC1\nC1C[Sn]CC1\nC1CCC[Sn]1")
 
-#    os.remove("tin_exclusion.smi")
-#    os.remove("tin_exclusion_sat.smi")
+    os.remove("stannole.smi")
+    os.remove("stannole_sat.smi")
 
 
 ## --------------------------------------------------
