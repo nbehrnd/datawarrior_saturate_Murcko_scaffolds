@@ -51,6 +51,56 @@ def test_program_exists():
 
 
 ## --------------------------------------------------
+def test_explicit_double_bonds():
+    """Check the saturation of explicit double bonds, e.g. in
+    esters, or non-aromatic dienes.
+
+    Submitted are three tests: (E)-hexene, (Z)-hexene both to yield
+    hexane (two entries); and 2-pyridone to yield 2-piperidinol.
+
+    The explicit indication of (E)/(Z)-isomerism of the double bonds
+    with forward and backward slash may yield a deprecation warning
+    issued by Python; so far, without effect to this test's results."""
+
+    with open("dienes.smi", mode="w", encoding="utf-8") as newfile:
+        newfile.write(str("CCC/C=C/C\nCCC/C=C\C\nO=C1NC=CC=C1"))
+
+    command = str("python3 saturate_murcko_scaffolds.py dienes.smi")
+    sub.call(command, shell=True)
+
+    with open("dienes_sat.smi", mode="r", encoding="utf-8") as source:
+        output = source.read()
+        assert str(output).strip() == str("CCCCCC\nCCCCCC\nOC1NCCCC1")
+
+    os.remove("dienes.smi")
+    os.remove("dienes_sat.smi")
+
+
+## --------------------------------------------------
+def test_explicit_triple_bonds():
+    """Check the saturation of explicit triple bonds, e.g. in alkynes,
+    nitriles, or isonitriles.
+
+    Submitted are four tests: 1-hexine, 2-hexine both to yield hexane
+    (two entries), benzonitrile to cyclohexylmethylamine, and
+    tert-butyl isocyanide to N-tert-butyl methylamine."""
+
+    with open("triple_bond.smi", mode="w", encoding="utf-8") as newfile:
+        newfile.write("CCCCC#C\nCCCC#CC\nN#Cc1ccccc1\nCC(C)(C)N#C")
+
+    command = str("python3 saturate_murcko_scaffolds.py triple_bond.smi")
+    sub.call(command, shell=True)
+
+    with open("triple_bond_sat.smi", mode="r", encoding="utf-8") as source:
+        output = source.read()
+        assert str(output).strip() == str(
+            "CCCCCC\nCCCCCC\nNCC1CCCCC1\nCC(C)(C)NC")
+
+    os.remove("triple_bond.smi")
+    os.remove("triple_bond_sat.smi")
+
+
+## --------------------------------------------------
 def test_benzene_to_cyclohexane():
     """Check the complete saturation of benzene to cyclohexane"""
 
@@ -174,56 +224,6 @@ def test_thiophene_to_thiolene():
 
     os.remove('thiophene.smi')
     os.remove('thiophene_sat.smi')
-
-
-## --------------------------------------------------
-def test_explicit_double_bonds():
-    """Check the saturation of explicit double bonds, e.g. in
-    esters, or non-aromatic dienes.
-
-    Submitted are three tests: (E)-hexene, (Z)-hexene both to yield
-    hexane (two entries); and 2-pyridone to yield 2-piperidinol.
-
-    The explicit indication of (E)/(Z)-isomerism of the double bonds
-    with forward and backward slash may yield a deprecation warning
-    issued by Python; so far, without effect to this test's results."""
-
-    with open("dienes.smi", mode="w", encoding="utf-8") as newfile:
-        newfile.write(str("CCC/C=C/C\nCCC/C=C\C\nO=C1NC=CC=C1"))
-
-    command = str("python3 saturate_murcko_scaffolds.py dienes.smi")
-    sub.call(command, shell=True)
-
-    with open("dienes_sat.smi", mode="r", encoding="utf-8") as source:
-        output = source.read()
-        assert str(output).strip() == str("CCCCCC\nCCCCCC\nOC1NCCCC1")
-
-    os.remove("dienes.smi")
-    os.remove("dienes_sat.smi")
-
-
-## --------------------------------------------------
-def test_explicit_triple_bonds():
-    """Check the saturation of explicit triple bonds, e.g. in alkynes,
-    nitriles, or isonitriles.
-
-    Submitted are four tests: 1-hexine, 2-hexine both to yield hexane
-    (two entries), benzonitrile to cyclohexylmethylamine, and
-    tert-butyl isocyanide to N-tert-butyl methylamine."""
-
-    with open("triple_bond.smi", mode="w", encoding="utf-8") as newfile:
-        newfile.write("CCCCC#C\nCCCC#CC\nN#Cc1ccccc1\nCC(C)(C)N#C")
-
-    command = str("python3 saturate_murcko_scaffolds.py triple_bond.smi")
-    sub.call(command, shell=True)
-
-    with open("triple_bond_sat.smi", mode="r", encoding="utf-8") as source:
-        output = source.read()
-        assert str(output).strip() == str(
-            "CCCCCC\nCCCCCC\nNCC1CCCCC1\nCC(C)(C)NC")
-
-    os.remove("triple_bond.smi")
-    os.remove("triple_bond_sat.smi")
 
 
 ## --------------------------------------------------
