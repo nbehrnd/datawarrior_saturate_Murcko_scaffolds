@@ -73,14 +73,14 @@ def test_cyclopentadiene_to_cyclopentane():
     """Check the saturation of cyclohexadiene to cyclohexane"""
 
     with open("cyclopentadiene.smi", mode="w", encoding="utf-8") as newfile:
-        newfile.write("c1cccc1")
+        newfile.write("C1=CC=CC1\nc1cCcc1")
 
     command = str("python3 saturate_murcko_scaffolds.py cyclopentadiene.smi")
     sub.call(command, shell=True)
 
     with open("cyclopentadiene_sat.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
-        assert str(output).strip() == str("C1CCCC1")
+        assert str(output).strip() == str("C1CCCC1\nC1CCCC1")
 
     os.remove('cyclopentadiene.smi')
     os.remove('cyclopentadiene_sat.smi')
@@ -91,14 +91,14 @@ def test_pyrrole_to_pyrrolidine():
     """Check the saturation for a N-heterocycle"""
 
     with open("pyrrole.smi", mode="w", encoding="utf-8") as newfile:
-        newfile.write("c1cncc1")
+        newfile.write("c1c[nH]cc1")
 
     command = str("python3 saturate_murcko_scaffolds.py pyrrole.smi")
     sub.call(command, shell=True)
 
     with open("pyrrole_sat.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
-        assert str(output).strip() == str("C1CNCC1")
+        assert str(output).strip() == str("C1C[NH]CC1")
 
     os.remove('pyrrole.smi')
     os.remove('pyrrole_sat.smi')
