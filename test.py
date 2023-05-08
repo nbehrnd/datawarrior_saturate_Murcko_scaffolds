@@ -19,22 +19,27 @@ or
 
 pytest-3 test.py
 
-The script test.py works for either pytest 6.2.1 and Python 3.9.1, or
-legacy pytest 4.6.11 and Python 2.7.18.  The test sequence equally may
-be triggered with the Makefile (and GNU Make 4.3) provided; here
-pytest-3 is invoked.  Individual SMILES provided as input were
-generated with DataWarrior.[1]  SMILES used in the assert statements
-were checked with the .svg visual by OpenBabel.[2]
+Initially written for pytest 4.6.1 (Python 2.7.18) and pytest 4.6.11
+(Python 3.9.1), this version of the script is known to work well with
+pytest 7.2.1 (Python 3.11.2) as provided by Linux Debian 12/bookworm,
+branch testing.  The test sequence equally may launched by a Makefile
+(and GNU Make 4.3) provided; here pytest-3 is invoked.  The SMILES
+used in the tests were checked with the visual output as .png provided
+by OpenBabel.[1]
 
-[1]  Sander T, Freyss J, von Korff M, Rufener C, J. Chem. Inf. Model.
+There are additional SMILES in sub folder `test_data` used e.g., to
+generate an illustration on the project's landing page.  These were
+exported by DataWarrior.[1]
+
+[1]  OpenBabel (http://www.openbabel.org) as version 3.1.1 for Linux
+     Debian 12 / bookworm, branch testing (Jan 4, 2023), was used.
+
+[2]  Sander T, Freyss J, von Korff M, Rufener C, J. Chem. Inf. Model.
      2015, 55, 460-473, (https://pubs.acs.org/doi/10.1021/ci500588j).
      The program, (c) 2002--2021 by Idorsia Pharmaceuticals Ltd., is
      freely available under http://www.openmolecules.org (source code
      at https://github.com/thsa/datawarrior).  The native Linux
      version 5.5.0 (April 2021) was used.
-
-[2]  OpenBabel (http://www.openbabel.org).  The packaged version 3.1.0
-     for Linux Debian 11 / bullseye, branch testing, was used.
 """
 
 import os
@@ -60,7 +65,12 @@ def test_explicit_double_bonds():
 
     The explicit indication of (E)/(Z)-isomerism of the double bonds
     with forward and backward slash may yield a deprecation warning
-    issued by Python; so far, without effect to this test's results."""
+    issued by Python; so far, without effect to this test's results.
+
+    Because the test string includes `\C` pylint (2.16.2) suggests either
+    the escape of the backslash as in `\\C`, or to prepend a `r` -- as in
+    `str(r"\C")`.  The former renders the SMILES string invalid, to use
+    `r` breaks the the test; hence, this issue is left unchanged."""
 
     with open("dienes.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write(str("CCC/C=C/C\nCCC/C=C\C\nO=C1NC=CC=C1"))
@@ -236,14 +246,14 @@ def test_stannole_to_stannolane():
     of a second element enclosed in the square brackets -- here reading like
     sulfur and nitrogen -- is not sensible."""
     with open("stannole.smi", mode="w", encoding="utf-8") as newfile:
-        newfile.write("c1c[Sn]cc1\nc1c[sn]cc1\nC1=CC=C[Sn]1")
+        newfile.write("c1c[Sn]cc1\nc1[sn]ccc1\nC1=CC=C[Sn]1")
 
     command = str("python3 saturate_murcko_scaffolds.py stannole.smi")
     sub.call(command, shell=True)
 
     with open("stannole_sat.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
-        assert str(output).strip() == str("C1C[Sn]CC1\nC1C[Sn]CC1\nC1CCC[Sn]1")
+        assert str(output).strip() == str("C1C[Sn]CC1\nC1[Sn]CCC1\nC1CCC[Sn]1")
 
     os.remove("stannole.smi")
     os.remove("stannole_sat.smi")
@@ -306,7 +316,7 @@ def test_preserve_assigned_charges():
     ion for charge compensation."""
 
     with open("charges.smi", mode="w", encoding="utf-8") as newfile:
-        newfile.write("[O-]c1ccccc1\n[o-]c1ccccc1\nC[N+](c1ccccc1)(C)C")
+        newfile.write("[O-]c1ccccc1\nC[N+](c1ccccc1)(C)C")
 
     command = str("python3 saturate_murcko_scaffolds.py charges.smi")
     sub.call(command, shell=True)
@@ -314,7 +324,7 @@ def test_preserve_assigned_charges():
     with open("charges_sat.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
         assert str(output) == str(
-            "[O-]C1CCCCC1\n[O-]C1CCCCC1\nC[N+](C1CCCCC1)(C)C\n")
+            "[O-]C1CCCCC1\nC[N+](C1CCCCC1)(C)C\n")
 
     os.remove("charges.smi")
     os.remove("charges_sat.smi")
