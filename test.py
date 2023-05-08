@@ -2,7 +2,7 @@
 # name:   test.py
 # author: nbehrnd@yahoo.com
 # date:   [2021-02-04 Tue]
-# edit:   [2023-05-07 Sun]
+# edit:   [2023-05-08 Mon]
 #
 """tests for saturate_murcko_scaffolds.py
 
@@ -120,6 +120,42 @@ def test_furane_to_tetrahydrofurane():
 
     os.remove('furane.smi')
     os.remove('furane_sat.smi')
+
+
+## --------------------------------------------------
+def test_phosporine_to_phosphinane():
+    """Check the saturation for an P-heterocycle, 1/2"""
+
+    with open("phosporine.smi", mode="w", encoding="utf-8") as newfile:
+        newfile.write("C1=CC=PC=C1\nc1cpccc1")
+
+    command = str("python3 saturate_murcko_scaffolds.py phosporine.smi")
+    sub.call(command, shell=True)
+
+    with open("phosporine_sat.smi", mode="r", encoding="utf-8") as source:
+        output = source.read()
+        assert str(output).strip() == str("C1CCPCC1\nC1CPCCC1")
+
+    os.remove('phosporine.smi')
+    os.remove('phosporine_sat.smi')
+
+
+## --------------------------------------------------
+def test_phosphole_to_phospholane():
+    """Check the saturation for an P-heterocycle, 2/2."""
+
+    with open("phosphole.smi", mode="w", encoding="utf-8") as newfile:
+        newfile.write("P1C=CC=C1\nc1ccc[pH]1")
+
+    command = str("python3 saturate_murcko_scaffolds.py phosphole.smi")
+    sub.call(command, shell=True)
+
+    with open("phosphole_sat.smi", mode="r", encoding="utf-8") as source:
+        output = source.read()
+        assert str(output).strip() == str("P1CCCC1\nC1CCC[PH]1")
+
+    os.remove('phosphole.smi')
+    os.remove('phosphole_sat.smi')
 
 
 ## --------------------------------------------------

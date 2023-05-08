@@ -2,8 +2,8 @@
 
 # name:   saturate_murcko_scaffolds.py
 # author: nbehrnd@yahoo.com
-# date:   [2019-06-07 Fri] 
-# edit:   [2023-05-07 Sun]
+# date:   [2019-06-07 Fri]
+# edit:   [2023-05-08 Mon]
 #
 """Read Smiles of Murcko scaffolds and return these as 'saturated'.
 
@@ -173,6 +173,20 @@ def saturate_oxygen(input_string):
     return processed
 
 
+def saturate_phosphorus(input_string):
+    """provide saturation of phosphorus atoms
+
+    The approach copies the one introduced on carbon, confer vide supra."""
+    processed = ""
+    new01 = re.sub(r"\[p\]", "P", input_string)  # `[p]` -> `P`
+    new02 = re.sub(r"(?<!\[[a-zA-Z])p(?!\])", "P", new01)
+    new03 = re.sub(r"\[p-\]", "[P-]", new02)
+    new04 = re.sub(r"\[p+\]", "[P+]", new03)
+
+    processed = new04
+    return processed
+
+
 def saturate_sulfur(input_string):
     """provide saturation of sulfur atoms
 
@@ -214,7 +228,8 @@ def main():
         on_carbon = saturate_carbon(only_single_bonds)
         on_nitrogen = saturate_nitrogen(on_carbon)
         on_oxygen = saturate_oxygen(on_nitrogen)
-        on_sulfur = saturate_sulfur(on_oxygen)
+        on_phosphorus = saturate_phosphorus(on_oxygen)
+        on_sulfur = saturate_sulfur(on_phosphorus)
 
         result = on_sulfur
         list_processed_smiles.append(result)
