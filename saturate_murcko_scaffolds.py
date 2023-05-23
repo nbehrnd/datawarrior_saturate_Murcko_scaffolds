@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 # name:   saturate_murcko_scaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   [2019-06-07 Fri]
-# edit:   [2023-05-08 Mon]
+# edit:   [2023-05-23 Tue]
 #
 """Read Smiles of Murcko scaffolds and return these as 'saturated'.
 
@@ -35,9 +36,10 @@ or zero pairs of square brackets (e.g., [Sn], [S@], [Fe3+]) are touched.
     http://www.openmolecules.org, https://github.com/thsa/datawarrior
 [3] https://en.wikipedia.org/wiki/Benomyl
 
-License: Norwid Behrnd, 2019--2022, GPLv3.
+License: Norwid Behrnd, 2019--2023, GPLv3.
 """
 import argparse
+import io
 import os
 import re
 import sys
@@ -54,14 +56,32 @@ def get_args():
         (often written in lower case as an implicit description of the aromatic
         bond order) and explicit double/triple bonds.  To prevent potential
         errors, the square brackets are copied verbatim into the newly written
-        SMILES string.  An input file 'example.smi' yields 'example_sat.smi' as
-        new permanent record.""")
+        SMILES string. Enclose SMILES provided via the command line in quotes,
+        or some characters permissible in a SMILES string can launch an unwanted
+        action."""
+    )
 
-    parser.add_argument("source_file",
-                        metavar="FILE",
-                        help="Input file with a list of SMILES strings.")
+    parser.add_argument(
+        "text",
+        type=str,
+        help="process a single SMILES from the CLI, or access an input file")
 
-    return parser.parse_args()
+    parser.add_argument(
+        "-o",
+        "--outfile",
+        help="output file name, else results are reported back to the CLI",
+        metavar="",
+        default="",
+    )
+
+    args = parser.parse_args()
+
+    if os.path.isfile(args.text):
+        args.text = open(file=args.text, mode="rt", encoding="utf-8")
+    else:
+        args.text = io.StringIO(args.text + "\n")
+
+    return args
 
 
 def access_raw_data(input_file=""):
@@ -134,7 +154,7 @@ def saturate_carbon(input_string):
       character of an element symbol enclosed by a pair or square brackets.
     + third, there may be formal charge on the atom of interest.  For now, only
       single positive, and single negative are supported by the algorithm.
-      """
+    """
     processed = ""
     new01 = re.sub(r"\[c\]", "C", input_string)  # `[c]` -> `C`
     new02 = re.sub(r"(?<!\[[a-zA-Z])c(?!\])", "C", new01)
@@ -218,13 +238,14 @@ def write_record(input_file, listing):
 def main():
     """Join the functions."""
     args = get_args()
-    input_file = args.source_file
-    raw_data = access_raw_data(input_file)
 
-    list_processed_smiles = []
+    output = (
+        open(args.outfile, mode="wt", encoding="utf-8") if args.outfile else sys.stdout
+    )
+    for line in args.text:
+        raw_data = str(line).strip()
 
-    for entry in raw_data:
-        only_single_bonds = saturate_bonds(str(entry).strip())
+        only_single_bonds = saturate_bonds(raw_data)
         on_carbon = saturate_carbon(only_single_bonds)
         on_nitrogen = saturate_nitrogen(on_carbon)
         on_oxygen = saturate_oxygen(on_nitrogen)
@@ -232,9 +253,7 @@ def main():
         on_sulfur = saturate_sulfur(on_phosphorus)
 
         result = on_sulfur
-        list_processed_smiles.append(result)
-
-    write_record(input_file, list_processed_smiles)
+        output.write(result + "\n")
 
 
 if __name__ == "__main__":

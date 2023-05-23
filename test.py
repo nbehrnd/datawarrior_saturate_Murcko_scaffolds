@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 # name:   test.py
 # author: nbehrnd@yahoo.com
 # date:   [2021-02-04 Tue]
-# edit:   [2023-05-08 Mon]
+# edit:   [2023-05-23 Tue]
 #
 """tests for saturate_murcko_scaffolds.py
 
@@ -45,7 +47,7 @@ exported by DataWarrior.[1]
 import os
 import subprocess as sub
 
-SCRIPT = './saturate_murcko_scaffolds.py'
+SCRIPT = "./saturate_murcko_scaffolds.py"
 
 
 # --------------------------------------------------
@@ -55,7 +57,7 @@ def test_program_exists():
     assert os.path.isfile(SCRIPT)
 
 
-## --------------------------------------------------
+# --------------------------------------------------
 def test_explicit_double_bonds():
     """Check the saturation of explicit double bonds, e.g. in
     esters, or non-aromatic dienes.
@@ -72,21 +74,22 @@ def test_explicit_double_bonds():
     `str(r"\C")`.  The former renders the SMILES string invalid, to use
     `r` breaks the the test; hence, this issue is left unchanged."""
 
-    with open("dienes.smi", mode="w", encoding="utf-8") as newfile:
+    with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write(str("CCC/C=C/C\nCCC/C=C\C\nO=C1NC=CC=C1"))
 
-    command = str("python3 saturate_murcko_scaffolds.py dienes.smi")
+    command = str(
+        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
-    with open("dienes_sat.smi", mode="r", encoding="utf-8") as source:
+    with open("output.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
         assert str(output).strip() == str("CCCCCC\nCCCCCC\nOC1NCCCC1")
 
-    os.remove("dienes.smi")
-    os.remove("dienes_sat.smi")
+    os.remove("test.smi")
+    os.remove("output.smi")
 
 
-## --------------------------------------------------
+# --------------------------------------------------
 def test_explicit_triple_bonds():
     """Check the saturation of explicit triple bonds, e.g. in alkynes,
     nitriles, or isonitriles.
@@ -95,148 +98,156 @@ def test_explicit_triple_bonds():
     (two entries), benzonitrile to cyclohexylmethylamine, and
     tert-butyl isocyanide to N-tert-butyl methylamine."""
 
-    with open("triple_bond.smi", mode="w", encoding="utf-8") as newfile:
+    with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("CCCCC#C\nCCCC#CC\nN#Cc1ccccc1\nCC(C)(C)N#C")
 
-    command = str("python3 saturate_murcko_scaffolds.py triple_bond.smi")
+    command = str(
+        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
-    with open("triple_bond_sat.smi", mode="r", encoding="utf-8") as source:
+    with open("output.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
         assert str(output).strip() == str(
             "CCCCCC\nCCCCCC\nNCC1CCCCC1\nCC(C)(C)NC")
 
-    os.remove("triple_bond.smi")
-    os.remove("triple_bond_sat.smi")
+    os.remove("test.smi")
+    os.remove("output.smi")
 
 
-## --------------------------------------------------
+# --------------------------------------------------
 def test_benzene_to_cyclohexane():
     """Check the complete saturation of benzene to cyclohexane"""
 
-    with open("benzene.smi", mode="w", encoding="utf-8") as newfile:
+    with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("c1ccccc1")
 
-    command = str("python3 saturate_murcko_scaffolds.py benzene.smi")
+    command = str(
+        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
-    with open("benzene_sat.smi", mode="r", encoding="utf-8") as source:
+    with open("output.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
         assert str(output).strip() == str("C1CCCCC1")
 
-    os.remove('benzene.smi')
-    os.remove('benzene_sat.smi')
+    os.remove("test.smi")
+    os.remove("output.smi")
 
 
-## --------------------------------------------------
+# --------------------------------------------------
 def test_cyclopentadiene_to_cyclopentane():
     """Check the saturation of cyclohexadiene to cyclohexane"""
 
-    with open("cyclopentadiene.smi", mode="w", encoding="utf-8") as newfile:
+    with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("C1=CC=CC1\nc1cCcc1")
 
-    command = str("python3 saturate_murcko_scaffolds.py cyclopentadiene.smi")
+    command = str(
+        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
-    with open("cyclopentadiene_sat.smi", mode="r", encoding="utf-8") as source:
+    with open("output.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
         assert str(output).strip() == str("C1CCCC1\nC1CCCC1")
 
-    os.remove('cyclopentadiene.smi')
-    os.remove('cyclopentadiene_sat.smi')
+    os.remove("test.smi")
+    os.remove("output.smi")
 
 
-## --------------------------------------------------
+# --------------------------------------------------
 def test_pyrrole_to_pyrrolidine():
     """Check the saturation for a N-heterocycle"""
 
-    with open("pyrrole.smi", mode="w", encoding="utf-8") as newfile:
+    with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("c1c[nH]cc1")
 
-    command = str("python3 saturate_murcko_scaffolds.py pyrrole.smi")
+    command = str(
+        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
-    with open("pyrrole_sat.smi", mode="r", encoding="utf-8") as source:
+    with open("output.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
         assert str(output).strip() == str("C1C[NH]CC1")
 
-    os.remove('pyrrole.smi')
-    os.remove('pyrrole_sat.smi')
+    os.remove("test.smi")
+    os.remove("output.smi")
 
 
-## --------------------------------------------------
+# --------------------------------------------------
 def test_furane_to_tetrahydrofurane():
     """Check the saturation for an O-heterocycle"""
 
-    with open("furane.smi", mode="w", encoding="utf-8") as newfile:
+    with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("c1cocc1")
 
-    command = str("python3 saturate_murcko_scaffolds.py furane.smi")
+    command = str(
+        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
-    with open("furane_sat.smi", mode="r", encoding="utf-8") as source:
+    with open("output.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
         assert str(output).strip() == str("C1COCC1")
 
-    os.remove('furane.smi')
-    os.remove('furane_sat.smi')
+    os.remove("test.smi")
+    os.remove("output.smi")
 
 
-## --------------------------------------------------
+# --------------------------------------------------
 def test_phosporine_to_phosphinane():
     """Check the saturation for an P-heterocycle, 1/2"""
 
-    with open("phosporine.smi", mode="w", encoding="utf-8") as newfile:
+    with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("C1=CC=PC=C1\nc1cpccc1")
 
-    command = str("python3 saturate_murcko_scaffolds.py phosporine.smi")
+    command = str(
+        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
-    with open("phosporine_sat.smi", mode="r", encoding="utf-8") as source:
+    with open("output.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
         assert str(output).strip() == str("C1CCPCC1\nC1CPCCC1")
 
-    os.remove('phosporine.smi')
-    os.remove('phosporine_sat.smi')
+    os.remove("test.smi")
+    os.remove("output.smi")
 
 
-## --------------------------------------------------
+# --------------------------------------------------
 def test_phosphole_to_phospholane():
     """Check the saturation for an P-heterocycle, 2/2."""
 
-    with open("phosphole.smi", mode="w", encoding="utf-8") as newfile:
+    with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("P1C=CC=C1\nc1ccc[pH]1")
 
-    command = str("python3 saturate_murcko_scaffolds.py phosphole.smi")
+    command = str(
+        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
-    with open("phosphole_sat.smi", mode="r", encoding="utf-8") as source:
+    with open("output.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
         assert str(output).strip() == str("P1CCCC1\nC1CCC[PH]1")
 
-    os.remove('phosphole.smi')
-    os.remove('phosphole_sat.smi')
+    os.remove("test.smi")
+    os.remove("output.smi")
 
 
-## --------------------------------------------------
+# --------------------------------------------------
 def test_thiophene_to_thiolene():
     """Check the saturation for a S-heterocycle"""
 
-    with open("thiophene.smi", mode="w", encoding="utf-8") as newfile:
+    with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("c1cscc1")
 
-    command = str("python3 saturate_murcko_scaffolds.py thiophene.smi")
+    command = str(
+        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
-    with open("thiophene_sat.smi", mode="r", encoding="utf-8") as source:
+    with open("output.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
         assert str(output).strip() == str("C1CSCC1")
 
-    os.remove('thiophene.smi')
-    os.remove('thiophene_sat.smi')
+    os.remove("test.smi")
+    os.remove("output.smi")
 
 
-## --------------------------------------------------
+# --------------------------------------------------
 def test_stannole_to_stannolane():
     """Prevent the not sensible reduction of [sn] to [SN].
 
@@ -245,42 +256,44 @@ def test_stannole_to_stannolane():
     is not such an element symbol, and except single hydrogen `H`, the presence
     of a second element enclosed in the square brackets -- here reading like
     sulfur and nitrogen -- is not sensible."""
-    with open("stannole.smi", mode="w", encoding="utf-8") as newfile:
+    with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("c1c[Sn]cc1\nc1[sn]ccc1\nC1=CC=C[Sn]1")
 
-    command = str("python3 saturate_murcko_scaffolds.py stannole.smi")
+    command = str(
+        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
-    with open("stannole_sat.smi", mode="r", encoding="utf-8") as source:
+    with open("output.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
         assert str(output).strip() == str("C1C[Sn]CC1\nC1[Sn]CCC1\nC1CCC[Sn]1")
 
-    os.remove("stannole.smi")
-    os.remove("stannole_sat.smi")
+    os.remove("test.smi")
+    os.remove("output.smi")
 
 
-## --------------------------------------------------
+# --------------------------------------------------
 def test_preserve_stereogenic_centers():
     """Do not remove, nor newly assign (R)/(S) indicators.
 
     Test compounds are the prochiral methyl ethylketone,
     (2R)-butanol, and (2S)-butanol."""
 
-    with open("rs_test.smi", mode="w", encoding="utf-8") as newfile:
+    with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("CCC(C)=O\nnCC[C@@H](C)O\nCC[C@H](C)O")
 
-    command = str("python3 saturate_murcko_scaffolds.py rs_test.smi")
+    command = str(
+        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
-    with open("rs_test_sat.smi", mode="r", encoding="utf-8") as source:
+    with open("output.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
         assert str(output) == str("CCC(C)O\nNCC[C@@H](C)O\nCC[C@H](C)O\n")
 
-    os.remove("rs_test.smi")
-    os.remove("rs_test_sat.smi")
+    os.remove("test.smi")
+    os.remove("output.smi")
 
 
-### --------------------------------------------------
+# --------------------------------------------------
 def test_preserve_structure_concatenation():
     """Retain the concatenation by the period sign.
 
@@ -289,21 +302,22 @@ def test_preserve_structure_concatenation():
     of e.g., SMILES about co-crystals, solvates, etc.  The entry of
     the test indeed is about 1,4-benzoquinone and hydroquinone."""
 
-    with open("cocrystal.smi", mode="w", encoding="utf-8") as newfile:
+    with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("C1=CC(=O)C=CC1=O.c1cc(ccc1O)O")
 
-    command = str("python3 saturate_murcko_scaffolds.py cocrystal.smi")
+    command = str(
+        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
-    with open("cocrystal_sat.smi", mode="r", encoding="utf-8") as source:
+    with open("output.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
         assert str(output) == str("C1CC(O)CCC1O.C1CC(CCC1O)O\n")
 
-    os.remove("cocrystal.smi")
-    os.remove("cocrystal_sat.smi")
+    os.remove("test.smi")
+    os.remove("output.smi")
 
 
-## --------------------------------------------------
+# --------------------------------------------------
 def test_preserve_assigned_charges():
     """Do not alter a charged assigned to an atom.
 
@@ -315,19 +329,65 @@ def test_preserve_assigned_charges():
     and N,N,N-trimethylbenzenaminium, intentionally lacking the counter
     ion for charge compensation."""
 
-    with open("charges.smi", mode="w", encoding="utf-8") as newfile:
+    with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("[O-]c1ccccc1\nC[N+](c1ccccc1)(C)C")
 
-    command = str("python3 saturate_murcko_scaffolds.py charges.smi")
+    command = str(
+        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
-    with open("charges_sat.smi", mode="r", encoding="utf-8") as source:
+    with open("output.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
-        assert str(output) == str(
-            "[O-]C1CCCCC1\nC[N+](C1CCCCC1)(C)C\n")
+        assert str(output) == str("[O-]C1CCCCC1\nC[N+](C1CCCCC1)(C)C\n")
 
-    os.remove("charges.smi")
-    os.remove("charges_sat.smi")
+    os.remove("test.smi")
+    os.remove("output.smi")
+
+
+# --------------------------------------------------
+def test_pass_input_from_cli_to_file():
+    """with pyridine, check the saturation from the CLI"""
+
+    command = str(
+        'python3 saturate_murcko_scaffolds.py "c1ccncc1" -o output.smi')
+    sub.call(command, shell=True)
+
+    with open("output.smi", mode="r", encoding="utf-8") as source:
+        output = source.read()
+        assert str(output) == str("C1CCNCC1\n")
+
+    os.remove("output.smi")
+
+
+# --------------------------------------------------
+def test_pass_input_from_cli_to_cli():
+    """with pyridine, check the saturation from the CLI"""
+
+    command = str('python3 saturate_murcko_scaffolds.py "c1ccncc1"')
+    sub.call(command, shell=True)
+
+    assert str("C1CCNCC1\n")
+
+
+# --------------------------------------------------
+def test_pass_input_file_to_cli():
+    """saturate multiple SMILES from a file, report to the CLI"""
+    molecules = ["c1ccncc1", "[O-]c1ccccc1", "c1c[Sn]cc1", "nCC[C@@H](C)O"]
+
+    with open(file="test.smi", mode="wt", encoding="utf-8") as newfile:
+        for molecule in molecules:
+            newfile.write(molecule + "\n")
+
+    command = str("python3 saturate_murcko_scaffolds.py test.smi")
+    sub.call(command, shell=True)
+    assert str("""
+C1CCNCC1
+[O-]C1CCCCC1
+C1C[Sn]CC1
+NCC[C@@H](C)O
+""")
+
+    os.remove("test.smi")
 
 
 # END
