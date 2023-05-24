@@ -1,7 +1,7 @@
 
 # name: README.org 
 # date: 2019-07-22 (YYYY-MM-DD)
-# edit: [2023-05-08 Mon]
+# edit: <2023-05-24 Wed>
 
 #+OPTIONS: toc:nil ^:nil
 
@@ -38,23 +38,21 @@
 
 * Typical use
  
-  The script runs from Python's CLI with a file listing SMILES to
-  process as parameter.  File =test_input.smi= (see sub-folder
-  =test_data=) for example:
+  Running from the command line, the script processes one, or multiple
+  SMILES strings listed in an input file (symbolized by ~text~ below)
+  to report the processed SMILES strings back to the command line:
 
   #+BEGIN_SRC shell
-    python saturate_murcko_scaffolds.py [test_input.smi]
+    python saturate_murcko_scaffolds.py [-h] [-o] text
   #+END_SRC
 
-  generates =test_input_sat.smi= as permanent record; the additional
-  =_sat= is a reminder of the performed saturation.  The input file is
-  preserved.
-
-  The use of the file extension =.smi= of the input file is a
-  recommendation because it is one frequently seen (e.g., around
-  OpenBabel[fn:openbabel]), however not mandatory.  Initially written
-  for use with either Python 2, or Python 3, the focus of the
-  project's maintenance shifted to Python 3.
+  Instead of an input file, individual SMILES strings equally may be
+  processed; to prevent their misinterpretation by the shell, enclose
+  them by either single, or double quotes.  Either approach elected,
+  the result may be redirected into a permanent record with a user
+  defined file name (flag ~--outfile~, or shorter ~-o~).  Only modules
+  the standard library of Python 3 provides (e.g., version 3.11.2) are
+  used.
 
 * Example
 
@@ -95,7 +93,7 @@
 
 * Known peculiarities
 
-  The script provides "saturation" by dropping explicit information
+  The script provides «saturation» by dropping explicit information
   related to double and triple bonds which SMILES encode (~=~, ~#~
   regarding bond order; ~/~ (forward slash), ~\~ (backward slash)
   regarding (/cis/)-(/trans/) relationship around double bonds). While
@@ -105,22 +103,22 @@
   program used for a visualization, if an explicit wedge is used
   (e.g., OpenBabel), or the absence of information is highlighted
   (e.g., as question mark in DataWarrior, or the project of CDK
-  depict[fn:CDKdepict]) as ambiguous.  Absolute absolute configuration
-  of stereogenic centers (indicated in SMILES with the ~@~ sign)
-  already assigned in the input file however is retained.
+  depict[fn:CDKdepict]) as ambiguous.  Absolute configuration of
+  stereogenic centers (indicated in SMILES with the ~@~ sign) already
+  assigned in the input however is retained.
 
   For a selection of elements (C, N, O, P, S), the implicit
   description of aromatic systems (e.g., as ~c1ccncc1~ in pyridine,
-  ~c1c[nH]cc1~ in pyrrol) is recognized.  To offer a "saturation",
+  ~c1c[nH]cc1~ in pyrrol) is recognized.  To offer a «saturation»,
   these characters returned as upper case characters to yield e.g.,
   piperidine (~C1CCNCC1~) and pyrrolidine (~C1C[NH]CC1~).
 
   The script equally preserves up to one single negative, or single
-  positve charge of these five elements (e.g., ~[O-]c1ccccc1~ about
+  positive charge of these five elements (e.g., ~[O-]c1ccccc1~ about
   the phenolate anion, and ~C[N+](c1ccccc1)(C)C~ about
   /N,N,N/-trimethylbenzenaminium cation).  Here, it can be sensible to
-  "sanitize" the results of this script by other libraries as e.g.
-  RDKit.[fn:rdkit]
+  «sanitize» the results this script provides by other libraries as
+  e.g. RDKit.[fn:rdkit]
 
   The capitalization of the five characters is constrained to prevent
   non sensible transformations of e.g., an (implicitly) aromatic atom
@@ -129,12 +127,11 @@
   written with two characters is beyond the current scope of the
   script.
 
-  If the input SMILES string describes more than exactly one molecule
-  by the concatenating "~.~" (period character), then this special
-  sign equally is written in the new SMILES string.  This permits
-  working with SMILES about e.g., co-crystals, like about
-  1,4-benzoquinone and hydroquinone, =C1=CC(=O)C=CC1=O.c1cc(ccc1O)O=
-  resolved as =C1CC(O)CCC1O.C1CC(CCC1O)O=.
+  A SMILES string may describe more than one molecule.  Thus, the
+  concatenation with "~.~" (period character) as seen for example in
+  descriptions of co-crystals like about 1,4-benzoquinone and
+  hydroquinone, =C1=CC(=O)C=CC1=O.c1cc(ccc1O)O=, is retained.  The
+  example is resolved as =C1CC(O)CCC1O.C1CC(CCC1O)O=.
 
 * License
 
