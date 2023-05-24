@@ -4,7 +4,7 @@
 # name:   saturate_murcko_scaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   [2019-06-07 Fri]
-# edit:   [2023-05-23 Tue]
+# edit:   <2023-05-23 Wed>
 #
 """Read Smiles of Murcko scaffolds and return these as 'saturated'.
 
@@ -82,20 +82,6 @@ def get_args():
         args.text = io.StringIO(args.text + "\n")
 
     return args
-
-
-def access_raw_data(input_file=""):
-    """Attempt to read the SMILES strings in question."""
-    raw_data = []
-
-    try:
-        with open(input_file, encoding="utf-8", mode="r") as source:
-            raw_data = source.readlines()
-    except OSError:
-        print(f"Error while accessing input file {input_file}.  Exit.")
-        sys.exit()
-
-    return raw_data
 
 
 def saturator(raw_smiles):
