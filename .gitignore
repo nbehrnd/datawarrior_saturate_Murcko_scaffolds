@@ -1,2 +1,2 @@
 !.gitignore
-!/.git/workflows/pytest.yml
+!/.github/workflows/pytest.yml
