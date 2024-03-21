@@ -1,0 +1,43 @@
+name: CI_pytest_datawarrior_saturate_murcko_scaffolds
+
+# name    : pytest.yml
+# purpose : regularly run pytest on the saturator script
+# date    : [2024-03-21 Thu]
+# edit    :
+
+on:
+  push:
+    branches:
+      - main             # updates to enter the principal branch "main"
+  pull_request:
+    branches:
+      - main             # PRs to enter the principal branch "main"
+  workflow_dispatch:     # provide a manual trigger
+  schedule:
+    - cron: "0 0 1 * *"  # once each 1st of a month, at 00:00 UTC (cf. https://crontab.guru/)
+
+jobs:
+  linux-static:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+
+    steps:
+      - name: Check number of cores
+        run: |
+          lscpu
+          lscpu | grep "CPU(s):                       " | awk '{print $2}' > num_cores
+          echo "NUM_CORES=$(cat num_cores)" >> $GITHUB_ENV
+
+      - uses: actions/checkout@v4
+        # by [2024-10-23 Wed], this version possibly will be considered "old", cf.
+        # https://github.blog/changelog/2023-09-22-github-actions-transitioning-from-node-16-to-node-20/
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies with PyPI
+        run: pip install pytest
+
+      - name: run the check by pytest
+        run: python -m pytest
