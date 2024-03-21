@@ -1,37 +1,44 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# name:   test.py
+# name:   test_saturate_murcko_scaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   [2021-02-04 Tue]
-# edit:   [2023-05-23 Tue]
+# edit:   [2024-03-21 Thu]
 #
 """tests for saturate_murcko_scaffolds.py
 
-This script is written to check if edits in the script
-saturate_murcko_scaffolds.py affect scope and content of the output.
+This script tests results by script `saturate_murcko_scaffolds.py`.
+The scope of the tests implemented could be incomplete.
 
-The scope of the tests is incomplete.
+To trigger the tests,
 
-To trigger the tests, either launch
+- clone the project into a local folder
+- create a virtual environment
+- activate the virtual environment
+- run the tests from the top level of the cloned project
 
-pytest test.py
+In an instance of Linux Debian, this would require the sequence of
+the following commands:
 
-or
+```shell
+git clone https://github.com/nbehrnd/datawarrior_saturate_Murcko_scaffolds.git
+cd ./datawarrior_saturate_Murcko_scaffolds
+python -m venv sup
+source ./sup/bin/activate
+pip install pytest
+python -m pytest
+```
 
-pytest-3 test.py
+This approach was tested and run successfully in Linux Debian 13/trixie
+with Python 3.11.8, and Pytest 8.1.1 as fetched from PyPi.org.
 
-Initially written for pytest 4.6.1 (Python 2.7.18) and pytest 4.6.11
-(Python 3.9.1), this version of the script is known to work well with
-pytest 7.2.1 (Python 3.11.2) as provided by Linux Debian 12/bookworm,
-branch testing.  The test sequence equally may launched by a Makefile
-(and GNU Make 4.3) provided; here pytest-3 is invoked.  The SMILES
-used in the tests were checked with the visual output as .png provided
-by OpenBabel.[1]
+The SMILES used in the tests were checked with the visual output as .png
+provided by OpenBabel.[1]
 
 There are additional SMILES in sub folder `test_data` used e.g., to
 generate an illustration on the project's landing page.  These were
-exported by DataWarrior.[1]
+exported by DataWarrior.[2]
 
 [1]  OpenBabel (http://www.openbabel.org) as version 3.1.1 for Linux
      Debian 12 / bookworm, branch testing (Jan 4, 2023), was used.
@@ -77,8 +84,7 @@ def test_explicit_double_bonds():
     with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write(str("CCC/C=C/C\nCCC/C=C\C\nO=C1NC=CC=C1"))
 
-    command = str(
-        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
+    command = str("python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
     with open("output.smi", mode="r", encoding="utf-8") as source:
@@ -101,14 +107,12 @@ def test_explicit_triple_bonds():
     with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("CCCCC#C\nCCCC#CC\nN#Cc1ccccc1\nCC(C)(C)N#C")
 
-    command = str(
-        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
+    command = str("python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
     with open("output.smi", mode="r", encoding="utf-8") as source:
         output = source.read()
-        assert str(output).strip() == str(
-            "CCCCCC\nCCCCCC\nNCC1CCCCC1\nCC(C)(C)NC")
+        assert str(output).strip() == str("CCCCCC\nCCCCCC\nNCC1CCCCC1\nCC(C)(C)NC")
 
     os.remove("test.smi")
     os.remove("output.smi")
@@ -121,8 +125,7 @@ def test_benzene_to_cyclohexane():
     with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("c1ccccc1")
 
-    command = str(
-        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
+    command = str("python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
     with open("output.smi", mode="r", encoding="utf-8") as source:
@@ -140,8 +143,7 @@ def test_cyclopentadiene_to_cyclopentane():
     with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("C1=CC=CC1\nc1cCcc1")
 
-    command = str(
-        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
+    command = str("python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
     with open("output.smi", mode="r", encoding="utf-8") as source:
@@ -159,8 +161,7 @@ def test_pyrrole_to_pyrrolidine():
     with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("c1c[nH]cc1")
 
-    command = str(
-        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
+    command = str("python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
     with open("output.smi", mode="r", encoding="utf-8") as source:
@@ -178,8 +179,7 @@ def test_furane_to_tetrahydrofurane():
     with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("c1cocc1")
 
-    command = str(
-        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
+    command = str("python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
     with open("output.smi", mode="r", encoding="utf-8") as source:
@@ -197,8 +197,7 @@ def test_phosporine_to_phosphinane():
     with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("C1=CC=PC=C1\nc1cpccc1")
 
-    command = str(
-        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
+    command = str("python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
     with open("output.smi", mode="r", encoding="utf-8") as source:
@@ -216,8 +215,7 @@ def test_phosphole_to_phospholane():
     with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("P1C=CC=C1\nc1ccc[pH]1")
 
-    command = str(
-        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
+    command = str("python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
     with open("output.smi", mode="r", encoding="utf-8") as source:
@@ -235,8 +233,7 @@ def test_thiophene_to_thiolene():
     with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("c1cscc1")
 
-    command = str(
-        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
+    command = str("python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
     with open("output.smi", mode="r", encoding="utf-8") as source:
@@ -259,8 +256,7 @@ def test_stannole_to_stannolane():
     with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("c1c[Sn]cc1\nc1[sn]ccc1\nC1=CC=C[Sn]1")
 
-    command = str(
-        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
+    command = str("python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
     with open("output.smi", mode="r", encoding="utf-8") as source:
@@ -281,8 +277,7 @@ def test_preserve_stereogenic_centers():
     with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("CCC(C)=O\nnCC[C@@H](C)O\nCC[C@H](C)O")
 
-    command = str(
-        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
+    command = str("python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
     with open("output.smi", mode="r", encoding="utf-8") as source:
@@ -305,8 +300,7 @@ def test_preserve_structure_concatenation():
     with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("C1=CC(=O)C=CC1=O.c1cc(ccc1O)O")
 
-    command = str(
-        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
+    command = str("python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
     with open("output.smi", mode="r", encoding="utf-8") as source:
@@ -332,8 +326,7 @@ def test_preserve_assigned_charges():
     with open("test.smi", mode="w", encoding="utf-8") as newfile:
         newfile.write("[O-]c1ccccc1\nC[N+](c1ccccc1)(C)C")
 
-    command = str(
-        "python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
+    command = str("python3 saturate_murcko_scaffolds.py test.smi -o output.smi")
     sub.call(command, shell=True)
 
     with open("output.smi", mode="r", encoding="utf-8") as source:
@@ -348,8 +341,7 @@ def test_preserve_assigned_charges():
 def test_pass_input_from_cli_to_file():
     """with pyridine, check the saturation from the CLI"""
 
-    command = str(
-        'python3 saturate_murcko_scaffolds.py "c1ccncc1" -o output.smi')
+    command = str('python3 saturate_murcko_scaffolds.py "c1ccncc1" -o output.smi')
     sub.call(command, shell=True)
 
     with open("output.smi", mode="r", encoding="utf-8") as source:
@@ -380,12 +372,14 @@ def test_pass_input_file_to_cli():
 
     command = str("python3 saturate_murcko_scaffolds.py test.smi")
     sub.call(command, shell=True)
-    assert str("""
+    assert str(
+        """
 C1CCNCC1
 [O-]C1CCCCC1
 C1C[Sn]CC1
 NCC[C@@H](C)O
-""")
+"""
+    )
 
     os.remove("test.smi")
 
