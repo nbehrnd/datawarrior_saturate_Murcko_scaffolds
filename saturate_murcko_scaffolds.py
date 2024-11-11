@@ -4,7 +4,7 @@
 # name:   saturate_murcko_scaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   [2019-06-07 Fri]
-# edit:   <2023-05-23 Wed>
+# edit:   [2024-11-11 Mon]
 #
 """Read Smiles of Murcko scaffolds and return these as 'saturated'.
 
@@ -36,7 +36,7 @@ or zero pairs of square brackets (e.g., [Sn], [S@], [Fe3+]) are touched.
     http://www.openmolecules.org, https://github.com/thsa/datawarrior
 [3] https://en.wikipedia.org/wiki/Benomyl
 
-License: Norwid Behrnd, 2019--2023, GPLv3.
+License: Norwid Behrnd, 2019--2024, GPLv3.
 """
 import argparse
 import io
@@ -62,24 +62,17 @@ def get_args():
     )
 
     parser.add_argument(
-        "text",
-        type=str,
-        help="process a single SMILES from the CLI, or access an input file")
+        "inputs",
+        nargs="+",
+        help="provide one or multiple SMILES from the CLI, or an input text file listing SMILES")
 
-    parser.add_argument(
-        "-o",
-        "--outfile",
-        help="output file name, else results are reported back to the CLI",
-        metavar="",
-        default="",
-    )
 
     args = parser.parse_args()
 
-    if os.path.isfile(args.text):
-        args.text = open(file=args.text, mode="rt", encoding="utf-8")
-    else:
-        args.text = io.StringIO(args.text + "\n")
+#    if os.path.isfile(args.text):
+#        args.text = open(file=args.text, mode="rt", encoding="utf-8")
+#    else:
+#        args.text = io.StringIO(args.text + "\n")
 
     return args
 
@@ -221,25 +214,43 @@ def write_record(input_file, listing):
         sys.exit()
 
 
+def process_smiles(smiles):
+    """sequentially pass a SMILES string to reduction"""
+    only_single_bonds = saturator(smiles)
+    on_carbon = saturate_carbon(only_single_bonds)
+    on_nitrogen = saturate_nitrogen(on_carbon)
+    on_oxygen = saturate_oxygen(on_nitrogen)
+    on_phosphorus = saturate_phosphorus(on_oxygen)
+    on_sulfur = saturate_sulfur(on_phosphorus)
+    result = on_sulfur
+
+    print(f"{result}")
+
+
+def process_input_files(input_files):
+    """sequentially process input files with lists of SMILES strings"""
+    for file in input_files:
+        try:
+            with open (file, mode="r", encoding="utf-8") as source:
+                for line in source:
+                    smiles = str(line).strip()
+                    process_smiles(smiles)
+        except:
+            print(f"file {file} is not accessible")
+
+
 def main():
     """Join the functions."""
     args = get_args()
 
-    output = (
-        open(args.outfile, mode="wt", encoding="utf-8") if args.outfile else sys.stdout
-    )
-    for line in args.text:
-        raw_data = str(line).strip()
+    smiles_strings = [arg for arg in args.inputs if not os.path.isfile(arg)]
+    if smiles_strings:
+        for smiles in smiles_strings:
+            process_smiles(smiles)
 
-        only_single_bonds = saturate_bonds(raw_data)
-        on_carbon = saturate_carbon(only_single_bonds)
-        on_nitrogen = saturate_nitrogen(on_carbon)
-        on_oxygen = saturate_oxygen(on_nitrogen)
-        on_phosphorus = saturate_phosphorus(on_oxygen)
-        on_sulfur = saturate_sulfur(on_phosphorus)
-
-        result = on_sulfur
-        output.write(result + "\n")
+    input_files = [arg for arg in args.inputs if os.path.isfile(arg)]
+    if input_files:
+        process_input_files(input_files)
 
 
 if __name__ == "__main__":
