@@ -234,6 +234,18 @@ def process_smiles(smiles):
     print(f"{result}")
 
 
+def process_input_files(input_files):
+    """sequentially process input files with lists of SMILES strings"""
+    for file in input_files:
+        try:
+            with open (file, mode="r", encoding="utf-8") as source:
+                for line in source:
+                    smiles = str(line).strip()
+                    process_smiles(smiles)
+        except:
+            print(f"file {file} is not accessible")
+
+
 def main():
     """Join the functions."""
     args = get_args()
@@ -242,6 +254,10 @@ def main():
     if smiles_strings:
         for smiles in smiles_strings:
             process_smiles(smiles)
+
+    input_files = [arg for arg in args.inputs if os.path.isfile(arg)]
+    if input_files:
+        process_input_files(input_files)
 #    output = (
 #        open(args.outfile, mode="wt", encoding="utf-8") if args.outfile else sys.stdout
 #    )
