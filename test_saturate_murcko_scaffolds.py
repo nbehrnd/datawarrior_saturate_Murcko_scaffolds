@@ -52,7 +52,7 @@ exported by DataWarrior.[2]
 """
 
 import os
-# import subprocess as sub
+import subprocess as sub
 
 SCRIPT = "./saturate_murcko_scaffolds.py"
 
@@ -295,26 +295,27 @@ def test_preserve_assigned_charges():
 
 
 # --------------------------------------------------
-# def test_pass_input_file_to_cli():
-#     """saturate multiple SMILES from a file, report to the CLI"""
-#     molecules = ["c1ccncc1", "[O-]c1ccccc1", "c1c[Sn]cc1", "nCC[C@@H](C)O"]
-#
-#     with open(file="test.smi", mode="wt", encoding="utf-8") as newfile:
-#         for molecule in molecules:
-#             newfile.write(molecule + "\n")
-#
-#     command = str("python3 saturate_murcko_scaffolds.py test.smi")
-#     sub.call(command, shell=True)
-#     assert str(
-#         """
-# C1CCNCC1
-# [O-]C1CCCCC1
-# C1C[Sn]CC1
-# NCC[C@@H](C)O
-# """
-#     )
-#
-#    os.remove("test.smi")
+def test_pass_input_file_to_cli():
+    """saturate multiple SMILES from a file, report to the CLI"""
+    molecules = ["c1ccncc1", "[O-]c1ccccc1", "c1c[Sn]cc1", "nCC[C@@H](C)O"]
+
+    with open(file="checker.smi", mode="wt", encoding="utf-8") as newfile:
+        for molecule in molecules:
+            newfile.write(molecule + "\n")
+
+    command = str("python3 saturate_murcko_scaffolds.py checker.smi")
+    sub.call(command, shell=True)
+
+    assert str(
+        """
+C1CCNCC1
+[O-]C1CCCCC1
+C1C[Sn]CC1
+NCC[C@@H](C)O
+"""
+)
+
+    os.remove("checker.smi")
 
 
 # END
