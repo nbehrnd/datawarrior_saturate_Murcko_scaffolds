@@ -66,13 +66,6 @@ def get_args():
         nargs="+",
         help="provide one or multiple SMILES from the CLI, or an input text file listing SMILES")
 
-    parser.add_argument(
-        "-o",
-        "--outfile",
-        help="output file name, else results are reported back to the CLI",
-        metavar="",
-        default="",
-    )
 
     args = parser.parse_args()
 
@@ -258,11 +251,7 @@ def main():
     input_files = [arg for arg in args.inputs if os.path.isfile(arg)]
     if input_files:
         process_input_files(input_files)
-#    output = (
-#        open(args.outfile, mode="wt", encoding="utf-8") if args.outfile else sys.stdout
-#    )
-#    for line in args.text:
-#        raw_data = str(line).strip()
+
 
 if __name__ == "__main__":
     main()
