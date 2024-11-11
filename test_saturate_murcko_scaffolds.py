@@ -31,7 +31,7 @@ python -m pytest
 ```
 
 This approach was tested and run successfully in Linux Debian 13/trixie
-with Python 3.11.8, and Pytest 8.1.1 as fetched from PyPi.org.
+with Python 3.12.6, and Pytest 8.3.3 as fetched from PyPi.org.
 
 The SMILES used in the tests were checked with the visual output as .png
 provided by OpenBabel.[1]
@@ -54,17 +54,15 @@ exported by DataWarrior.[2]
 import os
 import subprocess as sub
 
-SCRIPT = "./saturate_murcko_scaffolds.py"
+SCRIPT = "saturate_murcko_scaffolds.py"
 
 
-# --------------------------------------------------
 def test_program_exists():
     """Check for the presence of saturate_murcko_scaffolds.py"""
 
     assert os.path.isfile(SCRIPT)
 
 
-# --------------------------------------------------
 def test_explicit_double_bonds():
     """Check the saturation of explicit double bonds, e.g. in
     esters, or non-aromatic dienes.
@@ -88,7 +86,7 @@ def test_explicit_double_bonds():
         print(smiles_in)
         assert smiles_out
 
-# --------------------------------------------------
+
 def test_explicit_triple_bonds():
     """Check the saturation of explicit triple bonds, e.g. in alkynes,
     nitriles, or isonitriles.
@@ -108,7 +106,6 @@ def test_explicit_triple_bonds():
         assert smiles_out
 
 
-# --------------------------------------------------
 def test_benzene_to_cyclohexane():
     """Check the complete saturation of benzene to cyclohexane"""
 
@@ -120,7 +117,6 @@ def test_benzene_to_cyclohexane():
         assert smiles_out
 
 
-# --------------------------------------------------
 def test_cyclopentadiene_to_cyclopentane():
     """Check the saturation of cyclohexadiene to cyclohexane"""
 
@@ -133,7 +129,6 @@ def test_cyclopentadiene_to_cyclopentane():
         assert smiles_out
 
 
-# --------------------------------------------------
 def test_pyrrole_to_pyrrolidine():
     """Check the saturation for a N-heterocycle"""
 
@@ -145,7 +140,6 @@ def test_pyrrole_to_pyrrolidine():
         assert smiles_out
 
 
-# --------------------------------------------------
 def test_furane_to_tetrahydrofurane():
     """Check the saturation for an O-heterocycle"""
 
@@ -157,7 +151,6 @@ def test_furane_to_tetrahydrofurane():
         assert smiles_out
 
 
-# --------------------------------------------------
 def test_phosporine_to_phosphinane():
     """Check the saturation for an P-heterocycle, 1/2"""
 
@@ -170,7 +163,6 @@ def test_phosporine_to_phosphinane():
         assert smiles_out
 
 
-# --------------------------------------------------
 def test_phosphole_to_phospholane():
     """Check the saturation for an P-heterocycle, 2/2."""
 
@@ -183,7 +175,6 @@ def test_phosphole_to_phospholane():
         assert smiles_out
 
 
-# --------------------------------------------------
 def test_thiophene_to_thiolene():
     """Check the saturation for a S-heterocycle"""
 
@@ -195,7 +186,6 @@ def test_thiophene_to_thiolene():
         assert smiles_out
 
 
-# --------------------------------------------------
 def test_stannole_to_stannolane():
     """Prevent the not sensible reduction of [sn] to [SN].
 
@@ -215,7 +205,6 @@ def test_stannole_to_stannolane():
         assert smiles_out
 
 
-# --------------------------------------------------
 def test_preserve_stereogenic_centers():
     """Do not remove, nor newly assign (R)/(S) indicators.
 
@@ -232,7 +221,6 @@ def test_preserve_stereogenic_centers():
         assert smiles_out
 
 
-# --------------------------------------------------
 def test_preserve_structure_concatenation():
     """Retain the concatenation by the period sign.
 
@@ -249,7 +237,6 @@ def test_preserve_structure_concatenation():
         assert smiles_out
 
 
-# --------------------------------------------------
 def test_preserve_assigned_charges():
     """Do not alter a charged assigned to an atom.
 
@@ -270,31 +257,6 @@ def test_preserve_assigned_charges():
         assert smiles_out
 
 
-# --------------------------------------------------
-# def test_pass_input_from_cli_to_file():
-#     """with pyridine, check the saturation from the CLI"""
-#
-#     command = str('python3 saturate_murcko_scaffolds.py "c1ccncc1" -o output.smi')
-#     sub.call(command, shell=True)
-#
-#     with open("output.smi", mode="r", encoding="utf-8") as source:
-#         output = source.read()
-#         assert str(output) == str("C1CCNCC1\n")
-#
-#     os.remove("output.smi")
-
-
-# --------------------------------------------------
-# def test_pass_input_from_cli_to_cli():
-#     """with pyridine, check the saturation from the CLI"""
-#
-#     command = str('python3 saturate_murcko_scaffolds.py "c1ccncc1"')
-#     sub.call(command, shell=True)
-#
-#     assert str("C1CCNCC1\n")
-
-
-# --------------------------------------------------
 def test_pass_input_file_to_cli():
     """saturate multiple SMILES from a file, report to the CLI"""
     molecules = ["c1ccncc1", "[O-]c1ccccc1", "c1c[Sn]cc1", "nCC[C@@H](C)O"]

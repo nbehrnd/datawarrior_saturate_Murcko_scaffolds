@@ -36,7 +36,7 @@ or zero pairs of square brackets (e.g., [Sn], [S@], [Fe3+]) are touched.
     http://www.openmolecules.org, https://github.com/thsa/datawarrior
 [3] https://en.wikipedia.org/wiki/Benomyl
 
-License: Norwid Behrnd, 2019--2023, GPLv3.
+License: Norwid Behrnd, 2019--2024, GPLv3.
 """
 import argparse
 import io
