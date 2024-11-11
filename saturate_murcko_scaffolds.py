@@ -4,7 +4,7 @@
 # name:   saturate_murcko_scaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   [2019-06-07 Fri]
-# edit:   <2023-05-23 Wed>
+# edit:   [2022-11-11 Mon]
 #
 """Read Smiles of Murcko scaffolds and return these as 'saturated'.
 
@@ -62,9 +62,9 @@ def get_args():
     )
 
     parser.add_argument(
-        "text",
-        type=str,
-        help="process a single SMILES from the CLI, or access an input file")
+        "inputs",
+        nargs="+",
+        help="provide one or multiple SMILES from the CLI, or an input text file listing SMILES")
 
     parser.add_argument(
         "-o",
@@ -76,10 +76,10 @@ def get_args():
 
     args = parser.parse_args()
 
-    if os.path.isfile(args.text):
-        args.text = open(file=args.text, mode="rt", encoding="utf-8")
-    else:
-        args.text = io.StringIO(args.text + "\n")
+#    if os.path.isfile(args.text):
+#        args.text = open(file=args.text, mode="rt", encoding="utf-8")
+#    else:
+#        args.text = io.StringIO(args.text + "\n")
 
     return args
 
@@ -225,22 +225,26 @@ def main():
     """Join the functions."""
     args = get_args()
 
-    output = (
-        open(args.outfile, mode="wt", encoding="utf-8") if args.outfile else sys.stdout
-    )
-    for line in args.text:
-        raw_data = str(line).strip()
+    smiles_strings = [arg for arg in args.inputs if not os.path.isfile(arg)]
+    if smiles_strings:
 
-        only_single_bonds = saturate_bonds(raw_data)
-        on_carbon = saturate_carbon(only_single_bonds)
-        on_nitrogen = saturate_nitrogen(on_carbon)
-        on_oxygen = saturate_oxygen(on_nitrogen)
-        on_phosphorus = saturate_phosphorus(on_oxygen)
-        on_sulfur = saturate_sulfur(on_phosphorus)
+#    output = (
+#        open(args.outfile, mode="wt", encoding="utf-8") if args.outfile else sys.stdout
+#    )
+#    for line in args.text:
+#        raw_data = str(line).strip()
+        for smiles in smiles_strings:
+            only_single_bonds = saturator(smiles)
+            on_carbon = saturate_carbon(only_single_bonds)
+            on_nitrogen = saturate_nitrogen(on_carbon)
+            on_oxygen = saturate_oxygen(on_nitrogen)
+            on_phosphorus = saturate_phosphorus(on_oxygen)
+            on_sulfur = saturate_sulfur(on_phosphorus)
 
-        result = on_sulfur
-        output.write(result + "\n")
-
+            result = on_sulfur
+#        result = raw_data
+#        output.write(result + "\n")
+            print(f"{result}")
 
 if __name__ == "__main__":
     main()

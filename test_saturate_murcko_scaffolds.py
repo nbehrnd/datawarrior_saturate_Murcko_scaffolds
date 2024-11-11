@@ -4,7 +4,7 @@
 # name:   test_saturate_murcko_scaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   [2021-02-04 Tue]
-# edit:   [2024-03-21 Thu]
+# edit:   [2024-11-11 Mon]
 #
 """tests for saturate_murcko_scaffolds.py
 
