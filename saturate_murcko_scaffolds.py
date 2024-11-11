@@ -4,7 +4,7 @@
 # name:   saturate_murcko_scaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   [2019-06-07 Fri]
-# edit:   [2022-11-11 Mon]
+# edit:   [2024-11-11 Mon]
 #
 """Read Smiles of Murcko scaffolds and return these as 'saturated'.
 
@@ -221,30 +221,32 @@ def write_record(input_file, listing):
         sys.exit()
 
 
+def process_smiles(smiles):
+    """sequentially pass a SMILES string to reduction"""
+    only_single_bonds = saturator(smiles)
+    on_carbon = saturate_carbon(only_single_bonds)
+    on_nitrogen = saturate_nitrogen(on_carbon)
+    on_oxygen = saturate_oxygen(on_nitrogen)
+    on_phosphorus = saturate_phosphorus(on_oxygen)
+    on_sulfur = saturate_sulfur(on_phosphorus)
+    result = on_sulfur
+
+    print(f"{result}")
+
+
 def main():
     """Join the functions."""
     args = get_args()
 
     smiles_strings = [arg for arg in args.inputs if not os.path.isfile(arg)]
     if smiles_strings:
-
+        for smiles in smiles_strings:
+            process_smiles(smiles)
 #    output = (
 #        open(args.outfile, mode="wt", encoding="utf-8") if args.outfile else sys.stdout
 #    )
 #    for line in args.text:
 #        raw_data = str(line).strip()
-        for smiles in smiles_strings:
-            only_single_bonds = saturator(smiles)
-            on_carbon = saturate_carbon(only_single_bonds)
-            on_nitrogen = saturate_nitrogen(on_carbon)
-            on_oxygen = saturate_oxygen(on_nitrogen)
-            on_phosphorus = saturate_phosphorus(on_oxygen)
-            on_sulfur = saturate_sulfur(on_phosphorus)
-
-            result = on_sulfur
-#        result = raw_data
-#        output.write(result + "\n")
-            print(f"{result}")
 
 if __name__ == "__main__":
     main()
