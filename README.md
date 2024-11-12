@@ -8,37 +8,72 @@ only single bonds». Note, DataWarrior equally offers the export of
 Bemis-Murcko skeleton, however this simplifies e.g. the scaffold about
 an imidazole into one of cyclopentane.
 
-<img src="./pattern.png" title="showcase" style="width:75.0%" />
+<img src="./pattern.png" title="showcase" id="showcase"
+style="width:75.0%" />
 
 # Typical use
 
-Running from the command line, the script processes one, or multiple
-SMILES strings listed in an input file (symbolized by `text` below) to
-report the processed SMILES strings back to the command line:
+The script processes one, or multiple SMILES strings provided in a
+pattern of
 
 ``` shell
-python saturate_murcko_scaffolds.py [-h] [-o] text
+python saturate_murcko_scaffolds.py [-h] inputs [inputs ...]
 ```
 
-Instead of an input file, individual SMILES strings equally may be
-processed; to prevent their misinterpretation by the shell, enclose them
-by either single, or double quotes. Either approach elected, the result
-may be redirected into a permanent record with a user defined file name
-(flag `--outfile`, or shorter `-o`). Only modules the standard library
-of Python 3 provides (e.g., version 3.11.2) are used.
+Running from the CLI, this translates for example to
+
+``` shell
+$ python3 saturate_murcko_scaffolds.py c1ccncc1 c1ccccc1
+C1CCNCC1
+C1CCCCC1
+```
+
+It equally is possible to provide the input as a list of SMILES in a
+text file. As an example run in Linux Debian 13:
+
+``` shell
+$ cat test.smi
+c1ccncc1
+c1ccccc1
+$ python3 saturate_murcko_scaffolds.py test.smi
+C1CCNCC1
+C1CCCCC1
+```
+
+In a mixed input queue, SMILES strings provided via the CLI are
+processed prior to SMILES provided via one, or multiple input file(s).
+If wanted, the output to the CLI can be redirected to (piped into) the
+input of the next command-line utility, or appended to an already
+existing permanent record, for instance
+
+``` shell
+$ python3 saturate_murcko_scaffolds.py test.smi > output.smi
+$ cat output.smi 
+C1CCNCC1
+C1CCCCC1
+```
+
+The script requires only functionality provided by the standard library
+of Python 3. Backed by tests with `pytest` and multiple runner instances
+GitHub provides, the recommended usage picks any combination of
+(ubuntu-20.04, ubuntu-22.04, ubuntu-24.04, windows-2019, windows-2022,
+macos-14) as hosting operating system on one hand, and either
+Python 3.10, or Python 3.12 as Python interpreter on the other.
+Anecdotally, the script was observed to equally work in ubuntu 18.04 and
+Python 3.6.9, too.
 
 # Example
 
 For a collection of organic materials, the Bemis-Murcko scaffolds were
 extracted with DataWarrior (then release 5.0.0 for Linux, January 2019)
-as listing `test_input.smi` including higher bond orders (see folder
-`test_data`). The effect of the «artificial saturation» is easy to
-recognize while comparing the scaffold lists
-(fig. <span class="spurious-link" target="file_diff">*file_diff*</span>)
-in a difference view of the two `.smi` files.
+as listing `input.smi` including higher bond orders (see folder `demo`)
+with a redirect of the output into file `input_sat.smi`. The effect of
+the «artificial saturation» is easy to recognize while comparing the
+scaffold lists (fig. <span class="spurious-link"
+target="file_diff">*file_diff*</span>) in a difference view.
 
-<figure width="75%">
-<img src="./diffview.png" title="file_diff" />
+<figure id="file_diff" width="75%">
+<img src="./diffview.png" />
 <figcaption>Difference view of the SMILES strings of a Murcko scaffold
 <em>prior</em> (left hand column) and <em>after</em> an «artificial
 saturation» (right hand column). The processing affects explicit bond
@@ -52,8 +87,8 @@ slashes in lines #18 and #19). Descriptors of stereogenic centers
 copied verbatim.</figcaption>
 </figure>
 
-The work can be illustrated by OpenBabel[^3] with instructions to the
-command line in the pattern of
+OpenBabel[^3] is used to illustrate the work of the script. The
+instructions to the CLI follow the pattern of
 
 ``` shell
 obabel -ismi test_input.smi -O test_input_color.svg -xc10 -xr12 -xl --addinindex
@@ -66,7 +101,8 @@ obabel -ismi test_input_sat.smi -O test_input_sat_color.png -xc10 -xr12 -xl --ad
 ```
 
 to generate a bitmap `.png` with structure formulae depicted in a grid
-of 10 columns by 12 rows.
+of 10 columns by 12 rows. Script `series.py` automates the generation of
+the illustrations about both structure data sets.
 
 It is remarkable how well OpenBabel's displays the molecular structures
 with advanced motifs. In addition to those shown in the first
@@ -116,7 +152,7 @@ is resolved as `C1CC(O)CCC1O.C1CC(CCC1O)O`.
 
 # License
 
-Norwid Behrnd, 2019–23, GPLv3.
+Norwid Behrnd, 2019–24, GPLv3.
 
 # Footnotes
 
@@ -124,17 +160,16 @@ Norwid Behrnd, 2019–23, GPLv3.
     Molecular Frameworks. *J. Med. Chem.* **1996**, *39*, 2887–2893
     (<https://doi.org/10.1021/jm9602928>).
 
-[^2]: Sander, T.; Freyss, J.; Von Korff, M.; Rufener, 1. DataWarrior:
-    An Open-Source Program For Chemistry Aware Data
-    Visualization And Analysis. *J. Chem. Inf. Model.* **2015**, *55*,
-    460–473 (<https://doi.org/10.1021/ci500588j>). The program, (c)
-    2002–2023 by Idorsia Pharmaceuticals Ltd., is freely available under
+[^2]: Sander, T.; Freyss, J.; Von Korff, M.; Rufener, C. DataWarrior: An
+    Open-Source Program For Chemistry Aware Data Visualization And
+    Analysis. *J. Chem. Inf. Model.* **2015**, *55*, 460–473
+    (<https://doi.org/10.1021/ci500588j>). The program, (c) 2002–2024 by
+    Idorsia Pharmaceuticals Ltd., is freely available under
     <http://www.openmolecules.org>. For the source code (GPLv3), see
     <https://github.com/thsa/datawarrior>.
 
-[^3]: [www.openbabel.org](http://www.openbabel.org) For the most recent
-    documentation, see
-    <https://open-babel.readthedocs.io/en/latest/ReleaseNotes/ob310.html>
+[^3]: <https://github.com/openbabel/openbabel> For the most recent
+    documentation, see <https://open-babel.readthedocs.io/en/latest/>
 
 [^4]: <https://www.simolecule.com/cdkdepict/depict.html> For the
     mentioned annotation of CIP labels, change `No Annotation` (second
