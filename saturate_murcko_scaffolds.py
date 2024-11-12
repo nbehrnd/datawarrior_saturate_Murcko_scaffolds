@@ -66,13 +66,7 @@ def get_args():
         nargs="+",
         help="provide one or multiple SMILES from the CLI, or an input text file listing SMILES")
 
-
     args = parser.parse_args()
-
-#    if os.path.isfile(args.text):
-#        args.text = open(file=args.text, mode="rt", encoding="utf-8")
-#    else:
-#        args.text = io.StringIO(args.text + "\n")
 
     return args
 
