@@ -80,7 +80,7 @@ def test_explicit_double_bonds():
     probe_smiles = [
         (r"CCC/C=C/C", "CCCCCC"),
         (r"CCC/C=C\C", "CCCCCC"),
-        (r"O=C1NC=CC=C1", "OC1NCCCC1")
+        (r"O=C1NC=CC=C1", "OC1NCCCC1"),
     ]
     for smiles_in, smiles_out in probe_smiles:
         print(smiles_in)
@@ -99,7 +99,7 @@ def test_explicit_triple_bonds():
         (r"CCCCC#C", "CCCCCC"),
         (r"CCCC#CC", "CCCCCC"),
         (r"N#Cc1ccccc1", "NCC1CCCCC1"),
-        (r"CC(C)(C)N#C", "CC(C)(C)NC")
+        (r"CC(C)(C)N#C", "CC(C)(C)NC"),
     ]
     for smiles_in, smiles_out in probe_smiles:
         print(smiles_in)
@@ -120,10 +120,7 @@ def test_benzene_to_cyclohexane():
 def test_cyclopentadiene_to_cyclopentane():
     """Check the saturation of cyclohexadiene to cyclohexane"""
 
-    probe_smiles = [
-        (r"C1=CC=CC1", "C1CCCC1"),
-        (r"c1cCcc1", "C1CCCC1")
-    ]
+    probe_smiles = [(r"C1=CC=CC1", "C1CCCC1"), (r"c1cCcc1", "C1CCCC1")]
     for smiles_in, smiles_out in probe_smiles:
         print(smiles_in)
         assert smiles_out
@@ -132,9 +129,7 @@ def test_cyclopentadiene_to_cyclopentane():
 def test_pyrrole_to_pyrrolidine():
     """Check the saturation for a N-heterocycle"""
 
-    probe_smiles = [
-        (r"1c[nH]cc1", "C1C[NH]CC1")
-    ]
+    probe_smiles = [(r"1c[nH]cc1", "C1C[NH]CC1")]
     for smiles_in, smiles_out in probe_smiles:
         print(smiles_in)
         assert smiles_out
@@ -143,9 +138,7 @@ def test_pyrrole_to_pyrrolidine():
 def test_furane_to_tetrahydrofurane():
     """Check the saturation for an O-heterocycle"""
 
-    probe_smiles = [
-        (r"c1cocc1", "C1COCC1")
-    ]
+    probe_smiles = [(r"c1cocc1", "C1COCC1")]
     for smiles_in, smiles_out in probe_smiles:
         print(smiles_in)
         assert smiles_out
@@ -154,10 +147,7 @@ def test_furane_to_tetrahydrofurane():
 def test_phosporine_to_phosphinane():
     """Check the saturation for an P-heterocycle, 1/2"""
 
-    probe_smiles = [
-        (r"C1=CC=PC=C1", "C1CCPCC1"),
-        (r"c1cpccc1", "C1CPCCC1")
-    ]
+    probe_smiles = [(r"C1=CC=PC=C1", "C1CCPCC1"), (r"c1cpccc1", "C1CPCCC1")]
     for smiles_in, smiles_out in probe_smiles:
         print(smiles_in)
         assert smiles_out
@@ -166,10 +156,7 @@ def test_phosporine_to_phosphinane():
 def test_phosphole_to_phospholane():
     """Check the saturation for an P-heterocycle, 2/2."""
 
-    probe_smiles = [
-        (r"P1C=CC=C1", "P1CCCC1"),
-        (r"c1ccc[pH]1", "C1CCC[PH]1")
-    ]
+    probe_smiles = [(r"P1C=CC=C1", "P1CCCC1"), (r"c1ccc[pH]1", "C1CCC[PH]1")]
     for smiles_in, smiles_out in probe_smiles:
         print(smiles_in)
         assert smiles_out
@@ -178,9 +165,7 @@ def test_phosphole_to_phospholane():
 def test_thiophene_to_thiolene():
     """Check the saturation for a S-heterocycle"""
 
-    probe_smiles = [
-        (r"c1cscc1", "C1CSCC1")
-    ]
+    probe_smiles = [(r"c1cscc1", "C1CSCC1")]
     for smiles_in, smiles_out in probe_smiles:
         print(smiles_in)
         assert smiles_out
@@ -198,7 +183,7 @@ def test_stannole_to_stannolane():
     probe_smiles = [
         (r"c1c[Sn]cc1", "C1C[Sn]CC1"),
         (r"c1[sn]ccc1", "C1[Sn]CCC1"),
-        (r"C1=CC=C[Sn]1", "C1CCC[Sn]1")
+        (r"C1=CC=C[Sn]1", "C1CCC[Sn]1"),
     ]
     for smiles_in, smiles_out in probe_smiles:
         print(smiles_in)
@@ -214,7 +199,7 @@ def test_preserve_stereogenic_centers():
     probe_smiles = [
         (r"CCC(C)=O", "CCC(C)O"),
         (r"nCC[C@@H](C)O", "NCC[C@@H](C)O"),
-        (r"CC[C@H](C)O", "CC[C@H](C)O")
+        (r"CC[C@H](C)O", "CC[C@H](C)O"),
     ]
     for smiles_in, smiles_out in probe_smiles:
         print(smiles_in)
@@ -229,9 +214,7 @@ def test_preserve_structure_concatenation():
     of e.g., SMILES about co-crystals, solvates, etc.  The entry of
     the test indeed is about 1,4-benzoquinone and hydroquinone."""
 
-    probe_smiles = [
-        (r"C1=CC(=O)C=CC1=O.c1cc(ccc1O)O", "C1CC(O)CCC1O.C1CC(CCC1O)O")
-    ]
+    probe_smiles = [(r"C1=CC(=O)C=CC1=O.c1cc(ccc1O)O", "C1CC(O)CCC1O.C1CC(CCC1O)O")]
     for smiles_in, smiles_out in probe_smiles:
         print(smiles_in)
         assert smiles_out
@@ -250,7 +233,7 @@ def test_preserve_assigned_charges():
 
     probe_smiles = [
         (r"[O-]c1ccccc1", "[O-]C1CCCCC1"),
-        (r"C[N+](c1ccccc1)(C)C", "C[N+](C1CCCCC1)(C)C")
+        (r"C[N+](c1ccccc1)(C)C", "C[N+](C1CCCCC1)(C)C"),
     ]
     for smiles_in, smiles_out in probe_smiles:
         print(smiles_in)
@@ -275,7 +258,7 @@ C1CCNCC1
 C1C[Sn]CC1
 NCC[C@@H](C)O
 """
-)
+    )
 
     os.remove("checker.smi")
 

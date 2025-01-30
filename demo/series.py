@@ -59,11 +59,10 @@ register = [
     "obabel -ismi input_sat.smi -O input_color_sat.svg -xc10 -xr12 -xl --addinindex",
     "obabel -ismi input.smi -O input_bw.svg -xc10 -xr12 -xl --addinindex -xu",
     "obabel -ismi input_sat.smi -O input_bw_sat.svg -xc10 -xr12 -xl --addinindex -xu",
-
     "obabel -ismi input.smi -O input_color.png -xc10 -xr12 -xl --addinindex -xp 3000",
     "obabel -ismi input_sat.smi -O input_color_sat.png -xc10 -xr12 -xl --addinindex -xp 3000",
     "obabel -ismi input.smi -O input_bw.png -xc10 -xr12 -xl --addinindex -xp 3000 -xu",
-    "obabel -ismi input_sat.smi -O input_bw_sat.png -xc10 -xr12 -xl --addinindex -xp 3000 -xu"
+    "obabel -ismi input_sat.smi -O input_bw_sat.png -xc10 -xr12 -xl --addinindex -xp 3000 -xu",
 ]
 
 for entry in register:
