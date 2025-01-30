@@ -4,7 +4,7 @@
 # name:   saturate_murcko_scaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   [2019-06-07 Fri]
-# edit:   [2024-11-11 Mon]
+# edit:   [2025-01-30 Thu]
 #
 """Read Smiles of Murcko scaffolds and return these as 'saturated'.
 

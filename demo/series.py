@@ -3,8 +3,8 @@
 # name:    series.py
 # author:  nbehrnd@yahoo.com
 # license: MIT, 2020
-# date:    2020-04-26 (YYYY-MM-DD)
-# edit:    [2024-03-21 Thu]
+# date:    [2020-04-26 Sun]
+# edit:    [2025-01-30 Thu]
 #
 """
 Python script generating the test series' visualizations.
