@@ -4,7 +4,7 @@
 # name:   saturate_murcko_scaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   [2019-06-07 Fri]
-# edit:   [2024-11-11 Mon]
+# edit:   [2025-01-30 Thu]
 #
 """Read Smiles of Murcko scaffolds and return these as 'saturated'.
 
@@ -64,7 +64,8 @@ def get_args():
     parser.add_argument(
         "inputs",
         nargs="+",
-        help="provide one or multiple SMILES from the CLI, or an input text file listing SMILES")
+        help="provide one or multiple SMILES from the CLI, or an input text file listing SMILES",
+    )
 
     args = parser.parse_args()
 
@@ -225,7 +226,7 @@ def process_input_files(input_files):
     """sequentially process input files with lists of SMILES strings"""
     for file in input_files:
         try:
-            with open (file, mode="r", encoding="utf-8") as source:
+            with open(file, mode="r", encoding="utf-8") as source:
                 for line in source:
                     smiles = str(line).strip()
                     process_smiles(smiles)

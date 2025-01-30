@@ -3,8 +3,8 @@
 # name:    series.py
 # author:  nbehrnd@yahoo.com
 # license: MIT, 2020
-# date:    2020-04-26 (YYYY-MM-DD)
-# edit:    [2024-03-21 Thu]
+# date:    [2020-04-26 Sun]
+# edit:    [2025-01-30 Thu]
 #
 """
 Python script generating the test series' visualizations.
@@ -59,11 +59,10 @@ register = [
     "obabel -ismi input_sat.smi -O input_color_sat.svg -xc10 -xr12 -xl --addinindex",
     "obabel -ismi input.smi -O input_bw.svg -xc10 -xr12 -xl --addinindex -xu",
     "obabel -ismi input_sat.smi -O input_bw_sat.svg -xc10 -xr12 -xl --addinindex -xu",
-
     "obabel -ismi input.smi -O input_color.png -xc10 -xr12 -xl --addinindex -xp 3000",
     "obabel -ismi input_sat.smi -O input_color_sat.png -xc10 -xr12 -xl --addinindex -xp 3000",
     "obabel -ismi input.smi -O input_bw.png -xc10 -xr12 -xl --addinindex -xp 3000 -xu",
-    "obabel -ismi input_sat.smi -O input_bw_sat.png -xc10 -xr12 -xl --addinindex -xp 3000 -xu"
+    "obabel -ismi input_sat.smi -O input_bw_sat.png -xc10 -xr12 -xl --addinindex -xp 3000 -xu",
 ]
 
 for entry in register:
