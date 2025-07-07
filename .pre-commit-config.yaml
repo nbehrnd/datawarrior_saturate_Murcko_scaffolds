@@ -1,4 +1,4 @@
-# date: [2025-01-30 Thu]
+# date: [2025-07-07 Mon]
 #
 # In contrast to the checks by code reformatter Black, the setup of this
 # git-precommit hook does not prevent a Python script to enter the commit
@@ -27,6 +27,9 @@ repos:
       - id: flake8
         name: "flake8 (advisory only, it does not block a commit)"
         args:
+          - --exclude=.*/site-packages/.*
+          - --filename=.*\.py
+          - --max-line-length=90
           - --show-source
           - --statistics
           - --count
