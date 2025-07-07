@@ -3,12 +3,13 @@ name: CI_pytest_datawarrior_saturate_murcko_scaffolds
 # name    : pytest.yml
 # purpose : regularly run pytest on the saturator script
 # date    : [2024-03-21 Thu]
-# edit    : [2024-11-11 Mon]
+# edit    : [2025-07-07 Mon]
 
 on:
   push:
     branches:
       - main             # updates to enter the principal branch "main"
+      - dev
   pull_request:
     branches:
       - main             # PRs to enter the principal branch "main"
@@ -20,11 +21,11 @@ jobs:
   test:
     strategy:
       matrix:
-        # for a factorial test, an explicit selection of GitHUb runner images
+        # for a factorial test, an explicit selection of GitHub runner images
         # https://github.com/actions/runner-images?tab=readme-ov-file#available-images
-        # state of commit 23478d3 as visited on 2024-11-11 Mon
-        os: [ubuntu-20.04, ubuntu-22.04, ubuntu-24.04, windows-2019, windows-2022, macos-14]
-        python-version: ["3.10", "3.12"]
+        # state of commit 4bd4d1b as visited on 2025-07-07 Mon
+        os: [ubuntu-22.04, ubuntu-24.04, windows-latest, windows-2022, macos-14]
+        python-version: ["3.10", "3.13"]
     runs-on: ${{ matrix.os }}
 
     timeout-minutes: 3  # Timeout for each job individually
@@ -43,5 +44,4 @@ jobs:
 
       - name: Run the check with pytest
         run: python -m pytest
-
 

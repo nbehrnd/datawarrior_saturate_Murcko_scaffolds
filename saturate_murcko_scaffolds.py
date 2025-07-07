@@ -4,7 +4,7 @@
 # name:   saturate_murcko_scaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   [2019-06-07 Fri]
-# edit:   [2025-01-30 Thu]
+# edit:   [2025-07-07 Mon]
 #
 """Read Smiles of Murcko scaffolds and return these as 'saturated'.
 
@@ -39,7 +39,6 @@ or zero pairs of square brackets (e.g., [Sn], [S@], [Fe3+]) are touched.
 License: Norwid Behrnd, 2019--2024, GPLv3.
 """
 import argparse
-import io
 import os
 import re
 import sys
@@ -64,7 +63,7 @@ def get_args():
     parser.add_argument(
         "inputs",
         nargs="+",
-        help="provide one or multiple SMILES from the CLI, or an input text file listing SMILES",
+        help="one or multiple SMILES from the CLI, or list of an input text file",
     )
 
     args = parser.parse_args()
@@ -230,7 +229,7 @@ def process_input_files(input_files):
                 for line in source:
                     smiles = str(line).strip()
                     process_smiles(smiles)
-        except:
+        except OSError:
             print(f"file {file} is not accessible")
 
 
