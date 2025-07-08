@@ -36,7 +36,7 @@ or zero pairs of square brackets (e.g., [Sn], [S@], [Fe3+]) are touched.
     http://www.openmolecules.org, https://github.com/thsa/datawarrior
 [3] https://en.wikipedia.org/wiki/Benomyl
 
-License: Norwid Behrnd, 2019--2024, GPLv3.
+License: Norwid Behrnd, 2019--2025, GPLv3.
 """
 import argparse
 import os
@@ -69,28 +69,6 @@ def get_args():
     args = parser.parse_args()
 
     return args
-
-
-def saturator(raw_smiles):
-    """Return a SMILES string about a saturated compound.
-
-    Use this function only on (parts of) a SMILES string which does not
-    contain square brackets to prevent confusion like [sn] and [Sn] vs [SN]."""
-    characters_to_remove = ["=", "#", "/", "\\"]
-    characters_to_captitalize = ["c", "n", "o", "p", "s"]
-    retain = []
-    saturated_smiles = ""
-
-    for char in raw_smiles:
-        if char in characters_to_remove:
-            pass
-        elif char in characters_to_captitalize:
-            retain.append(char.upper())
-        else:
-            retain.append(char)
-    saturated_smiles = "".join(retain)
-
-    return saturated_smiles
 
 
 def saturate_bonds(input_smiles):
@@ -210,7 +188,7 @@ def write_record(input_file, listing):
 
 def process_smiles(smiles):
     """sequentially pass a SMILES string to reduction"""
-    only_single_bonds = saturator(smiles)
+    only_single_bonds = saturate_bonds(smiles)
     on_carbon = saturate_carbon(only_single_bonds)
     on_nitrogen = saturate_nitrogen(on_carbon)
     on_oxygen = saturate_oxygen(on_nitrogen)
