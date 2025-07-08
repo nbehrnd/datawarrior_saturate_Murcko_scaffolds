@@ -4,29 +4,22 @@
 # name:   test_saturate_murcko_scaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   [2021-02-04 Tue]
-# edit:   [2025-01-30 Thu]
+# edit:   [2025-07-08 Tue]
 #
 """tests for saturate_murcko_scaffolds.py
 
-This script tests results by script `saturate_murcko_scaffolds.py`.
-The scope of the tests implemented could be incomplete.
+This script checks results by script `saturate_murcko_scaffolds.py` with
+pytest.  The coverage is incomplete, already because checks currently don't
+import individual functions, i.e. only black box-tests are run.
 
-To trigger the tests,
+Test setup, for instance in Linux Debian 13/trixie:
 
-- clone the project into a local folder
-- create a virtual environment
-- activate the virtual environment
-- run the tests from the top level of the cloned project
-
-In an instance of Linux Debian, this would require the sequence of
-the following commands:
-
-```shell
+```bash
 git clone https://github.com/nbehrnd/datawarrior_saturate_Murcko_scaffolds.git
 cd ./datawarrior_saturate_Murcko_scaffolds
 python -m venv sup
 source ./sup/bin/activate
-pip install pytest
+pip install -r requirements-dev.txt
 python -m pytest
 ```
 
@@ -54,28 +47,26 @@ exported by DataWarrior.[2]
 import os
 import subprocess as sub
 
+# import pytest
+
 SCRIPT = "saturate_murcko_scaffolds.py"
 
 
 def test_program_exists():
-    """Check for the presence of saturate_murcko_scaffolds.py"""
+    """Check for the presence of saturate_murcko_scaffolds.py."""
 
     assert os.path.isfile(SCRIPT)
 
 
 def test_explicit_double_bonds():
-    """Check the saturation of explicit double bonds, e.g. in
-    esters, or non-aromatic dienes.
+    """Check the saturation of explicit double bonds.
 
     Submitted are three tests: (E)-hexene, (Z)-hexene both to yield
     hexane (two entries); and 2-pyridone to yield 2-piperidinol.
 
-    The explicit indication of (E)/(Z)-isomerism of the double bonds
-    with forward and backward slash may yield a deprecation warning
-    issued by Python; so far, without effect to this test's results.
-
-    Since SMILES strings may contain forward and backward slashes, it
-    is safer to submit them as r-strings."""
+    For a safe transmission of (E)/(Z)-isomerism on double bonds
+    with forward and backward slashes, the SMILES are submitted as
+    r-strings."""
 
     probe_smiles = [
         (r"CCC/C=C/C", "CCCCCC"),
@@ -83,13 +74,14 @@ def test_explicit_double_bonds():
         (r"O=C1NC=CC=C1", "OC1NCCCC1"),
     ]
     for smiles_in, smiles_out in probe_smiles:
-        print(smiles_in)
-        assert smiles_out
+        result = sub.run(["python", SCRIPT, smiles_in], capture_output=True, text=True)
+        output = result.stdout.strip()
+
+        assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
 def test_explicit_triple_bonds():
-    """Check the saturation of explicit triple bonds, e.g. in alkynes,
-    nitriles, or isonitriles.
+    """Check the saturation of explicit triple bonds.
 
     Submitted are four tests: 1-hexine, 2-hexine both to yield hexane
     (two entries), benzonitrile to cyclohexylmethylamine, and
@@ -102,55 +94,67 @@ def test_explicit_triple_bonds():
         (r"CC(C)(C)N#C", "CC(C)(C)NC"),
     ]
     for smiles_in, smiles_out in probe_smiles:
-        print(smiles_in)
-        assert smiles_out
+        result = sub.run(["python", SCRIPT, smiles_in], capture_output=True, text=True)
+        output = result.stdout.strip()
+
+        assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
-def test_benzene_to_cyclohexane():
-    """Check the complete saturation of benzene to cyclohexane"""
+def test_toluene_to_methylcyclohexane():
+    """Check the saturation of toluene to methylcyclohexane."""
 
     probe_smiles = [
-        (r"Cc1ccccc1", "C1CCCCC1"),
+        (r"Cc1ccccc1", "CC1CCCCC1"),
     ]
     for smiles_in, smiles_out in probe_smiles:
-        print(smiles_in)
-        assert smiles_out
+        result = sub.run(["python", SCRIPT, smiles_in], capture_output=True, text=True)
+        output = result.stdout.strip()
+
+        assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
 def test_cyclopentadiene_to_cyclopentane():
-    """Check the saturation of cyclohexadiene to cyclohexane"""
+    """Check the saturation of cyclohexadiene to cyclohexane."""
 
     probe_smiles = [(r"C1=CC=CC1", "C1CCCC1"), (r"c1cCcc1", "C1CCCC1")]
     for smiles_in, smiles_out in probe_smiles:
-        print(smiles_in)
-        assert smiles_out
+        result = sub.run(["python", SCRIPT, smiles_in], capture_output=True, text=True)
+        output = result.stdout.strip()
+
+        assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
 def test_pyrrole_to_pyrrolidine():
-    """Check the saturation for a N-heterocycle"""
+    """Check the saturation of a N-heterocycle."""
 
-    probe_smiles = [(r"1c[nH]cc1", "C1C[NH]CC1")]
+    probe_smiles = [(r"c1c[nH]cc1", "C1C[NH]CC1")]
     for smiles_in, smiles_out in probe_smiles:
-        print(smiles_in)
-        assert smiles_out
+        result = sub.run(["python", SCRIPT, smiles_in], capture_output=True, text=True)
+        output = result.stdout.strip()
+
+        assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
 def test_furane_to_tetrahydrofurane():
-    """Check the saturation for an O-heterocycle"""
+    """Check the saturation of a O-heterocycle."""
 
     probe_smiles = [(r"c1cocc1", "C1COCC1")]
     for smiles_in, smiles_out in probe_smiles:
-        print(smiles_in)
-        assert smiles_out
+        result = sub.run(["python", SCRIPT, smiles_in], capture_output=True, text=True)
+        output = result.stdout.strip()
+
+        assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
 def test_phosporine_to_phosphinane():
-    """Check the saturation for an P-heterocycle, 1/2"""
+    """Check the saturation for an P-heterocycle, 1/2."""
 
     probe_smiles = [(r"C1=CC=PC=C1", "C1CCPCC1"), (r"c1cpccc1", "C1CPCCC1")]
     for smiles_in, smiles_out in probe_smiles:
-        print(smiles_in)
-        assert smiles_out
+        result = sub.run(["python", SCRIPT, smiles_in], capture_output=True, text=True)
+        output = result.stdout.strip()
+
+        assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
 def test_phosphole_to_phospholane():
@@ -158,17 +162,21 @@ def test_phosphole_to_phospholane():
 
     probe_smiles = [(r"P1C=CC=C1", "P1CCCC1"), (r"c1ccc[pH]1", "C1CCC[PH]1")]
     for smiles_in, smiles_out in probe_smiles:
-        print(smiles_in)
-        assert smiles_out
+        result = sub.run(["python", SCRIPT, smiles_in], capture_output=True, text=True)
+        output = result.stdout.strip()
+
+        assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
 def test_thiophene_to_thiolene():
-    """Check the saturation for a S-heterocycle"""
+    """Check the saturation for a S-heterocycle."""
 
     probe_smiles = [(r"c1cscc1", "C1CSCC1")]
     for smiles_in, smiles_out in probe_smiles:
-        print(smiles_in)
-        assert smiles_out
+        result = sub.run(["python", SCRIPT, smiles_in], capture_output=True, text=True)
+        output = result.stdout.strip()
+
+        assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
 def test_stannole_to_stannolane():
@@ -186,8 +194,10 @@ def test_stannole_to_stannolane():
         (r"C1=CC=C[Sn]1", "C1CCC[Sn]1"),
     ]
     for smiles_in, smiles_out in probe_smiles:
-        print(smiles_in)
-        assert smiles_out
+        result = sub.run(["python", SCRIPT, smiles_in], capture_output=True, text=True)
+        output = result.stdout.strip()
+
+        assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
 def test_preserve_stereogenic_centers():
@@ -202,8 +212,10 @@ def test_preserve_stereogenic_centers():
         (r"CC[C@H](C)O", "CC[C@H](C)O"),
     ]
     for smiles_in, smiles_out in probe_smiles:
-        print(smiles_in)
-        assert smiles_out
+        result = sub.run(["python", SCRIPT, smiles_in], capture_output=True, text=True)
+        output = result.stdout.strip()
+
+        assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
 def test_preserve_structure_concatenation():
@@ -216,8 +228,10 @@ def test_preserve_structure_concatenation():
 
     probe_smiles = [(r"C1=CC(=O)C=CC1=O.c1cc(ccc1O)O", "C1CC(O)CCC1O.C1CC(CCC1O)O")]
     for smiles_in, smiles_out in probe_smiles:
-        print(smiles_in)
-        assert smiles_out
+        result = sub.run(["python", SCRIPT, smiles_in], capture_output=True, text=True)
+        output = result.stdout.strip()
+
+        assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
 def test_preserve_assigned_charges():
@@ -236,8 +250,10 @@ def test_preserve_assigned_charges():
         (r"C[N+](c1ccccc1)(C)C", "C[N+](C1CCCCC1)(C)C"),
     ]
     for smiles_in, smiles_out in probe_smiles:
-        print(smiles_in)
-        assert smiles_out
+        result = sub.run(["python", SCRIPT, smiles_in], capture_output=True, text=True)
+        output = result.stdout.strip()
+
+        assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
 def test_pass_input_file_to_cli():
@@ -248,17 +264,18 @@ def test_pass_input_file_to_cli():
         for molecule in molecules:
             newfile.write(molecule + "\n")
 
-    command = str("python3 saturate_murcko_scaffolds.py checker.smi")
-    sub.call(command, shell=True)
+    command = ["python3", "saturate_murcko_scaffolds.py", "checker.smi"]
+    result = sub.run(command, capture_output=True, text=True)
+    output = result.stdout.strip()
 
-    assert str(
-        """
+    expected_output = """
 C1CCNCC1
 [O-]C1CCCCC1
 C1C[Sn]CC1
 NCC[C@@H](C)O
-"""
-    )
+""".strip()
+
+    assert output == expected_output, f"Expected {expected_output}, but got {output}"
 
     os.remove("checker.smi")
 
