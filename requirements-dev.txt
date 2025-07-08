@@ -7,10 +7,12 @@
 pre-commit
 black
 flake8
+pytest
 
 # After completing the setup of your virtual environment, the command
 #
 #    pre-commit install
 #
-# updates your local `.git/hooks folder`.  You equally can launch the
-# checks without a commit by `git-precommit run --all-files`.
+# updates your local `.git/hooks folder`.  Checks by the pre-commit
+# hook then can be launched by `git-precommit run --all-files`, or
+# by `git-precommit run --file example.py` (to probe only `example.py`).
