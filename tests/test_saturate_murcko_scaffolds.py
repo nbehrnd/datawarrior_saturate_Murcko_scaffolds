@@ -4,7 +4,7 @@
 # name:   test_saturate_murcko_scaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   [2021-02-04 Tue]
-# edit:   [2025-07-08 Tue]
+# edit:   [2025-07-16 Wed]
 #
 """tests for saturate_murcko_scaffolds.py
 
@@ -49,7 +49,7 @@ import subprocess as sub
 
 # import pytest
 
-SCRIPT = "saturate_murcko_scaffolds.py"
+SCRIPT = "src/saturate_murcko_scaffolds/saturate_murcko_scaffolds.py"
 
 
 def test_program_exists():
@@ -264,7 +264,7 @@ def test_pass_input_file_to_cli():
         for molecule in molecules:
             newfile.write(molecule + "\n")
 
-    command = ["python3", "saturate_murcko_scaffolds.py", "checker.smi"]
+    command = ["python3", SCRIPT, "checker.smi"]
     result = sub.run(command, capture_output=True, text=True)
     output = result.stdout.strip()
 
