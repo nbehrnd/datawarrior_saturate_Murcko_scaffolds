@@ -4,7 +4,7 @@
 # name:   saturate_murcko_scaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   [2019-06-07 Fri]
-# edit:   [2025-07-07 Mon]
+# edit:   [2025-07-17 Thu]
 #
 """Read Smiles of Murcko scaffolds and return these as 'saturated'.
 
@@ -196,7 +196,7 @@ def process_smiles(smiles):
     on_sulfur = saturate_sulfur(on_phosphorus)
     result = on_sulfur
 
-    print(f"{result}")
+    return result
 
 
 def process_input_files(input_files):
@@ -206,7 +206,7 @@ def process_input_files(input_files):
             with open(file, mode="r", encoding="utf-8") as source:
                 for line in source:
                     smiles = str(line).strip()
-                    process_smiles(smiles)
+                    print(process_smiles(smiles))
         except OSError:
             print(f"file {file} is not accessible")
 
@@ -218,7 +218,7 @@ def main():
     smiles_strings = [arg for arg in args.inputs if not os.path.isfile(arg)]
     if smiles_strings:
         for smiles in smiles_strings:
-            process_smiles(smiles)
+            print(process_smiles(smiles))
 
     input_files = [arg for arg in args.inputs if os.path.isfile(arg)]
     if input_files:
