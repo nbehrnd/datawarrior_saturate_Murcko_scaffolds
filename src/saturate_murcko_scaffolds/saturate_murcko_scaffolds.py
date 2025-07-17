@@ -41,7 +41,8 @@ License: Norwid Behrnd, 2019--2025, GPLv3.
 import argparse
 import os
 import re
-import sys
+
+# import sys
 
 
 def get_args():
@@ -172,18 +173,18 @@ def saturate_sulfur(input_string):
     return processed
 
 
-def write_record(input_file, listing):
-    """Provide the permanent record."""
-    stem_input_file = os.path.splitext(input_file)[0]
-    report_file = "".join([stem_input_file, "_sat.smi"])
-
-    try:
-        with open(report_file, encoding="utf-8", mode="w") as newfile:
-            for entry in listing:
-                newfile.write(f"{entry}\n")
-    except OSError:
-        print(f"System error while writing file {report_file}.  Exit.")
-        sys.exit()
+# def write_record(input_file, listing):
+#     """Provide the permanent record."""
+#     stem_input_file = os.path.splitext(input_file)[0]
+#     report_file = "".join([stem_input_file, "_sat.smi"])
+#
+#     try:
+#         with open(report_file, encoding="utf-8", mode="w") as newfile:
+#             for entry in listing:
+#                 newfile.write(f"{entry}\n")
+#     except OSError:
+#         print(f"System error while writing file {report_file}.  Exit.")
+#         sys.exit()
 
 
 def process_smiles(smiles):
