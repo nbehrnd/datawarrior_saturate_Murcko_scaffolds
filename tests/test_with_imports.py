@@ -108,6 +108,7 @@ def test_furfual() -> None:
     output_smiles = r"C1CC(OC1)CO"
     assert process_smiles(input_smiles) == output_smiles
 
+
 @pytest.mark.imported
 def test_tetrabutyltinhydride() -> None:
     """Test Sn is not accidentally 'reduced' to SN."""
