@@ -39,11 +39,11 @@ dependencies = []  # None (intentionally only Python's standard library)
 
 [project.optional-dependencies]
 dev = [
-    "black",
-    "build",
-    "flake8",
-    "pre-commit",
-    "pytest",
+    "black>=25.1.0",
+    "build>=1.2.2.post1",
+    "flake8>=7.1.1",
+    "pre-commit>=4.2.0",
+    "pytest>=8.4.1",
 ]
 
 [project.urls]
@@ -52,4 +52,12 @@ Homepage = "https://github.com/nbehrnd/datawarrior_saturate_Murcko_scaffolds"
 [project.scripts]
 saturate_murcko_scaffolds = "saturate_murcko_scaffolds.saturate_murcko_scaffolds:main"
 
+[tool.pytest.ini_options]
+pythonpath = "src"
+testpaths = "tests"
+filterwarnings = "ignore::pytest.PytestCacheWarning"
+markers = [
+    "blackbox: a black-box test",
+    "imported: a test which imports a function of the script",
+]
 
