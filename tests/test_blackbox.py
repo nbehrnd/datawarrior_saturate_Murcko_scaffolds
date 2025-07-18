@@ -1,55 +1,29 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# name:   test_saturate_murcko_scaffolds.py
+# name:   test_blackbox.py
 # author: nbehrnd@yahoo.com
 # date:   [2021-02-04 Tue]
-# edit:   [2025-07-08 Tue]
+# edit:   [2025-07-17 Thu]
 #
 """tests for saturate_murcko_scaffolds.py
 
 This script checks results by script `saturate_murcko_scaffolds.py` with
 pytest.  The coverage is incomplete, already because checks currently don't
-import individual functions, i.e. only black box-tests are run.
+import individual functions, i.e. only black box-tests (`pytest -k blackbox`)
+are run.
 
-Test setup, for instance in Linux Debian 13/trixie:
-
-```bash
-git clone https://github.com/nbehrnd/datawarrior_saturate_Murcko_scaffolds.git
-cd ./datawarrior_saturate_Murcko_scaffolds
-python -m venv sup
-source ./sup/bin/activate
-pip install -r requirements-dev.txt
-python -m pytest
-```
-
-This approach was tested and run successfully in Linux Debian 13/trixie
-with Python 3.12.6, and Pytest 8.3.3 as fetched from PyPi.org.
-
-The SMILES used in the tests were checked with the visual output as .png
-provided by OpenBabel.[1]
-
-There are additional SMILES in sub folder `test_data` used e.g., to
-generate an illustration on the project's landing page.  These were
-exported by DataWarrior.[2]
-
-[1]  OpenBabel (http://www.openbabel.org) as version 3.1.1 for Linux
-     Debian 12 / bookworm, branch testing (Jan 4, 2023), was used.
-
-[2]  Sander T, Freyss J, von Korff M, Rufener C, J. Chem. Inf. Model.
-     2015, 55, 460-473, (https://pubs.acs.org/doi/10.1021/ci500588j).
-     The program, (c) 2002--2021 by Idorsia Pharmaceuticals Ltd., is
-     freely available under http://www.openmolecules.org (source code
-     at https://github.com/thsa/datawarrior).  The native Linux
-     version 5.5.0 (April 2021) was used.
+There are additional SMILES in sub folder `demo` which serve for a more
+extended demonstration of the script's working rather than (pytest based)
+checks if the script works correctly.
 """
 
 import os
 import subprocess as sub
 
-# import pytest
+import pytest
 
-SCRIPT = "saturate_murcko_scaffolds.py"
+SCRIPT = "src/saturate_murcko_scaffolds/saturate_murcko_scaffolds.py"
 
 
 def test_program_exists():
@@ -58,6 +32,7 @@ def test_program_exists():
     assert os.path.isfile(SCRIPT)
 
 
+@pytest.mark.blackbox
 def test_explicit_double_bonds():
     """Check the saturation of explicit double bonds.
 
@@ -80,6 +55,7 @@ def test_explicit_double_bonds():
         assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
+@pytest.mark.blackbox
 def test_explicit_triple_bonds():
     """Check the saturation of explicit triple bonds.
 
@@ -100,6 +76,7 @@ def test_explicit_triple_bonds():
         assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
+@pytest.mark.blackbox
 def test_toluene_to_methylcyclohexane():
     """Check the saturation of toluene to methylcyclohexane."""
 
@@ -113,6 +90,7 @@ def test_toluene_to_methylcyclohexane():
         assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
+@pytest.mark.blackbox
 def test_cyclopentadiene_to_cyclopentane():
     """Check the saturation of cyclohexadiene to cyclohexane."""
 
@@ -124,6 +102,7 @@ def test_cyclopentadiene_to_cyclopentane():
         assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
+@pytest.mark.blackbox
 def test_pyrrole_to_pyrrolidine():
     """Check the saturation of a N-heterocycle."""
 
@@ -135,6 +114,7 @@ def test_pyrrole_to_pyrrolidine():
         assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
+@pytest.mark.blackbox
 def test_furane_to_tetrahydrofurane():
     """Check the saturation of a O-heterocycle."""
 
@@ -146,6 +126,7 @@ def test_furane_to_tetrahydrofurane():
         assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
+@pytest.mark.blackbox
 def test_phosporine_to_phosphinane():
     """Check the saturation for an P-heterocycle, 1/2."""
 
@@ -157,6 +138,7 @@ def test_phosporine_to_phosphinane():
         assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
+@pytest.mark.blackbox
 def test_phosphole_to_phospholane():
     """Check the saturation for an P-heterocycle, 2/2."""
 
@@ -168,6 +150,7 @@ def test_phosphole_to_phospholane():
         assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
+@pytest.mark.blackbox
 def test_thiophene_to_thiolene():
     """Check the saturation for a S-heterocycle."""
 
@@ -179,6 +162,7 @@ def test_thiophene_to_thiolene():
         assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
+@pytest.mark.blackbox
 def test_stannole_to_stannolane():
     """Prevent the not sensible reduction of [sn] to [SN].
 
@@ -200,6 +184,7 @@ def test_stannole_to_stannolane():
         assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
+@pytest.mark.blackbox
 def test_preserve_stereogenic_centers():
     """Do not remove, nor newly assign (R)/(S) indicators.
 
@@ -218,6 +203,7 @@ def test_preserve_stereogenic_centers():
         assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
+@pytest.mark.blackbox
 def test_preserve_structure_concatenation():
     """Retain the concatenation by the period sign.
 
@@ -234,6 +220,7 @@ def test_preserve_structure_concatenation():
         assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
+@pytest.mark.blackbox
 def test_preserve_assigned_charges():
     """Do not alter a charged assigned to an atom.
 
@@ -256,6 +243,7 @@ def test_preserve_assigned_charges():
         assert output == smiles_out, f"Expected {smiles_out}, but got {output}"
 
 
+@pytest.mark.blackbox
 def test_pass_input_file_to_cli():
     """saturate multiple SMILES from a file, report to the CLI"""
     molecules = ["c1ccncc1", "[O-]c1ccccc1", "c1c[Sn]cc1", "nCC[C@@H](C)O"]
@@ -264,7 +252,7 @@ def test_pass_input_file_to_cli():
         for molecule in molecules:
             newfile.write(molecule + "\n")
 
-    command = ["python3", "saturate_murcko_scaffolds.py", "checker.smi"]
+    command = ["python3", SCRIPT, "checker.smi"]
     result = sub.run(command, capture_output=True, text=True)
     output = result.stdout.strip()
 

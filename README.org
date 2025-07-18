@@ -1,7 +1,7 @@
 
 # name: README.org 
 # date: 2019-07-22 (YYYY-MM-DD)
-# edit: [2024-11-12 Tue]
+# edit: [2025-07-17 Tue]
 
 #+OPTIONS: toc:nil ^:nil
 
@@ -20,6 +20,9 @@
 #+LATEX_HEADER:   \setcapindent{0em}  \setkomafont{caption}{\small}
 #+LATEX_HEADER:   \usepackage[basicstyle=small]{listings}
 
+[[./coverage-badge.svg]]
+[[./flake8-badge.svg]]
+[[./tests-badge.svg]]
 
 * Background
    

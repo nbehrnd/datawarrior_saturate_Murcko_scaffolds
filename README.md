@@ -1,3 +1,4 @@
+![](./coverage-badge.svg) ![](./flake8-badge.svg) ![](./tests-badge.svg)
 
 # Background
 
