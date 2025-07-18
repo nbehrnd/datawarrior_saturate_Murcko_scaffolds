@@ -4,7 +4,7 @@
 # name:   saturate_murcko_scaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   [2019-06-07 Fri]
-# edit:   [2025-07-17 Thu]
+# edit:   [2025-07-18 Fri]
 #
 """Read Smiles of Murcko scaffolds and return these as 'saturated'.
 
@@ -46,25 +46,27 @@ import re
 
 
 def get_args():
-    """Get command-line arguments"""
+    """Collect command-line arguments."""
 
     parser = argparse.ArgumentParser(
-        description="""Reading a list of SMILES, the script reports 'saturated'
-        Murcko scaffolds as a list of SMILES.  The script processes SMILES
-        strings only if these contain one or zero pairs of square brackets
-        (e.g., [Sn], [S@], [Fe3+]) and only works on elements C, N, O, P, and S
-        (often written in lower case as an implicit description of the aromatic
-        bond order) and explicit double/triple bonds.  To prevent potential
-        errors, the square brackets are copied verbatim into the newly written
-        SMILES string. Enclose SMILES provided via the command line in quotes,
-        or some characters permissible in a SMILES string can launch an unwanted
-        action."""
+        description="""Reading a list of SMILES, the script reports
+        'saturated' Murcko scaffolds as a list of SMILES.  The script
+        processes SMILES strings only if these contain one or zero pairs
+        of square brackets (e.g., [Sn], [S@], [Fe3+]) and only works on
+        elements C, N, O, P, and S (often written in lower case as an
+        implicit description of the aromatic bond order) and explicit
+        double/triple bonds.  To prevent potential errors, the square
+        brackets are copied verbatim into the newly written SMILES
+        string. Enclose SMILES provided via the command line in quotes,
+        or some characters permissible in a SMILES string can launch an
+        unwanted action."""
     )
 
     parser.add_argument(
         "inputs",
         nargs="+",
-        help="one or multiple SMILES from the CLI, or list of an input text file",
+        help="""
+One or multiple SMILES from the CLI, or a list by an input file""",
     )
 
     args = parser.parse_args()
@@ -72,11 +74,12 @@ def get_args():
     return args
 
 
-def saturate_bonds(input_smiles):
-    """remove explicit designation of higher bond orders
+def saturate_bonds(input_smiles: str) -> str:
+    """Remove explicit designation of higher bond orders.
 
-    SMILES strings may describe double and triple bonds explicitly; this as well
-    as then irrelevant information about (E)/(Z) configuration is removed."""
+    SMILES strings may describe double and triple bonds explicitly; this
+    as well as then irrelevant information about (E)/(Z) configuration
+    is removed."""
     characters_to_remove = ["=", "#", "/", "\\"]
     retain = []
     processed = ""
@@ -91,21 +94,23 @@ def saturate_bonds(input_smiles):
     return processed
 
 
-def saturate_carbon(input_string):
-    """provide saturation of carbon atoms
+def saturate_carbon(input_string: str) -> str:
+    """Provide saturation of carbon atoms.
 
     A sequential approach appears more suitable here.
-    + though perhaps a bit verbose, it is possible to note every C atom enclosed
-      in square brackets.  Inspired by OpenBabel, saturation is provided by drop
-      of the enclosing square brackets and capitalization.
-    + application of the mere string.uppercase() approach could transform `[sn]`
-      about aromatic tin to `[SN]` -- which however now neither is non-aromatic
-      tin `[Sn]`, nor follows the rule to enclose only one element into a pair
-      of square brackets (you don't want to have `S` sulfur and `N` instead).
-      So the second rule prevents a modification of `c` if `c` is used as second
-      character of an element symbol enclosed by a pair or square brackets.
-    + third, there may be formal charge on the atom of interest.  For now, only
-      single positive, and single negative are supported by the algorithm.
+    + though perhaps a bit verbose, it is possible to note every C atom
+      enclosed in square brackets.  Inspired by OpenBabel, saturation is
+      provided by drop of the enclosing square brackets and capitalization.
+    + application of the mere string.uppercase() approach could transform
+      `[sn]` about aromatic tin to `[SN]` -- which however now neither
+      is non-aromatic tin `[Sn]`, nor follows the rule to enclose only
+      one element into a pair of square brackets (you don't want to have
+      `S` sulfur and `N` instead). So the second rule prevents a
+      modification of `c` if `c` is used as second character of an element
+      symbol enclosed by a pair or square brackets.
+    + third, there may be formal charge on the atom of interest.  For now,
+      only single positive, and single negative are supported by the
+      algorithm.
     """
     processed = ""
     new01 = re.sub(r"\[c\]", "C", input_string)  # `[c]` -> `C`
@@ -117,8 +122,8 @@ def saturate_carbon(input_string):
     return processed
 
 
-def saturate_nitrogen(input_string):
-    """provide saturation of nitrogen atoms
+def saturate_nitrogen(input_string: str) -> str:
+    """Saturation next to nitrogen atoms.
 
     The approach copies the one introduced on carbon, confer vide supra."""
     processed = ""
@@ -131,8 +136,8 @@ def saturate_nitrogen(input_string):
     return processed
 
 
-def saturate_oxygen(input_string):
-    """provide saturation of oxygen atoms
+def saturate_oxygen(input_string: str) -> str:
+    """Saturation next to oxygen atoms.
 
     The approach copies the one introduced on carbon, confer vide supra."""
     processed = ""
@@ -145,8 +150,8 @@ def saturate_oxygen(input_string):
     return processed
 
 
-def saturate_phosphorus(input_string):
-    """provide saturation of phosphorus atoms
+def saturate_phosphorus(input_string: str) -> str:
+    """Saturation next to phosphorus atoms.
 
     The approach copies the one introduced on carbon, confer vide supra."""
     processed = ""
@@ -159,8 +164,8 @@ def saturate_phosphorus(input_string):
     return processed
 
 
-def saturate_sulfur(input_string):
-    """provide saturation of sulfur atoms
+def saturate_sulfur(input_string: str) -> str:
+    """Saturation next to sulfur atoms.
 
     The approach copies the one introduced on carbon, confer vide supra."""
     processed = ""
@@ -187,8 +192,8 @@ def saturate_sulfur(input_string):
 #         sys.exit()
 
 
-def process_smiles(smiles):
-    """sequentially pass a SMILES string to reduction"""
+def process_smiles(smiles: str) -> str:
+    """Sequential reduction of a compound described by a SMILES string."""
     only_single_bonds = saturate_bonds(smiles)
     on_carbon = saturate_carbon(only_single_bonds)
     on_nitrogen = saturate_nitrogen(on_carbon)
@@ -200,8 +205,8 @@ def process_smiles(smiles):
     return result
 
 
-def process_input_files(input_files):
-    """sequentially process input files with lists of SMILES strings"""
+def process_input_files(input_files: list[str]) -> None:
+    """Sequentially process input files with lists of SMILES strings."""
     for file in input_files:
         try:
             with open(file, mode="r", encoding="utf-8") as source:
@@ -212,7 +217,7 @@ def process_input_files(input_files):
             print(f"file {file} is not accessible")
 
 
-def main():
+def main() -> None:
     """Join the functions."""
     args = get_args()
 
