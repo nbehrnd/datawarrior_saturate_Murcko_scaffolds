@@ -162,3 +162,24 @@ def test_sequentially_process_smiles_from_cli(capsys) -> None:
     output = capsys.readouterr().out.rstrip()
 
     assert output == "CCCC\nC1CCNCC1"
+
+
+@pytest.mark.imported
+def test_sequentially_process_smiles_from_files(capsys) -> None:
+    """Check main function's processing of file's SMILES."""
+    with open("alkenes.smi", mode="w", encoding="utf-8") as new:
+        alkenes = "\n".join(["C=C", "C=CC", "C=CCC"])
+        new.write(alkenes)
+
+    with open("alkines.smi", mode="w", encoding="utf-8") as new:
+        alkines = "\n".join(["C#C", "C#CC"])
+        new.write(alkines)
+
+    input_files = ["alkenes.smi", "alkines.smi"]
+    main(input_files)
+    output = capsys.readouterr().out.rstrip()
+
+    assert output == "\n".join(["CC", "CCC", "CCCC", "CC", "CCC"])
+
+    os.remove("alkenes.smi")
+    os.remove("alkines.smi")
