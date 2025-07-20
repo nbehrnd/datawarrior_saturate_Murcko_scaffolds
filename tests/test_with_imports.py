@@ -11,6 +11,7 @@
 This file provides pytest checks for script `saturate_murcko_scaffolds.py`.
 Complementary to the ones in `test_blackbox.py`, this script imports and
 checks the script's functions individually."""
+import os
 import shlex
 
 import pytest
@@ -24,6 +25,7 @@ from saturate_murcko_scaffolds.saturate_murcko_scaffolds import (
     saturate_sulfur,
     process_smiles,
     get_args,
+    process_input_files,
 )
 
 
@@ -135,3 +137,17 @@ def test_selfcheck_shlex() -> None:
 def test_read_smiles_from_cli(inputs, reference_smiles):
     args = get_args(shlex.split(inputs))
     assert inputs == reference_smiles
+
+
+@pytest.mark.imported
+def test_read_smiles_from_a_file(capsys) -> None:
+    """Check if a file present and mentioned in a list of files is read."""
+
+    with open("example.smi", mode="w", encoding="utf-8") as new:
+        new.write("C#CCC")
+    list_of_files = ["example.smi"]
+    process_input_files(list_of_files)
+    output = capsys.readouterr().out.rstrip()
+
+    assert output == "CCCC"
+    os.remove("example.smi")
