@@ -26,6 +26,7 @@ from saturate_murcko_scaffolds.saturate_murcko_scaffolds import (
     process_smiles,
     get_args,
     process_input_files,
+    main,
 )
 
 
@@ -151,3 +152,13 @@ def test_read_smiles_from_a_file(capsys) -> None:
 
     assert output == "CCCC"
     os.remove("example.smi")
+
+
+@pytest.mark.imported
+def test_sequentially_process_smiles_from_cli(capsys) -> None:
+    """Check processing SMILES from CLI by the main function."""
+    smiles_strings = ["C#CCC", "c1ccncc1"]
+    main(smiles_strings)
+    output = capsys.readouterr().out.rstrip()
+
+    assert output == "CCCC\nC1CCNCC1"
