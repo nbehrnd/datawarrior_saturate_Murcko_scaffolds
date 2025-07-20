@@ -4,13 +4,14 @@
 # name:   test_blackbox.py
 # author: nbehrnd@yahoo.com
 # date:   [2025-07-17 Thu]
-# edit:
+# edit:   [2025-07-20 Sun]
 #
 """tests for saturate_murcko_scaffolds.py with function imports
 
 This file provides pytest checks for script `saturate_murcko_scaffolds.py`.
 Complementary to the ones in `test_blackbox.py`, this script imports and
 checks the script's functions individually."""
+import shlex
 
 import pytest
 
@@ -115,3 +116,11 @@ def test_tetrabutyltinhydride() -> None:
     input_smiles = r"CCCC[SnH](CCCC)CCCC"
     output_smiles = r"CCCC[SnH](CCCC)CCCC"
     assert process_smiles(input_smiles) == output_smiles
+
+
+@pytest.mark.imported
+def test_selfcheck_shlex() -> None:
+    """Check if `shlex` works well."""
+    command = "C#CCC c1ccncc1"
+    split_into_list = ["C#CCC", "c1ccncc1"]
+    assert shlex.split(command) == split_into_list
