@@ -231,5 +231,5 @@ def main(arg_list=None) -> None:
         process_input_files(input_files)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     main()
