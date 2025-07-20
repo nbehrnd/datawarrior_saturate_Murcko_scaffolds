@@ -23,6 +23,7 @@ from saturate_murcko_scaffolds.saturate_murcko_scaffolds import (
     saturate_phosphorus,
     saturate_sulfur,
     process_smiles,
+    get_args,
 )
 
 
@@ -124,3 +125,13 @@ def test_selfcheck_shlex() -> None:
     command = "C#CCC c1ccncc1"
     split_into_list = ["C#CCC", "c1ccncc1"]
     assert shlex.split(command) == split_into_list
+
+
+@pytest.mark.parametrize(
+    "inputs, reference_smiles",
+    [(r"C#CCC", r"C#CCC"), (r"C#CCC c1ccncc1", r"C#CCC c1ccncc1")],
+)
+@pytest.mark.imported
+def test_read_smiles_from_cli(inputs, reference_smiles):
+    args = get_args(shlex.split(inputs))
+    assert inputs == reference_smiles
