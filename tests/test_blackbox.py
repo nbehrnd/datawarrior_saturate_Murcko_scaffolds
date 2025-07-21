@@ -23,7 +23,9 @@ import subprocess as sub
 
 import pytest
 
-SCRIPT = "src/saturate_murcko_scaffolds/saturate_murcko_scaffolds.py"
+SCRIPT = os.path.join(
+    "src", "saturate_murcko_scaffolds", "saturate_murcko_scaffolds.py"
+)
 
 
 def test_program_exists():
