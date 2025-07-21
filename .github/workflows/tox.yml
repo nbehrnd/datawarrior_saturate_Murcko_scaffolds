@@ -1,0 +1,36 @@
+name: CI_tox_datawarrior_saturate_murcko_scaffolds
+
+# name    : tox.yml
+# purpose : run pytest on the saturator script if deemed necessary
+# date    : [2025-07-21 Mon]
+# edit
+
+on:
+  workflow_dispatch:  # the manual trigger
+  # push:
+    # branches: [ dev, main ]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.10', '3.11', '3.12', '3.13']
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install tox
+      run: |
+        python -m pip install --upgrade pip
+        pip install tox tox-gh-actions
+
+    - name: run tox' jobs (which GitHub happens to split in separate jobs)
+      run: tox
+

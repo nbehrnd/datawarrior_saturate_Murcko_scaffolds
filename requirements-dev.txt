@@ -8,6 +8,7 @@ pre-commit
 black
 flake8
 pytest
+tox
 
 # After completing the setup of your virtual environment, the command
 #
