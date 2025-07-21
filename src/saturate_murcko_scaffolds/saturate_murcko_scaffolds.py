@@ -4,7 +4,7 @@
 # name:   saturate_murcko_scaffolds.py
 # author: nbehrnd@yahoo.com
 # date:   [2019-06-07 Fri]
-# edit:   [2025-07-18 Fri]
+# edit:   [2025-07-20 Sun]
 #
 """Read Smiles of Murcko scaffolds and return these as 'saturated'.
 
@@ -45,7 +45,7 @@ import re
 # import sys
 
 
-def get_args():
+def get_args(arg_list: list[str] | None):
     """Collect command-line arguments."""
 
     parser = argparse.ArgumentParser(
@@ -69,7 +69,7 @@ def get_args():
 One or multiple SMILES from the CLI, or a list by an input file""",
     )
 
-    args = parser.parse_args()
+    args = parser.parse_args(arg_list)
 
     return args
 
@@ -217,9 +217,9 @@ def process_input_files(input_files: list[str]) -> None:
             print(f"file {file} is not accessible")
 
 
-def main() -> None:
+def main(arg_list=None) -> None:
     """Join the functions."""
-    args = get_args()
+    args = get_args(arg_list)
 
     smiles_strings = [arg for arg in args.inputs if not os.path.isfile(arg)]
     if smiles_strings:
@@ -231,5 +231,5 @@ def main() -> None:
         process_input_files(input_files)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     main()

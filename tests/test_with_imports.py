@@ -4,13 +4,15 @@
 # name:   test_blackbox.py
 # author: nbehrnd@yahoo.com
 # date:   [2025-07-17 Thu]
-# edit:
+# edit:   [2025-07-20 Sun]
 #
 """tests for saturate_murcko_scaffolds.py with function imports
 
 This file provides pytest checks for script `saturate_murcko_scaffolds.py`.
 Complementary to the ones in `test_blackbox.py`, this script imports and
 checks the script's functions individually."""
+import os
+import shlex
 
 import pytest
 
@@ -22,6 +24,9 @@ from saturate_murcko_scaffolds.saturate_murcko_scaffolds import (
     saturate_phosphorus,
     saturate_sulfur,
     process_smiles,
+    get_args,
+    process_input_files,
+    main,
 )
 
 
@@ -115,3 +120,66 @@ def test_tetrabutyltinhydride() -> None:
     input_smiles = r"CCCC[SnH](CCCC)CCCC"
     output_smiles = r"CCCC[SnH](CCCC)CCCC"
     assert process_smiles(input_smiles) == output_smiles
+
+
+@pytest.mark.imported
+def test_selfcheck_shlex() -> None:
+    """Check if `shlex` works well."""
+    command = "C#CCC c1ccncc1"
+    split_into_list = ["C#CCC", "c1ccncc1"]
+    assert shlex.split(command) == split_into_list
+
+
+@pytest.mark.parametrize(
+    "inputs, reference_smiles",
+    [(r"C#CCC", r"C#CCC"), (r"C#CCC c1ccncc1", r"C#CCC c1ccncc1")],
+)
+@pytest.mark.imported
+def test_read_smiles_from_cli(inputs, reference_smiles):
+    args = get_args(shlex.split(inputs))
+    assert inputs == reference_smiles
+
+
+@pytest.mark.imported
+def test_read_smiles_from_a_file(capsys) -> None:
+    """Check if a file present and mentioned in a list of files is read."""
+
+    with open("example.smi", mode="w", encoding="utf-8") as new:
+        new.write("C#CCC")
+    list_of_files = ["example.smi"]
+    process_input_files(list_of_files)
+    output = capsys.readouterr().out.rstrip()
+
+    assert output == "CCCC"
+    os.remove("example.smi")
+
+
+@pytest.mark.imported
+def test_sequentially_process_smiles_from_cli(capsys) -> None:
+    """Check processing SMILES from CLI by the main function."""
+    smiles_strings = ["C#CCC", "c1ccncc1"]
+    main(smiles_strings)
+    output = capsys.readouterr().out.rstrip()
+
+    assert output == "CCCC\nC1CCNCC1"
+
+
+@pytest.mark.imported
+def test_sequentially_process_smiles_from_files(capsys) -> None:
+    """Check main function's processing of file's SMILES."""
+    with open("alkenes.smi", mode="w", encoding="utf-8") as new:
+        alkenes = "\n".join(["C=C", "C=CC", "C=CCC"])
+        new.write(alkenes)
+
+    with open("alkines.smi", mode="w", encoding="utf-8") as new:
+        alkines = "\n".join(["C#C", "C#CC"])
+        new.write(alkines)
+
+    input_files = ["alkenes.smi", "alkines.smi"]
+    main(input_files)
+    output = capsys.readouterr().out.rstrip()
+
+    assert output == "\n".join(["CC", "CCC", "CCCC", "CC", "CCC"])
+
+    os.remove("alkenes.smi")
+    os.remove("alkines.smi")
