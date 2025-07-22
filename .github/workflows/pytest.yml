@@ -1,9 +1,9 @@
-name: CI_pytest_datawarrior_saturate_murcko_scaffolds
+name: CI_pytest_mypy_datawarrior_saturate_murcko_scaffolds
 
 # name    : pytest.yml
 # purpose : regularly run pytest on the saturator script
 # date    : [2024-03-21 Thu]
-# edit    : [2025-07-21 Mon]
+# edit    : [2025-07-22 Tue]
 
 on:
   push:
@@ -23,7 +23,6 @@ jobs:
       matrix:
         # for a factorial test, an explicit selection of GitHub runner images
         # https://github.com/actions/runner-images?tab=readme-ov-file#available-images
-        # state of commit 4bd4d1b as visited on 2025-07-07 Mon
         os: [ubuntu-latest, windows-latest, macos-latest]
         python-version: ["3.13"]
     runs-on: ${{ matrix.os }}
@@ -40,8 +39,11 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies with PyPI
-        run: pip install pytest
+        run: pip install pytest mypy
 
       - name: Run the check with pytest
         run: python -m pytest
+
+      - name: check with mypy
+        run:  python -m mypy .
 
