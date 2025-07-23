@@ -1,0 +1,43 @@
+name: CI_wheel_datawarrior_saturate_murcko_scaffolds
+
+# name:    build_wheel.yml
+# purpose: build a .whl as an artifact without a secret/GitHub token
+# date:    [2025-07-23 Wed]
+# edit:
+
+on:
+  workflow_dispatch:  # launch only by the manual trigger
+    branches:  # default branch and a `dev` to test a .whl early seems sensible
+      - dev
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    timeout-minutes: 5
+
+    steps:
+    - name: checkout of the local repository
+      uses: actions/checkout@v3
+
+    - name: set up Python
+      uses: actions/setup-python@v4  # compare with https://github.com/actions
+      with:
+        python-version: "3.13"
+
+    - name: provide a virtual environment, resolve dependencies, then build
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+        pip install build
+        python -m build
+
+    - name: delivery within an archive `pubchem_wheel.zip`
+      uses: actions/upload-artifact@v4
+      with:
+        name: datawarrior_saturate_Murcko_scaffolds_wheel
+        path: |
+          dist/*.whl
+          dist/*.tar.gz
+
