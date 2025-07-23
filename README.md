@@ -1,3 +1,5 @@
+![Python Version from PEP 621 TOML](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Fnbehrnd%2Fdatawarrior_saturate_Murcko_scaffolds%2Fmain%2Fpyproject.toml)
+
 ![](./coverage-badge.svg) ![](./flake8-badge.svg) ![](./tests-badge.svg)
 
 # Background
