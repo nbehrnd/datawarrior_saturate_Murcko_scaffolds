@@ -1,5 +1,7 @@
 ![Python Version from PEP 621 TOML](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Fnbehrnd%2Fdatawarrior_saturate_Murcko_scaffolds%2Fmain%2Fpyproject.toml)
 
+<a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
+
 ![](./coverage-badge.svg) ![](./flake8-badge.svg) ![](./tests-badge.svg)
 
 # Background
@@ -16,17 +18,18 @@ style="width:75.0%" />
 
 # Typical use
 
-The script processes one, or multiple SMILES strings provided in a
-pattern of
+After the installation (see below), the script's general input follows
+the pattern of
 
 ``` shell
-python saturate_murcko_scaffolds.py [-h] inputs [inputs ...]
+saturate_murcko_scaffolds [-h] inputs [inputs ...]
 ```
 
-Running from the CLI, this translates for example to
+Running from the CLI, this translates for example the SMILES strings
+about pyridine and benzene to the ones about piperidine and cyclohexane
 
 ``` shell
-$ python3 saturate_murcko_scaffolds.py c1ccncc1 c1ccccc1
+$ saturate_murcko_scaffolds c1ccncc1 c1ccccc1
 C1CCNCC1
 C1CCCCC1
 ```
@@ -38,7 +41,7 @@ text file. As an example run in Linux Debian 13:
 $ cat test.smi
 c1ccncc1
 c1ccccc1
-$ python3 saturate_murcko_scaffolds.py test.smi
+$ saturate_murcko_scaffolds test.smi
 C1CCNCC1
 C1CCCCC1
 ```
@@ -50,22 +53,53 @@ input of the next command-line utility, or appended to an already
 existing permanent record, for instance
 
 ``` shell
-$ python3 saturate_murcko_scaffolds.py test.smi > output.smi
+$ saturate_murcko_scaffolds test.smi > output.smi
 $ cat output.smi 
 C1CCNCC1
 C1CCCCC1
 ```
 
-The script requires only functionality provided by the standard library
-of Python 3. Backed by tests with `pytest` and multiple runner instances
-GitHub provides, the recommended usage picks any combination of
-(ubuntu-20.04, ubuntu-22.04, ubuntu-24.04, windows-2019, windows-2022,
-macos-14) as hosting operating system on one hand, and either
-Python 3.10, or Python 3.12 as Python interpreter on the other.
-Anecdotally, the script was observed to equally work in ubuntu 18.04 and
-Python 3.6.9, too.
+# Installation
 
-# Example
+For normal use, download the most recent Python .whl enclosed in a zip
+archive distributed on the [releases
+page](https://github.com/nbehrnd/datawarrior_saturate_Murcko_scaffolds/releases).
+Within e.g., an activated virtual environment, the installation proceeds
+purely locally in the pattern of
+
+``` bash
+pip install saturate_murcko_scaffolds-1.3.1-py3-none-any.whl
+```
+
+Intentionally, the Python script and subsequent .whl are set up to work
+regardless of the underlying operation system (Windows,[^3] Linux, or
+MacOS) out of the box with the standard library of Python (version 3.10,
+or higher).
+
+You equally can clone the GitHub repository to then proceed by either
+command of
+
+``` bash
+pip install .
+pip install .e
+```
+
+Note (because of `pip`) this requires a working connection to the
+internet during the installation.
+
+If you are interested to locally edit and develop further the
+application, `pyproject.toml` lists additional tools like `flake8` and
+`pytest` distributed on the PyPI to check and improve source code
+quality. Then, the command
+
+``` bash
+pip install pyproject.toml[dev]
+```
+
+resolves these dependencies. Finally, a GNU Makefile provides additional
+analytic tools.
+
+# Larger example
 
 For a collection of organic materials, the Bemis-Murcko scaffolds were
 extracted with DataWarrior (then release 5.0.0 for Linux, January 2019)
@@ -90,7 +124,7 @@ slashes in lines #18 and #19). Descriptors of stereogenic centers
 copied verbatim.</figcaption>
 </figure>
 
-OpenBabel[^3] is used to illustrate the work of the script. The
+OpenBabel[^4] is used to illustrate the work of the script. The
 instructions to the CLI follow the pattern of
 
 ``` shell
@@ -110,7 +144,7 @@ the illustrations about both structure data sets.
 It is remarkable how well OpenBabel's displays the molecular structures
 with advanced motifs. In addition to those shown in the first
 illustration of this guide, see sub-folder `test_data` for a more
-extensive survey (e.g., the scaffold of cyclophane \[entry \#33\],
+extensive survey (e.g., the scaffold of cyclophane \[entry #33\],
 sparteine \[#38\], or adamantane \[#50\]).
 
 # Known peculiarities
@@ -124,7 +158,7 @@ the script refrains from the assignment of new CIP priorities and a
 corresponding label. It then depends on the program used for a
 visualization, if an explicit wedge is used (e.g., OpenBabel), or the
 absence of information is highlighted (e.g., as question mark in
-DataWarrior, or the project of CDK depict[^4]) as ambiguous. Absolute
+DataWarrior, or the project of CDK depict[^5]) as ambiguous. Absolute
 configuration of stereogenic centers (indicated in SMILES with the `@`
 sign) already assigned in the input however is retained.
 
@@ -139,7 +173,7 @@ positive charge of these five elements (e.g., `[O-]c1ccccc1` about the
 phenolate anion, and `C[N+](c1ccccc1)(C)C` about
 *N,N,N*-trimethylbenzenaminium cation). Here, it can be sensible to
 «sanitize» the results this script provides by other libraries as e.g.
-RDKit.[^5]
+RDKit.[^6]
 
 The capitalization of the five characters is constrained to prevent non
 sensible transformations of e.g., an (implicitly) aromatic atom of tin
@@ -155,7 +189,7 @@ is resolved as `C1CC(O)CCC1O.C1CC(CCC1O)O`.
 
 # License
 
-Norwid Behrnd, 2019–24, GPLv3.
+Norwid Behrnd, 2019, GPLv3.
 
 # Footnotes
 
@@ -171,14 +205,22 @@ Norwid Behrnd, 2019–24, GPLv3.
     <http://www.openmolecules.org>. For the source code (GPLv3), see
     <https://github.com/thsa/datawarrior>.
 
-[^3]: <https://github.com/openbabel/openbabel> For the most recent
+[^3]: Contrasting to `cmd.exe`, Windows' PowerShell may block the
+    execution of scripts. The later is adjustable by the command
+    `set-executionpolicy remotesigned` while running in the
+    administrator mode. For additional details, visit for instance [How
+    to enable execution of PowerShell
+    scripts?](https://superuser.com/questions/106360/how-to-enable-execution-of-powershell-scripts)
+    on StackExchange/superuser.
+
+[^4]: <https://github.com/openbabel/openbabel> For the most recent
     documentation, see <https://open-babel.readthedocs.io/en/latest/>
 
-[^4]: <https://www.simolecule.com/cdkdepict/depict.html> For the
+[^5]: <https://www.simolecule.com/cdkdepict/depict.html> For the
     mentioned annotation of CIP labels, change `No Annotation` (second
     pull down menu from the left) to `CIP Stereo Label`.
 
-[^5]: For an overview about the freely available RDKit library, see
+[^6]: For an overview about the freely available RDKit library, see
     [www.rdkit.org](https://www.rdkit.org/). An introduction into the
     topic of «molecular sanitization» is provided in the section of this
     very title in the on-line
