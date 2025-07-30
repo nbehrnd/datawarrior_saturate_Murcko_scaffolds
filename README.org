@@ -1,7 +1,7 @@
 
 # name: README.org 
 # date: 2019-07-22 (YYYY-MM-DD)
-# edit: [2025-07-23 Wed]
+# edit: [2025-07-30 Wed]
 
 #+OPTIONS: toc:nil ^:nil
 
@@ -41,16 +41,18 @@
 
 * Typical use
  
-  The script processes one, or multiple SMILES strings provided in a pattern of
+  After the installation (see below), the script's general input
+  follows the pattern of
 
   #+BEGIN_SRC shell
-    python saturate_murcko_scaffolds.py [-h] inputs [inputs ...]
+    saturate_murcko_scaffolds [-h] inputs [inputs ...]
   #+END_SRC
 
-  Running from the CLI, this translates for example to
+  Running from the CLI, this translates for example the SMILES strings
+  about pyridine and benzene to the ones about piperidine and cyclohexane
 
   #+BEGIN_SRC shell
-    $ python3 saturate_murcko_scaffolds.py c1ccncc1 c1ccccc1
+    $ saturate_murcko_scaffolds c1ccncc1 c1ccccc1
     C1CCNCC1
     C1CCCCC1
   #+END_SRC
@@ -62,7 +64,7 @@
     $ cat test.smi
     c1ccncc1
     c1ccccc1
-    $ python3 saturate_murcko_scaffolds.py test.smi
+    $ saturate_murcko_scaffolds test.smi
     C1CCNCC1
     C1CCCCC1
   #+END_SRC
@@ -74,22 +76,53 @@
   to an already existing permanent record, for instance
 
   #+BEGIN_SRC shell
-    $ python3 saturate_murcko_scaffolds.py test.smi > output.smi
+    $ saturate_murcko_scaffolds test.smi > output.smi
     $ cat output.smi 
     C1CCNCC1
     C1CCCCC1
   #+END_SRC
 
-  The script requires only functionality provided by the standard
-  library of Python 3.  Backed by tests with =pytest= and multiple
-  runner instances GitHub provides, the recommended usage picks any
-  combination of (ubuntu-20.04, ubuntu-22.04, ubuntu-24.04,
-  windows-2019, windows-2022, macos-14) as hosting operating system on
-  one hand, and either Python 3.10, or Python 3.12 as Python
-  interpreter on the other.  Anecdotally, the script was observed to
-  equally work in ubuntu 18.04 and Python 3.6.9, too.
+* Installation
 
-* Example
+  For normal use, download the most recent Python .whl enclosed in a
+  zip archive distributed on the
+  [[https://github.com/nbehrnd/datawarrior_saturate_Murcko_scaffolds/releases][releases page]].
+  Within e.g., an activated virtual environment, the installation
+  proceeds purely locally in the pattern of
+
+  #+begin_src sh
+    pip install saturate_murcko_scaffolds-1.3.1-py3-none-any.whl
+  #+end_src
+
+  Intentionally, the Python script and subsequent .whl are set up to
+  work regardless of the underlying operation system
+  (Windows,[fn:PowerShell] Linux, or MacOS) out of the box with the
+  standard library of Python (version 3.10, or higher).
+
+  You equally can clone the GitHub repository to then proceed by
+  either command of
+
+  #+begin_src sh
+    pip install .
+    pip install .e
+  #+end_src
+
+  Note (because of ~pip~) this requires a working connection to the
+  internet during the installation.
+
+  If you are interested to locally edit and develop further the
+  application, ~pyproject.toml~ lists additional tools like ~flake8~
+  and ~pytest~ distributed on the PyPI to check and improve source
+  code quality.  Then, the command
+
+  #+begin_src sh
+    pip install pyproject.toml[dev]
+  #+end_src
+
+  resolves these dependencies.  Finally, a GNU Makefile provides
+  additional analytic tools.
+
+* Larger example
 
   For a collection of organic materials, the Bemis-Murcko scaffolds
   were extracted with DataWarrior (then release 5.0.0 for Linux,
@@ -172,7 +205,7 @@
 
 * License
 
-  Norwid Behrnd, 2019--24, GPLv3.
+  Norwid Behrnd, 2019, GPLv3.
 
 * Footnotes
 
@@ -199,3 +232,9 @@ on-line [[https://www.rdkit.org/docs/RDKit_Book.html][RDKit Book]].
 [fn:CDKdepict] https://www.simolecule.com/cdkdepict/depict.html For
 the mentioned annotation of CIP labels, change ~No Annotation~ (second
 pull down menu from the left) to ~CIP Stereo Label~.
+
+[fn:PowerShell]  Contrasting to ~cmd.exe~, Windows' PowerShell may
+block the execution of scripts.  The later is adjustable by the
+command ~set-executionpolicy remotesigned~ while running in the
+administrator mode.  For additional details, visit for instance [[https://superuser.com/questions/106360/how-to-enable-execution-of-powershell-scripts][How to
+enable execution of PowerShell scripts?]] on StackExchange/superuser.
