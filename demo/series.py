@@ -4,7 +4,7 @@
 # author:  nbehrnd@yahoo.com
 # license: MIT, 2020
 # date:    [2020-04-26 Sun]
-# edit:    [2025-01-30 Thu]
+# edit:    [2026-07-01 Wed]
 #
 """
 Python script generating the test series' visualizations.
@@ -34,35 +34,35 @@ those one could type one the CLI.
   12 lines per page.
   The input follows the pattern of:
 
-  obabel -ismi input.smi -O input_color.svg -xc10 -xr12 -xl --addinindex
+  obabel input.smi -O input_color.svg -xc10 -xr12 -xl --addinindex
 
   For the representation in black and white:
 
-  obabel -ismi input.smi -O input_color.svg -xc10 -xr12 -xl --addinindex -xu
+  obabel input.smi -O input_color.svg -xc10 -xr12 -xl --addinindex -xu
 
 + The default width of the .png per motif equates to 300 dpi.  To
   maintain the grid already introduced, the page-width is explicitly
   defined as the tenfold multiple.  The input follow the pattern of:
 
-  obabel -ismi input_sat.smi -O input_sat_color.png -xc10 -xr12 -xl --addinindex -xp 3000
+  obabel input_sat.smi -O input_sat_color.png -xc10 -xr12 -xl --addinindex -xp 3000
 
   Inter alia, for the representation in black and white:
 
-  obabel -ismi input_sat.smi -O input_sat_color.png -xc10 -xr12 -xl --addinindex -xp 3000 -xu
+  obabel input_sat.smi -O input_sat_color.png -xc10 -xr12 -xl --addinindex -xp 3000 -xu
 
 The script intends to serve as proof-of-principle."""
 
 import subprocess as sub
 
 register = [
-    "obabel -ismi input.smi -O input_color.svg -xc10 -xr12 -xl --addinindex",
-    "obabel -ismi input_sat.smi -O input_color_sat.svg -xc10 -xr12 -xl --addinindex",
-    "obabel -ismi input.smi -O input_bw.svg -xc10 -xr12 -xl --addinindex -xu",
-    "obabel -ismi input_sat.smi -O input_bw_sat.svg -xc10 -xr12 -xl --addinindex -xu",
-    "obabel -ismi input.smi -O input_color.png -xc10 -xr12 -xl --addinindex -xp 3000",
-    "obabel -ismi input_sat.smi -O input_color_sat.png -xc10 -xr12 -xl --addinindex -xp 3000",
-    "obabel -ismi input.smi -O input_bw.png -xc10 -xr12 -xl --addinindex -xp 3000 -xu",
-    "obabel -ismi input_sat.smi -O input_bw_sat.png -xc10 -xr12 -xl --addinindex -xp 3000 -xu",
+    "obabel input.smi -O input_color.svg -xc10 -xr12 -xl --addinindex",
+    "obabel input_sat.smi -O input_color_sat.svg -xc10 -xr12 -xl --addinindex",
+    "obabel input.smi -O input_bw.svg -xc10 -xr12 -xl --addinindex -xu",
+    "obabel input_sat.smi -O input_bw_sat.svg -xc10 -xr12 -xl --addinindex -xu",
+    "obabel input.smi -O input_color.png -xc10 -xr12 -xl --addinindex -xp 3000",
+    "obabel input_sat.smi -O input_color_sat.png -xc10 -xr12 -xl --addinindex -xp 3000",
+    "obabel input.smi -O input_bw.png -xc10 -xr12 -xl --addinindex -xp 3000 -xu",
+    "obabel input_sat.smi -O input_bw_sat.png -xc10 -xr12 -xl --addinindex -xp 3000 -xu",
 ]
 
 for entry in register:

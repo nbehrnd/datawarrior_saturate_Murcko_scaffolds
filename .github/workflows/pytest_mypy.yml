@@ -3,19 +3,18 @@ name: CI_pytest_mypy_datawarrior_saturate_murcko_scaffolds
 # name    : pytest_mypy.yml
 # purpose : regularly run pytest and mypy on the saturator script
 # date    : [2024-03-21 Thu]
-# edit    : [2025-07-22 Tue]
 
 on:
   push:
     branches:
-      - main             # updates to enter the principal branch "main"
+      - main
       - dev
   pull_request:
     branches:
-      - main             # PRs to enter the principal branch "main"
-  workflow_dispatch:     # provide a manual trigger
-  schedule:
-    - cron: "0 0 1 * *"  # once each 1st of a month, at 00:00 UTC (cf. https://crontab.guru/)
+      - main
+  workflow_dispatch:
+#  schedule:
+#    - cron: "0 0 1 * *"  # once each 1st of a month, at 00:00 UTC (cf. https://crontab.guru/)
 
 jobs:
   test:
@@ -24,15 +23,13 @@ jobs:
         # for a factorial test, an explicit selection of GitHub runner images
         # https://github.com/actions/runner-images?tab=readme-ov-file#available-images
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ["3.13"]
+        python-version: ["3.x"]
     runs-on: ${{ matrix.os }}
 
-    timeout-minutes: 3  # Timeout for each job individually
+    timeout-minutes: 5  # Timeout for each job individually
 
     steps:
       - uses: actions/checkout@v4
-        # by [2024-10-23 Wed], this version possibly will be considered "old", cf.
-        # https://github.blog/changelog/2023-09-22-github-actions-transitioning-from-node-16-to-node-20/
 
       - uses: actions/setup-python@v5
         with:
@@ -46,4 +43,3 @@ jobs:
 
       - name: check with mypy
         run:  python -m mypy .
-

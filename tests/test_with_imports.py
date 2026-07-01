@@ -4,13 +4,14 @@
 # name:   test_blackbox.py
 # author: nbehrnd@yahoo.com
 # date:   [2025-07-17 Thu]
-# edit:   [2025-07-20 Sun]
+# edit:   [2026-07-01 Wed]
 #
 """tests for saturate_murcko_scaffolds.py with function imports
 
 This file provides pytest checks for script `saturate_murcko_scaffolds.py`.
 Complementary to the ones in `test_blackbox.py`, this script imports and
 checks the script's functions individually."""
+
 import os
 import shlex
 
@@ -136,7 +137,7 @@ def test_selfcheck_shlex() -> None:
 )
 @pytest.mark.imported
 def test_read_smiles_from_cli(inputs, reference_smiles):
-    args = get_args(shlex.split(inputs))
+    get_args(shlex.split(inputs))
     assert inputs == reference_smiles
 
 

@@ -2,7 +2,7 @@
 #
 # This Makefile presumes an activated virtual environment of Python and an
 # internet connection for pytest's checks on pubchempy's interaction with NIH.
-# In contast to e.g., the coverage badge by coveralls, the setup here does not
+# In contrast to e.g., the coverage badge by coveralls, the setup here does not
 # rely on a separate account, nor a GitHub token to work.  By flag `-l`, the
 # badges are created locally, independent of genbadge's default to reach out
 # for shields.io.

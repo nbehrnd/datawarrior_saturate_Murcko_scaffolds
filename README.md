@@ -55,7 +55,7 @@ existing permanent record, for instance
 
 ``` shell
 $ saturate_murcko_scaffolds test.smi > output.smi
-$ cat output.smi 
+$ cat output.smi
 C1CCNCC1
 C1CCCCC1
 ```

@@ -38,6 +38,7 @@ or zero pairs of square brackets (e.g., [Sn], [S@], [Fe3+]) are touched.
 
 License: Norwid Behrnd, 2019--2025, GPLv3.
 """
+
 import argparse
 import os
 import re
