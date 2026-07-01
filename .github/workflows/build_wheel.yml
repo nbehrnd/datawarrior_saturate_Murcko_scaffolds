@@ -18,10 +18,10 @@ jobs:
 
     steps:
     - name: checkout of the local repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v7
 
     - name: set up Python
-      uses: actions/setup-python@v4  # compare with https://github.com/actions
+      uses: actions/setup-python@v6  # compare with https://github.com/actions
       with:
         python-version: "3.x"
 
@@ -33,7 +33,7 @@ jobs:
         python -m build
 
     - name: delivery within an archive
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: datawarrior_saturate_Murcko_scaffolds_wheel
         path: |
