@@ -64,4 +64,3 @@ markers = [
     "blackbox: a black-box test",
     "imported: a test which imports a function of the script",
 ]
-

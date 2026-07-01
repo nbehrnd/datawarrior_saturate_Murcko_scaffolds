@@ -1,11 +1,11 @@
 
-# name: README.org 
+# name: README.org
 # date: 2019-07-22 (YYYY-MM-DD)
 # edit: [2025-07-30 Wed]
 
 #+OPTIONS: toc:nil ^:nil
 
-#+LATEX_CLASS:    koma-article  
+#+LATEX_CLASS:    koma-article
 #+LATEX_HEADER:   \usepackage[a4paper]{geometry}
 #+LATEX_HEADER:   \usepackage{libertine, microtype, graphicx, float, booktabs}
 #+LATEX_HEADER:   \usepackage[USenglish]{babel}
@@ -25,7 +25,7 @@
 [[./tests-badge.svg]]
 
 * Background
-   
+
   The Bemis-Murcko scaffold[fn:BM_scaffold] provided by
   DataWarrior[fn:DataWarrior] retains information about bond order and
   chirality.  Sometimes, however, it suffices to retain only atom
@@ -40,7 +40,7 @@
   [[./pattern.png]]
 
 * Typical use
- 
+
   After the installation (see below), the script's general input
   follows the pattern of
 
@@ -68,7 +68,7 @@
     C1CCNCC1
     C1CCCCC1
   #+END_SRC
-  
+
   In a mixed input queue, SMILES strings provided via the CLI are
   processed prior to SMILES provided via one, or multiple input
   file(s).  If wanted, the output to the CLI can be redirected to
@@ -77,7 +77,7 @@
 
   #+BEGIN_SRC shell
     $ saturate_murcko_scaffolds test.smi > output.smi
-    $ cat output.smi 
+    $ cat output.smi
     C1CCNCC1
     C1CCCCC1
   #+END_SRC
@@ -131,7 +131,7 @@
   =input_sat.smi=.  The effect of the «artificial saturation» is easy
   to recognize while comparing the scaffold lists (fig. [[file_diff]]) in
   a difference view.
-   
+
    #+NAME:       file_diff
    #+CAPTION:    Difference view of the SMILES strings of a Murcko scaffold /prior/ (left hand column) and /after/ an «artificial saturation» (right hand column).  The processing affects explicit bond order indicators, e.g. double bond (equality sign, e.g., line #14), triple bond bond (number sign ~#~, not shown); or about implicit aromatization (lower case to upper case) for atoms of carbon, nitrogen, oxygen (depicted); or phosphorus, sulfur (not depicted).  Stereochemical indicators about double bonds will be removed (e.g., slashes in lines #18 and #19).  Descriptors of stereogenic centers (~@~-signs, e.g., line #25) and charges (not shown) are copied verbatim.
    #+ATTR_LATEX: :width 14cm
@@ -140,17 +140,17 @@
 
    OpenBabel[fn:openbabel] is used to illustrate the work of the
    script.  The instructions to the CLI follow the pattern of
-   
+
    #+BEGIN_SRC shell
      obabel -ismi test_input.smi -O test_input_color.svg -xc10 -xr12 -xl --addinindex
    #+END_SRC
-   
+
    to generate a =.svg= file (vector representation), or
-   
+
    #+BEGIN_SRC shell
        obabel -ismi test_input_sat.smi -O test_input_sat_color.png -xc10 -xr12 -xl --addinindex -xp 3000
    #+END_SRC
-   
+
    to generate a bitmap =.png= with structure formulae depicted in a
    grid of 10 columns by 12 rows.  Script =series.py= automates the
    generation of the illustrations about both structure data sets.

@@ -2741,7 +2741,7 @@ x="12.500000" y="99.833333" >112</text>
       starty = evt.clientY;
     }
     svgEl.onmousemove=function(evt) {
-      if(startx!=0 && starty!=0 
+      if(startx!=0 && starty!=0
         && ((evt.clientX - startx)*(evt.clientX - startx)+(evt.clientY - starty)*(evt.clientY - starty)>100))
       {
         var vbtext = svgEl.getAttributeNS(null,"viewBox");
@@ -2753,7 +2753,7 @@ x="12.500000" y="99.833333" >112</text>
         startx = evt.clientX;
         starty = evt.clientY;
       }
-    } 
+    }
     svgEl.onmouseup=function() {
       startx=0;
       starty=0;

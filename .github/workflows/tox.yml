@@ -33,4 +33,3 @@ jobs:
 
     - name: run tox' jobs (which GitHub happens to split in separate jobs)
       run: tox
-
