@@ -12,9 +12,14 @@ on:
   pull_request:
     branches:
       - main
-  workflow_dispatch:
-#  schedule:
-#    - cron: "0 0 1 * *"  # once each 1st of a month, at 00:00 UTC (cf. https://crontab.guru/)
+  workflow_dispatch:     # provide a manual trigger
+  schedule:
+    - cron: "0 0 1 * *"  # once each 1st of a month, at 00:00 UTC (cf. https://crontab.guru/)
+
+# prevent concurrency of workflows (rule GH102):
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -26,20 +31,28 @@ jobs:
         python-version: ["3.x"]
     runs-on: ${{ matrix.os }}
 
-    timeout-minutes: 5  # Timeout for each job individually
+    timeout-minutes: 3  # individual timeout for each job
 
     steps:
       - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v6.2.0
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies with PyPI
-        run: pip install pytest mypy
+      - name: setup pytest, mypy
+        run: |
+          python -m pip install --upgrade pip
+          pip install .
+          pip install pytest
+          pip install mypy
 
       - name: Run the check with pytest
-        run: python -m pytest
+        run: |
+          pytest
+          pytest -v
 
       - name: check with mypy
-        run:  python -m mypy .
+        run: |
+          mypy src/saturate_murcko_scaffolds/saturate_murcko_scaffolds.py
+
