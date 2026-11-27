@@ -1,6 +1,6 @@
 [build-system]
 build-backend = "setuptools.build_meta"
-requires = [ "setuptools>=42" ]
+requires = [ "setuptools==84.2.1" ]
 
 [project]
 name = "saturate-murcko-scaffolds"
@@ -11,7 +11,7 @@ keywords = [ "datawarrior", "scaffold" ]
 license = "GPL-3.0-only"
 license-files = [ "LICENSE" ]
 authors = [ { name = "Norwid Behrnd", email = "nbehrnd@yahoo.com" } ]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 # https://pypi.org/classifiers/
 classifiers = [
   "Development Status :: 4 - Beta",
@@ -24,7 +24,6 @@ classifiers = [
   "Operating System :: OS Independent",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
@@ -36,26 +35,22 @@ classifiers = [
 ]
 dependencies = []  # None (intentionally only Python's standard library)
 optional-dependencies.dev = [
-  "black>=25.1.0",
-  "build>=1.2.2.post1",
-  "flake8>=7.1.1",
-  "pre-commit>=4.2.0",
-  "pytest>=9.0",
+  "build==1.6.1",
+  "pre-commit==4.7.0",
+  "pytest==9.2.0",
   "ruff==0.17.6",
-  "tox>=4.28.0",
+  "tox==4.67.16",
 ]
 urls.Homepage = "https://github.com/nbehrnd/datawarrior_saturate_Murcko_scaffolds"
 scripts.saturate_murcko_scaffolds = "saturate_murcko_scaffolds.saturate_murcko_scaffolds:main"
 
 [dependency-groups]
 dev = [
-  "black>=25.1.0",
-  "build>=1.2.2.post1",
-  "flake8>=7.1.1",
-  "pre-commit>=4.2.0",
-  "pytest>=9.0",
+  "build==1.6.1",
+  "pre-commit==4.7.0",
+  "pytest==9.2.0",
   "ruff==0.17.6",
-  "tox>=4.28.0",
+  "tox==4.67.16",
 ]
 
 [tool.ruff]
