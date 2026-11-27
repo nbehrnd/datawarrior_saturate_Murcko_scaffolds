@@ -36,8 +36,9 @@ classifiers = [
 dependencies = []  # None (intentionally only Python's standard library)
 optional-dependencies.dev = [
   "build==1.6.1",
-  "pre-commit==4.7.0",
-  "pytest==9.2.0",
+  "mypy==2.4.1",
+  "pre-commit==4.7",
+  "pytest==9.2",
   "ruff==0.17.6",
   "tox==4.67.16",
 ]
@@ -47,8 +48,9 @@ scripts.saturate_murcko_scaffolds = "saturate_murcko_scaffolds.saturate_murcko_s
 [dependency-groups]
 dev = [
   "build==1.6.1",
-  "pre-commit==4.7.0",
-  "pytest==9.2.0",
+  "mypy==2.4.1",
+  "pre-commit==4.7",
+  "pytest==9.2",
   "ruff==0.17.6",
   "tox==4.67.16",
 ]
@@ -82,6 +84,13 @@ ignore = [
 
 [tool.codespell]
 skip = "*.smi"
+
+[tool.mypy]
+files = "src"
+python_version = "3.13"
+warn_unreachable = true
+enable_error_code = [ "ignore-without-code", "redundant-expr", "truthy-bool" ]
+strict = false  # because not each function got all relevant type hints
 
 [tool.pytest]
 addopts = [ "-ra" ]
