@@ -1,16 +1,17 @@
 # date: [2025-01-29 Wed]
-# edit: [2026-06-17 Wed]
+# edit: [2026-11-01 Sun]
 #
 # Notes:
 #
-# - the installation by `pre-commit install` creates the local folder
-#   `~/.cache/pre-commit` in with the data supporting the hooks' work
-# - while editing the Python scripts, `pre-commit run --all-files` allows
-#   to launch the tests separately and prior to e.g., `git add *.py`
-# - if necessary, `git commit -m "commit message" --no-verify` allows to
-#   bypass the tests altogether.
+# - activation | deactivation: pre-commit install | uninstall
+# - use on each file: pre-commt run --all-files
+# - commit without a check: git commit -m "message" --no-verify
+#
+# An installation by `pre-commit install` creates the local folder
+# `~/.cache/pre-commit` in with the data supporting the hooks' work.
 
 repos:
+  # general purpose / (mostly) agnostic to the language of implementation:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: "v6.0.0"
     hooks:
@@ -29,43 +30,37 @@ repos:
       - id: requirements-txt-fixer
       - id: trailing-whitespace
 
-  - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 26.5.1
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.3
     hooks:
-      - id: black
-        name: black (on .py)
-        args:
-          - --line-length=90
+      - id: codespell
+        name: codespell (cf. configuration `[tool.codespell]`)
 
-  - repo: https://github.com/adamchainz/blacken-docs
-    rev: 1.20.0
+  # with (at least some) relation to Python:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.17.6
     hooks:
-      - id: blacken-docs
-        name: black (in code blocks .md, .rst, .tex contain)
+    - id: ruff-check
+      args: ["--fix", "--show-fixes", "--exit-zero"]
+    - id: ruff-format
+      types_or: [python, markdown]
+
+  - repo: https://github.com/hukkin/mdformat
+    rev: 1.0.0
+    hooks:
+      - id: mdformat
+        # complementary plugins to mdformat
         additional_dependencies:
-        - black==26.3.1
+        - mdformat-gfm
 
   - repo: https://github.com/pre-commit/pygrep-hooks
     rev: v1.10.0
     hooks:
       - id: python-use-type-annotations
 
-  - repo: https://github.com/codespell-project/codespell
-    rev: v2.4.1
+  - repo: https://github.com/tox-dev/pyproject-fmt
+    rev: v2.31.2
     hooks:
-      - id: codespell
-        name: codespell (cf. configuration `[tool.codespell]`)
-
-  - repo: https://github.com/PyCQA/flake8
-    rev: 7.1.1
-    hooks:
-      - id: flake8
-        name: "flake8 (advisory only, it does not block a commit)"
+      - id: pyproject-fmt
         args:
-          - --max-line-length=90
-          - --show-source
-          - --statistics
-          - --count
-          - --exit-zero
-        verbose: true
-        always_run: true
+        - --keep-full-version
