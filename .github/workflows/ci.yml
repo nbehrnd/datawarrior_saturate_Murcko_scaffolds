@@ -1,0 +1,59 @@
+name: CI_pytest_mypy
+
+# name    : ci.yml
+# purpose : regularly run pytest and mypy on dw_saturate script
+
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:     # provide the manual trigger
+
+# prevent concurrency of workflows (rule GH102):
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test_source:
+    runs-on: ubuntu-latest
+    env:
+      UV_PYTHON_PREFERENCE: only-managed
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup uv and latest Python 3
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: "3"
+          enable-cache: true
+
+      - run: uv sync --locked --all-extras --dev
+      - run: uv run ruff check .
+      - run: uv run ruff format .
+
+  test_work:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+      UV_PYTHON_PREFERENCE: only-managed  # use uv managed Python interpreters
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup uv and latest Python 3
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: "3"
+          enable-cache: true
+
+      - run: uv python list --only-installed  # spot what uv sees
+      - run: uv sync --locked --all-extras --dev
+      - run: uv run pytest
+      - run: uv run mypy src/saturate_murcko_scaffolds/saturate_murcko_scaffolds.py

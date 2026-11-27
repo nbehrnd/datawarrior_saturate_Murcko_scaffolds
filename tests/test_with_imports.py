@@ -18,16 +18,16 @@ import shlex
 import pytest
 
 from saturate_murcko_scaffolds.saturate_murcko_scaffolds import (
+    get_args,
+    main,
+    process_input_files,
+    process_smiles,
     saturate_bonds,
     saturate_carbon,
     saturate_nitrogen,
     saturate_oxygen,
     saturate_phosphorus,
     saturate_sulfur,
-    process_smiles,
-    get_args,
-    process_input_files,
-    main,
 )
 
 
