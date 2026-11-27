@@ -1,7 +1,7 @@
 
 # name: README.org
 # date: 2019-07-22 (YYYY-MM-DD)
-# edit: [2025-07-30 Wed]
+# edit: [2026-11-27 Fri]
 
 #+OPTIONS: toc:nil ^:nil
 
@@ -20,9 +20,8 @@
 #+LATEX_HEADER:   \setcapindent{0em}  \setkomafont{caption}{\small}
 #+LATEX_HEADER:   \usepackage[basicstyle=small]{listings}
 
-[[./coverage-badge.svg]]
-[[./flake8-badge.svg]]
 [[./tests-badge.svg]]
+[[./coverage-badge.svg]]
 
 * Background
 
@@ -97,7 +96,7 @@
   Intentionally, the Python script and subsequent .whl are set up to
   work regardless of the underlying operation system
   (Windows,[fn:PowerShell] Linux, or MacOS) out of the box with the
-  standard library of Python (version 3.10, or higher).
+  standard library of Python (version 3.11, or higher).
 
   You equally can clone the GitHub repository to then proceed by
   either command of
