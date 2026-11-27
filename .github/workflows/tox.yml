@@ -1,7 +1,7 @@
-name: CI_tox_datawarrior_saturate_murcko_scaffolds
+name: tox_pytest_mypy
 
 # name    : tox.yml
-# purpose : run pytest on the saturator script if deemed necessary
+# purpose : larger CI if deemed necessary
 
 on:
   workflow_dispatch:  # the manual trigger

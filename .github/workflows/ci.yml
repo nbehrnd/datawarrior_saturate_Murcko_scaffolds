@@ -1,7 +1,7 @@
-name: CI_pytest_mypy_datawarrior_saturate_murcko_scaffolds
+name: CI_pytest_mypy
 
 # name    : ci.yml
-# purpose : regularly run pytest and mypy on the saturator script
+# purpose : regularly run pytest and mypy on dw_saturate script
 
 
 on:
